@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OMEGA-ULTIMATE-FUSION-V∞ — The Final Form</title>
+  <meta name="description" content="8 Autonomous Trading Agents · 32 Containers · Temporal.io Brain · 12 Chains · 150X YOLO · 15% Circuit Breaker · 99.999% Uptime. The self-deploying, self-evolving unstoppable trading system for the Brotherhood Omega Dynasty." />
+  <meta property="og:title"       content="OMEGA-ULTIMATE-FUSION-V∞ — The Final Form" />
+  <meta property="og:description" content="The complete self-deploying, self-evolving, unstoppable trading system. Deploy once, dominate forever." />
+  <meta property="og:type"        content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔱</text></svg>" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+<!-- Starfield canvas -->
+<canvas id="starfield"></canvas>
+
+<!-- ════════════════════════════════════════
+     NAV
+════════════════════════════════════════ -->
+<nav>
+  <div class="container">
+    <div class="nav-inner">
+      <span class="nav-brand">🔱 OMEGA-ULTIMATE-FUSION-V∞</span>
+      <ul class="nav-links">
+        <li><a href="#agents">Agents</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#chains">Chains</a></li>
+        <li><a href="#safety">Safety</a></li>
+        <li><a href="#terminal">Live Feed</a></li>
+        <li><a href="#deploy">Deploy</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<header>
+  <div class="header-grid-lines"></div>
+  <div class="container">
+    <div class="status-bar">
+      <span><span class="status-dot"></span> ALL SYSTEMS OPERATIONAL</span>
+      <span>UPTIME: <strong id="uptime-counter" style="color:var(--accent-green)">calculating…</strong></span>
+      <span>TOTAL PnL: <strong id="pnl-live">$14,820,143</strong></span>
+      <span>AGENTS: <strong style="color:var(--accent-cyan)">8 / 8 ACTIVE</strong></span>
+    </div>
+
+    <span class="trident">🔱</span>
+
+    <h1>OMEGA-ULTIMATE-FUSION-V∞</h1>
+    <p class="subtitle">Brotherhood Omega Dynasty · The Final Form</p>
+    <p class="tagline">CHUKUA KONTROLI YOTE</p>
+
+    <div class="cta-group">
+      <a class="btn btn-primary" href="#deploy">⚡ Deploy Now</a>
+      <a class="btn btn-outline" href="#agents">Explore Agents →</a>
+    </div>
+
+    <!-- KPI strip -->
+    <div class="kpi-strip fade-in">
+      <div class="kpi-item">
+        <div class="kpi-value kpi-cyan">8</div>
+        <div class="kpi-label">Autonomous Agents</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value kpi-purple">32</div>
+        <div class="kpi-label">Containers</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value kpi-gold">12</div>
+        <div class="kpi-label">Blockchains</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value kpi-red">150X</div>
+        <div class="kpi-label">YOLO Multiplier</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value kpi-green">15%</div>
+        <div class="kpi-label">Circuit Breaker</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value kpi-green">99.999%</div>
+        <div class="kpi-label">Uptime SLA</div>
+      </div>
+      <div class="kpi-item">
+        <div class="kpi-value kpi-cyan">∞</div>
+        <div class="kpi-label">Version</div>
+      </div>
+    </div>
+
+    <div class="uptime-ticker">
+      <span class="status-dot"></span>
+      System online · Deploy once, dominate forever · Self-healing · Self-evolving
+    </div>
+  </div>
+</header>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     AGENTS
+════════════════════════════════════════ -->
+<section id="agents">
+  <div class="container">
+    <p class="section-label">Core Intelligence</p>
+    <h2 class="section-title">8 Autonomous Trading Agents</h2>
+    <p class="section-desc">Each agent runs in its own isolated container with a dedicated Temporal.io workflow, self-healing capabilities, and a private key vault. They collaborate through an event mesh but act independently under extreme conditions.</p>
+
+    <div class="agents-grid">
+
+      <div class="agent-card fade-in" style="--agent-color:#00d4ff">
+        <div class="agent-id">AGENT-01 · ALPHA</div>
+        <div class="agent-name">Alpha Scanner</div>
+        <div class="agent-desc">Real-time market microstructure analysis across all 12 chains. Detects price inefficiencies, order-book imbalances and momentum signals within sub-50 ms windows.</div>
+        <div class="agent-tags">
+          <span class="tag">Order Flow</span>
+          <span class="tag">Microstructure</span>
+          <span class="tag">WebSocket</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#ffd700">
+        <div class="agent-id">AGENT-02 · BETA</div>
+        <div class="agent-name">Beta Executor</div>
+        <div class="agent-desc">High-frequency trade execution engine with smart order routing. Splits large orders across DEXes and CEXes to minimise slippage and MEV exposure.</div>
+        <div class="agent-tags">
+          <span class="tag">Smart Routing</span>
+          <span class="tag">MEV Shield</span>
+          <span class="tag">Flashbots</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#00ff88">
+        <div class="agent-id">AGENT-03 · GAMMA</div>
+        <div class="agent-name">Gamma Risk Manager</div>
+        <div class="agent-desc">Portfolio-level risk orchestration. Enforces the 15% circuit breaker, monitors Greeks across option positions, and dynamically hedges delta exposure.</div>
+        <div class="agent-tags">
+          <span class="tag">Greeks</span>
+          <span class="tag">Circuit Breaker</span>
+          <span class="tag">VaR</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#a855f7">
+        <div class="agent-id">AGENT-04 · DELTA</div>
+        <div class="agent-name">Delta Arbitrageur</div>
+        <div class="agent-desc">Cross-chain and cross-venue arbitrage specialist. Monitors 500+ trading pairs simultaneously and executes atomic multi-hop arb paths in a single transaction.</div>
+        <div class="agent-tags">
+          <span class="tag">Cross-Chain</span>
+          <span class="tag">Flash Loans</span>
+          <span class="tag">Atomic Arb</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#ff8c00">
+        <div class="agent-id">AGENT-05 · EPSILON</div>
+        <div class="agent-name">Epsilon Sentiment</div>
+        <div class="agent-desc">LLM-powered sentiment pipeline ingesting Twitter/X, Telegram, on-chain social graphs, and news feeds. Generates directional alpha signals within 2 seconds of major news events.</div>
+        <div class="agent-tags">
+          <span class="tag">LLM</span>
+          <span class="tag">NLP</span>
+          <span class="tag">Social Graph</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#00d4ff">
+        <div class="agent-id">AGENT-06 · ZETA</div>
+        <div class="agent-name">Zeta Momentum</div>
+        <div class="agent-desc">Trend-following and breakout specialist deploying adaptive lookback Kalman filters and regime-detection HMMs. Scales position size via the Kelly Criterion at 150X leverage.</div>
+        <div class="agent-tags">
+          <span class="tag">Kalman Filter</span>
+          <span class="tag">HMM</span>
+          <span class="tag">Kelly 150X</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#ff3366">
+        <div class="agent-id">AGENT-07 · ETA</div>
+        <div class="agent-name">Eta Liquidity Maker</div>
+        <div class="agent-desc">Automated market-making across 4 perp DEXes. Dynamically skews quotes around the fair-value mid-price using inventory and volatility signals, capturing the spread 24/7.</div>
+        <div class="agent-tags">
+          <span class="tag">AMM</span>
+          <span class="tag">Spread Capture</span>
+          <span class="tag">Perps</span>
+        </div>
+      </div>
+
+      <div class="agent-card fade-in" style="--agent-color:#ffd700">
+        <div class="agent-id">AGENT-08 · THETA</div>
+        <div class="agent-name">Theta Rebalancer</div>
+        <div class="agent-desc">Continuous portfolio rebalancing and tax-loss harvesting orchestrator. Executes portfolio drift corrections below 0.1% tracking error and auto-compounds yield positions.</div>
+        <div class="agent-tags">
+          <span class="tag">Rebalancing</span>
+          <span class="tag">Yield</span>
+          <span class="tag">Tax-Loss</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     ARCHITECTURE
+════════════════════════════════════════ -->
+<section id="architecture">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <p class="section-label">Infrastructure</p>
+        <h2 class="section-title">32-Container Architecture</h2>
+        <p class="section-desc">Every service runs in an isolated, auto-healing container orchestrated by Kubernetes with Temporal.io as the distributed workflow brain. Zero single points of failure.</p>
+
+        <div class="progress-list fade-in">
+          <div class="progress-item">
+            <span class="progress-label">Agent Containers</span>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:25%"></div></div>
+            <span class="progress-val">8 / 32</span>
+          </div>
+          <div class="progress-item">
+            <span class="progress-label">Data Pipelines</span>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:18.75%"></div></div>
+            <span class="progress-val">6 / 32</span>
+          </div>
+          <div class="progress-item">
+            <span class="progress-label">Risk & Compliance</span>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:12.5%"></div></div>
+            <span class="progress-val">4 / 32</span>
+          </div>
+          <div class="progress-item">
+            <span class="progress-label">Chain Adapters</span>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:37.5%"></div></div>
+            <span class="progress-val">12 / 32</span>
+          </div>
+          <div class="progress-item">
+            <span class="progress-label">Infra Services</span>
+            <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:6.25%"></div></div>
+            <span class="progress-val">2 / 32</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-grid fade-in">
+        <div class="arch-card">
+          <div class="arch-icon">⏱</div>
+          <div class="arch-title">Temporal.io Brain</div>
+          <div class="arch-detail">Durable workflow execution with automatic retries, sagas, and long-running activity support.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">☸️</div>
+          <div class="arch-title">Kubernetes Orchestration</div>
+          <div class="arch-detail">Auto-scaling, rolling deployments, and self-healing pod management across multi-region clusters.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">🔐</div>
+          <div class="arch-title">HashiCorp Vault</div>
+          <div class="arch-detail">Dynamic secret management, key rotation every 24h, and HSM-backed signing for all on-chain transactions.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">📡</div>
+          <div class="arch-title">Event Mesh</div>
+          <div class="arch-detail">Kafka-powered pub/sub bus connecting all 8 agents with sub-5 ms internal latency and at-least-once delivery.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">🗄️</div>
+          <div class="arch-title">TimescaleDB</div>
+          <div class="arch-detail">High-performance time-series storage for tick data, OHLCV history, and portfolio snapshots with auto-compression.</div>
+        </div>
+        <div class="arch-card">
+          <div class="arch-icon">📊</div>
+          <div class="arch-title">Grafana Observability</div>
+          <div class="arch-detail">300+ dashboards, P99 latency tracking, PnL attribution, and Slack/PagerDuty alerting for every anomaly.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     CHAINS
+════════════════════════════════════════ -->
+<section id="chains">
+  <div class="container">
+    <p class="section-label">Multi-Chain Coverage</p>
+    <h2 class="section-title">12 Blockchains, One Brain</h2>
+    <p class="section-desc">A single deployment connects to every major chain through dedicated RPC-redundant node clusters, unified by a cross-chain state layer.</p>
+
+    <div class="chains-grid fade-in">
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Ethereum</div>
+          <div class="chain-type">Layer 1 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">BNB Chain</div>
+          <div class="chain-type">Layer 1 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Arbitrum One</div>
+          <div class="chain-type">Layer 2 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Solana</div>
+          <div class="chain-type">Layer 1 · SVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Avalanche</div>
+          <div class="chain-type">Layer 1 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Polygon</div>
+          <div class="chain-type">Layer 2 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Base</div>
+          <div class="chain-type">Layer 2 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Optimism</div>
+          <div class="chain-type">Layer 2 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Fantom</div>
+          <div class="chain-type">Layer 1 · EVM</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Aptos</div>
+          <div class="chain-type">Layer 1 · Move</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Sui</div>
+          <div class="chain-type">Layer 1 · Move</div>
+        </div>
+      </div>
+      <div class="chain-card">
+        <div class="chain-dot"></div>
+        <div>
+          <div class="chain-name">Injective</div>
+          <div class="chain-type">Layer 1 · Cosmos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     SAFETY
+════════════════════════════════════════ -->
+<section id="safety">
+  <div class="container">
+    <p class="section-label">Risk Management</p>
+    <h2 class="section-title">Engineered for Survival</h2>
+    <p class="section-desc">Aggressive alpha capture is paired with institutional-grade risk controls. The system is designed to keep the Brotherhood safe even in black-swan scenarios.</p>
+
+    <div class="safety-grid fade-in">
+      <div class="safety-card" style="--safety-color:var(--accent-red)">
+        <div class="safety-value">15%</div>
+        <div class="safety-title">Portfolio Circuit Breaker</div>
+        <div class="safety-desc">Automatic halt and emergency de-risk when the aggregate drawdown reaches 15%. All new orders are blocked until a human override is confirmed.</div>
+      </div>
+      <div class="safety-card" style="--safety-color:var(--accent-gold)">
+        <div class="safety-value">150X</div>
+        <div class="safety-title">YOLO Leverage Cap</div>
+        <div class="safety-desc">Maximum 150X leverage per individual position, enforced at the executor level with real-time margin monitoring and automatic partial close on breach.</div>
+      </div>
+      <div class="safety-card" style="--safety-color:var(--accent-green)">
+        <div class="safety-value">99.999%</div>
+        <div class="safety-title">Uptime SLA</div>
+        <div class="safety-desc">Multi-region active-active deployment with sub-30s failover. Temporal.io durable workflows ensure zero trade loss during regional outages.</div>
+      </div>
+      <div class="safety-card" style="--safety-color:var(--accent-cyan)">
+        <div class="safety-value">24h</div>
+        <div class="safety-title">Key Rotation</div>
+        <div class="safety-desc">All signing keys are rotated every 24 hours through HashiCorp Vault. Compromised keys are revoked within 60 seconds via automated monitoring.</div>
+      </div>
+      <div class="safety-card" style="--safety-color:var(--accent-purple)">
+        <div class="safety-value">5-of-8</div>
+        <div class="safety-title">Multi-Sig Emergency</div>
+        <div class="safety-desc">Large withdrawals require a 5-of-8 multi-signature from the Brotherhood council. Smart contracts enforce this at the protocol layer.</div>
+      </div>
+      <div class="safety-card" style="--safety-color:var(--accent-green)">
+        <div class="safety-value">60s</div>
+        <div class="safety-title">Anomaly Detection</div>
+        <div class="safety-desc">ML-based anomaly detection triggers within 60 seconds of unusual activity, automatically pausing the affected agent and alerting operators.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     LIVE TERMINAL
+════════════════════════════════════════ -->
+<section id="terminal">
+  <div class="container">
+    <p class="section-label">System Status</p>
+    <h2 class="section-title">Live Operations Feed</h2>
+    <p class="section-desc">Real-time log stream from the OMEGA-BRAIN orchestrator. All 8 agents report activity, health checks, and trade executions into this unified feed.</p>
+
+    <div class="terminal fade-in">
+      <div class="terminal-bar">
+        <div class="terminal-dot t-red"></div>
+        <div class="terminal-dot t-amber"></div>
+        <div class="terminal-dot t-green"></div>
+        <span class="terminal-title">omega-brain · live · tty0</span>
+      </div>
+      <div class="terminal-body" id="terminal-body"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     DEPLOY
+════════════════════════════════════════ -->
+<section id="deploy">
+  <div class="container">
+    <p class="section-label">Quick Start</p>
+    <h2 class="section-title">Deploy in 3 Steps</h2>
+    <p class="section-desc">The system is fully self-deploying. Point it at your infrastructure and it handles the rest — including future updates.</p>
+
+    <div class="arch-grid fade-in" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+      <div class="arch-card">
+        <div class="arch-icon">1️⃣</div>
+        <div class="arch-title">Clone & Configure</div>
+        <div class="arch-detail" style="font-family:var(--font-mono); font-size:0.8rem; line-height:1.8; color:var(--accent-cyan);">
+          git clone https://github.com/PatDigLat63/<br>
+          &nbsp;&nbsp;OMEGA-ULTIMATE-FUSION-V-<br>
+          cp .env.example .env<br>
+          # Fill in API keys, RPC endpoints,<br>
+          # and Brotherhood wallet addresses
+        </div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-icon">2️⃣</div>
+        <div class="arch-title">Bootstrap Cluster</div>
+        <div class="arch-detail" style="font-family:var(--font-mono); font-size:0.8rem; line-height:1.8; color:var(--accent-cyan);">
+          docker compose up -d<br>
+          # OR for production Kubernetes:<br>
+          helm repo add omega ./charts<br>
+          helm install omega-fusion omega/core \<br>
+          &nbsp;&nbsp;-f values.production.yaml
+        </div>
+      </div>
+      <div class="arch-card">
+        <div class="arch-icon">3️⃣</div>
+        <div class="arch-title">Activate & Dominate</div>
+        <div class="arch-detail" style="font-family:var(--font-mono); font-size:0.8rem; line-height:1.8; color:var(--accent-green);">
+          # All 8 agents auto-start<br>
+          # Self-evolving strategies<br>
+          # Auto-updates via GitOps<br>
+          #<br>
+          # CHUKUA KONTROLI YOTE 🔱
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem; padding:1.5rem; background:var(--bg-card); border:1px solid var(--border); border-radius:8px; border-left:3px solid var(--accent-gold);" class="fade-in">
+      <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.7;">
+        ⚠️ <strong style="color:var(--accent-gold)">Risk Disclaimer:</strong>
+        OMEGA-ULTIMATE-FUSION-V∞ is experimental software intended for educational and research purposes. Leveraged trading carries significant risk of loss. The 150X YOLO multiplier and cross-chain arbitrage strategies can result in total loss of capital. Only deploy with funds you can afford to lose. Past performance of back-tests does not guarantee future results. The Brotherhood Omega Dynasty accepts no liability for financial losses.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-logo">🔱 OMEGA-ULTIMATE-FUSION-V∞</div>
+    <div class="footer-motto">CHUKUA KONTROLI YOTE</div>
+    <div class="footer-links">
+      <a href="https://github.com/PatDigLat63/OMEGA-ULTIMATE-FUSION-V-">GitHub</a>
+      <a href="#agents">Agents</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#chains">Chains</a>
+      <a href="#safety">Safety</a>
+      <a href="#terminal">Live Feed</a>
+      <a href="#deploy">Deploy</a>
+    </div>
+    <div class="footer-copy">
+      © 2026 Brotherhood Omega Dynasty · All rights reserved · Build V∞ · Deploy once, dominate forever.
+    </div>
+  </div>
+</footer>
+
+<script src="assets/main.js"></script>
+</body>
+</html>
