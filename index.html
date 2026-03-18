@@ -1,0 +1,1275 @@
+537033fb2ed)<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="60" />
+  <title>OMEGA-ULTIMATE-FUSION-V∞ — Brotherhood Omega Dynasty</title>
+  <style>
+    :root {
+      --gold: #ffd700;
+      --gold2: #ffb300;
+      --green: #00ff88;
+      --red: #ff2244;
+      --blue: #00cfff;
+      --purple: #b44aff;
+      --orange: #ff7700;
+      --bg: #050a10;
+      --panel: #0a1420;
+      --panel2: #0d1a2a;
+      --border: #1a3050;
+      --text: #c8d8e8;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    #header {
+      background: linear-gradient(135deg, #030710 0%, #0a1428 50%, #030710 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 18px 24px 12px;
+      text-align: center;
+      position: relative;
+    }
+    #header h1 {
+      font-size: clamp(1.3rem, 4vw, 2.2rem);
+      background: linear-gradient(90deg, var(--gold), var(--white), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    #header .subtitle {
+      font-size: 0.72rem;
+      color: var(--gold2);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    #header .dynasty-verse {
+      margin-top: 8px;
+      font-size: 0.7rem;
+      color: #8899aa;
+      font-style: italic;
+    }
+    .header-clock {
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      font-size: 0.75rem;
+      color: var(--green);
+      text-align: right;
+    }
+
+    /* ── 24/7 BANNER ── */
+    #banner-247 {
+      background: linear-gradient(90deg, #001800, #003300, #001800);
+      border-top: 1px solid var(--green);
+      border-bottom: 1px solid var(--green);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .banner-text {
+      font-size: clamp(0.7rem, 2vw, 0.95rem);
+      color: var(--green);
+      font-weight: bold;
+      letter-spacing: 2px;
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0%, 100% { text-shadow: 0 0 6px var(--green), 0 0 18px var(--green); }
+      50% { text-shadow: 0 0 2px var(--green); }
+    }
+    .connection-status {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .conn-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--text);
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 6px var(--green);
+      animation: dot-blink 2.5s infinite;
+    }
+    @keyframes dot-blink {
+      0%, 90%, 100% { opacity: 1; }
+      45% { opacity: 0.3; }
+    }
+    .dot.wa { animation-delay: 0s; }
+    .dot.tg { animation-delay: 0.8s; }
+    .dot.x  { animation-delay: 1.6s; }
+
+    .heartbeat {
+      font-size: 0.68rem;
+      color: #557766;
+    }
+
+    /* ── GRID LAYOUT ── */
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+
+    /* ── PANEL ── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .panel.gold::before  { background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .panel.green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+    .panel.blue::before  { background: linear-gradient(90deg, transparent, var(--blue), transparent); }
+    .panel.red::before   { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+    .panel.purple::before{ background: linear-gradient(90deg, transparent, var(--purple), transparent); }
+    .panel.orange::before{ background: linear-gradient(90deg, transparent, var(--orange), transparent); }
+
+    .panel-title {
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .panel-title .icon { font-size: 1.1rem; }
+
+    /* ── METRICS ── */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .metric-box {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      text-align: center;
+    }
+    .metric-box .label {
+      font-size: 0.62rem;
+      color: #667788;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .metric-box .value {
+      font-size: 1.15rem;
+      font-weight: bold;
+    }
+    .metric-box .value.gold   { color: var(--gold); }
+    .metric-box .value.green  { color: var(--green); }
+    .metric-box .value.blue   { color: var(--blue); }
+    .metric-box .value.purple { color: var(--purple); }
+    .metric-box .value.orange { color: var(--orange); }
+
+    /* ── AGENTS ── */
+    .agent-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 10px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      margin-bottom: 6px;
+      font-size: 0.78rem;
+    }
+    .agent-row .name { color: var(--gold); font-weight: bold; }
+    .agent-row .profit { color: var(--green); }
+    .agent-row .addr {
+      font-size: 0.58rem;
+      color: #445566;
+      word-break: break-all;
+    }
+
+    /* ── DOCKER NODES ── */
+    .docker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 8px;
+    }
+    .docker-node {
+      background: #051510;
+      border: 1px solid #0d3020;
+      border-radius: 6px;
+      padding: 8px 6px;
+      text-align: center;
+      position: relative;
+    }
+    .docker-node .node-name {
+      font-size: 0.65rem;
+      color: var(--blue);
+      font-weight: bold;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .docker-node .node-status {
+      font-size: 0.7rem;
+      color: var(--green);
+      font-weight: bold;
+    }
+    .docker-node .node-dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 5px var(--green);
+      margin-right: 3px;
+    }
+    .docker-node .node-uptime {
+      font-size: 0.58rem;
+      color: #334444;
+      margin-top: 2px;
+    }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-decoration: none;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.2); }
+    .btn:active { transform: translateY(0); filter: brightness(0.9); }
+    .btn-whatsapp {
+      background: #25D366;
+      color: #000;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .btn-telegram {
+      background: #0088cc;
+      color: #fff;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .btn-x {
+      background: #1a1a1a;
+      color: var(--white);
+      border: 1px solid #333;
+      width: 100%;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .btn-halt {
+      background: #ff3300;
+      color: #fff;
+      width: 100%;
+      justify-content: center;
+      margin-top: 8px;
+      animation: halt-pulse 3s infinite;
+    }
+    @keyframes halt-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 51, 0, 0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(255, 51, 0, 0); }
+    }
+    .btn-alert {
+      background: linear-gradient(135deg, #cc0000, #ff0000);
+      color: #fff;
+      width: 100%;
+      justify-content: center;
+      font-size: 0.9rem;
+      padding: 14px 20px;
+      animation: red-alert 1.5s infinite;
+    }
+    @keyframes red-alert {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,0,0,0.7), 0 0 20px rgba(255,0,0,0.3); }
+      50% { box-shadow: 0 0 0 10px rgba(255,0,0,0), 0 0 40px rgba(255,0,0,0.5); }
+    }
+    .btn-post {
+      background: #1a1a1a;
+      color: var(--white);
+      border: 1px solid #555;
+      padding: 8px 14px;
+      font-size: 0.72rem;
+    }
+
+    /* ── COMMAND PANEL ── */
+    .cmd-list { list-style: none; }
+    .cmd-list li {
+      background: #030810;
+      border: 1px solid #0a1525;
+      border-radius: 4px;
+      padding: 7px 10px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+    .cmd-list li .cmd { color: var(--blue); font-weight: bold; }
+    .cmd-list li .desc { color: #556677; font-size: 0.68rem; }
+    .cmd-list li .run-btn {
+      background: #0a2040;
+      color: var(--blue);
+      border: 1px solid #0a3060;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 0.65rem;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .cmd-list li .run-btn:hover { background: #0a3060; }
+
+    /* ── X FEED ── */
+    .tweet-card {
+      background: #050810;
+      border: 1px solid #101520;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+    }
+    .tweet-card .tweet-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .tweet-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--orange));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #000;
+      flex-shrink: 0;
+    }
+    .tweet-card .handle { color: var(--text); font-size: 0.72rem; font-weight: bold; }
+    .tweet-card .ts { color: #445566; font-size: 0.62rem; margin-left: auto; }
+    .tweet-card .body { font-size: 0.73rem; color: var(--text); line-height: 1.4; }
+    .tweet-card .body .hash { color: var(--blue); }
+
+    /* ── INFRA ── */
+    .infra-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #0a1520;
+      font-size: 0.75rem;
+    }
+    .infra-row:last-child { border-bottom: none; }
+    .infra-row .k { color: #667788; }
+    .infra-row .v { color: var(--text); text-align: right; }
+    .infra-row .v.green { color: var(--green); }
+    .infra-row .v.gold  { color: var(--gold); }
+    .infra-row .v.blue  { color: var(--blue); }
+
+    /* ── ADDRESS BOOK ── */
+    .addr-entry {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+    }
+    .addr-entry .agent-label {
+      font-size: 0.65rem;
+      color: var(--gold);
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+    .addr-entry .addr-hash {
+      font-size: 0.6rem;
+      color: #556677;
+      word-break: break-all;
+      font-family: 'Courier New', monospace;
+    }
+    .addr-entry .addr-hash.emergency { color: var(--red); }
+
+    /* ── TERMINAL LOG ── */
+    #terminal {
+      background: #020507;
+      border: 1px solid #0a1520;
+      border-radius: 6px;
+      padding: 10px;
+      height: 160px;
+      overflow-y: auto;
+      font-size: 0.68rem;
+      line-height: 1.5;
+    }
+    #terminal .t-line { color: #334455; }
+    #terminal .t-line .t-ts { color: #1a3344; margin-right: 8px; }
+    #terminal .t-line .t-ok  { color: var(--green); }
+    #terminal .t-line .t-warn { color: var(--orange); }
+    #terminal .t-line .t-err  { color: var(--red); }
+    #terminal .t-line .t-info { color: var(--blue); }
+
+    /* ── DYNASTY FOOTER ── */
+    #footer {
+      background: linear-gradient(135deg, #030710, #0a1428, #030710);
+      border-top: 2px solid var(--gold);
+      padding: 20px 24px;
+      text-align: center;
+    }
+    #footer .f1 {
+      font-size: clamp(0.7rem, 2vw, 0.95rem);
+      color: var(--gold);
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    #footer .f2 {
+      font-size: 0.72rem;
+      color: #667788;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    #footer .f3 {
+      font-size: clamp(0.75rem, 2.5vw, 1rem);
+      color: var(--white);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+    #footer .f4 {
+      font-size: 0.7rem;
+      color: #556677;
+      font-style: italic;
+    }
+
+    /* ── ALERT MODAL ── */
+    #alertModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    #alertModal.show { display: flex; }
+    .modal-box {
+      background: #0a0000;
+      border: 2px solid var(--red);
+      border-radius: 10px;
+      padding: 30px;
+      max-width: 460px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(255,0,0,0.5);
+      animation: modal-shake 0.4s ease;
+    }
+    @keyframes modal-shake {
+      0%, 100% { transform: translateX(0); }
+      20%  { transform: translateX(-8px); }
+      40%  { transform: translateX(8px); }
+      60%  { transform: translateX(-5px); }
+      80%  { transform: translateX(5px); }
+    }
+    .modal-box h2 {
+      color: var(--red);
+      font-size: 1.3rem;
+      letter-spacing: 3px;
+      margin-bottom: 14px;
+      animation: pulse-red 1s infinite;
+    }
+    @keyframes pulse-red {
+      0%, 100% { text-shadow: 0 0 10px var(--red); }
+      50% { text-shadow: 0 0 30px var(--red), 0 0 60px var(--red); }
+    }
+    .modal-box .steps { list-style: none; margin: 14px 0; text-align: left; }
+    .modal-box .steps li {
+      padding: 5px 0;
+      border-bottom: 1px solid #200000;
+      font-size: 0.75rem;
+      color: var(--text);
+    }
+    .modal-box .steps li::before { content: '⚡ '; color: var(--red); }
+    .modal-close {
+      background: #400000;
+      color: var(--text);
+      border: 1px solid var(--red);
+      padding: 8px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.75rem;
+      margin-top: 14px;
+    }
+    .modal-close:hover { background: #600000; }
+
+    /* ── WHATSAPP ONLINE SIM ── */
+    .wa-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #0a1a0a;
+      border: 1px solid #0d2a0d;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      font-size: 0.72rem;
+    }
+    .wa-status .wa-avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .wa-status .wa-name { color: var(--text); font-weight: bold; }
+    .wa-status .wa-seen { color: #25D366; font-size: 0.62rem; }
+
+    /* ── COMPOUND COUNTER ── */
+    .compound-display {
+      background: linear-gradient(135deg, #0a0a20, #10102a);
+      border: 1px solid #2020aa;
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .compound-display .c-label {
+      font-size: 0.65rem;
+      color: #4455aa;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .compound-display .c-value {
+      font-size: 2rem;
+      color: var(--purple);
+      font-weight: bold;
+      text-shadow: 0 0 10px var(--purple);
+    }
+
+    /* ── LIVE TICKER ── */
+    .ticker-wrap {
+      overflow: hidden;
+      background: #030810;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 0;
+    }
+    .ticker-inner {
+      display: inline-block;
+      white-space: nowrap;
+      animation: ticker-scroll 30s linear infinite;
+      font-size: 0.68rem;
+      color: var(--gold2);
+    }
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* ── WIDE PANELS ── */
+    .span-2 { grid-column: span 2; }
+    @media (max-width: 700px) { .span-2 { grid-column: span 1; } }
+
+    /* ── TOAST ── */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      background: #0a1420;
+      border-left: 4px solid var(--green);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-size: 0.75rem;
+      color: var(--text);
+      max-width: 320px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      animation: toast-in 0.3s ease;
+      pointer-events: auto;
+    }
+    .toast.warn { border-left-color: var(--orange); }
+    .toast.err  { border-left-color: var(--red); }
+    .toast.info { border-left-color: var(--blue); }
+    @keyframes toast-in {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes toast-out {
+      from { opacity: 1; }
+      to   { opacity: 0; }
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #020507; }
+    ::-webkit-scrollbar-thumb { background: #1a3050; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header id="header">
+  <div class="header-clock">
+    <div id="clock">--:--:--</div>
+    <div id="utc-date" style="font-size:0.62rem;color:#445566;">UTC --/--/----</div>
+  </div>
+  <h1>⚡ OMEGA-ULTIMATE-FUSION-V∞ ⚡</h1>
+  <div class="subtitle">Brotherhood Omega Dynasty · Command Center · The Final Form</div>
+  <div class="dynasty-verse">
+    "FEARLESS • FOCUSED • NO REGRETS • WALK WHERE ANGELS FEAR"
+  </div>
+</header>
+
+<!-- ═══ 24/7 BANNER ═══ -->
+<div id="banner-247">
+  <div class="banner-text">🔱 ALL SYSTEMS 24/7 UNSTOPPABLE 🔱</div>
+  <div class="connection-status">
+    <div class="conn-item"><div class="dot wa"></div>WhatsApp</div>
+    <div class="conn-item"><div class="dot tg"></div>Telegram</div>
+    <div class="conn-item"><div class="dot x"></div>X · @patrickdl44</div>
+    <div class="heartbeat">❤ Last heartbeat: <span id="heartbeat-ts">--</span></div>
+  </div>
+</div>
+
+<!-- ═══ LIVE TICKER ═══ -->
+<div style="padding:8px 16px;">
+  <div class="ticker-wrap">
+    <span class="ticker-inner" id="ticker">
+      ⚡ DJ AGENT: ACTIVE · TRADING · SOL · BTC · ETH &nbsp;|&nbsp;
+      🔱 HASHIM AGENT: ACTIVE · DERIVATIVES · PERPS &nbsp;|&nbsp;
+      💎 BOSSMAN AGENT: ACTIVE · ORDINALS · RUNES · BITMAPS &nbsp;|&nbsp;
+      🌌 PATRICK AGENT: ACTIVE · CROSS-CHAIN · 12 CHAINS &nbsp;|&nbsp;
+      🛡 SERVER: DigitalOcean 206.189.118.255 · 14/14 CONTAINERS UP &nbsp;|&nbsp;
+      🏰 brotherhoodomegadynasty.com · RENEWS FEB 2029 &nbsp;|&nbsp;
+      ⚡ CHUKUA KONTROLI YOTE — Take Total Control
+    </span>
+  </div>
+</div>
+
+<!-- ═══ MAIN GRID ═══ -->
+<div id="grid">
+
+  <!-- ── REAL-TIME METRICS ── -->
+  <div class="panel gold">
+    <div class="panel-title" style="color:var(--gold)">
+      <span class="icon">📊</span> Live Metrics — All 4 Agents
+    </div>
+    <div class="metric-grid">
+      <div class="metric-box">
+        <div class="label">Total AUM</div>
+        <div class="value gold">$3,570</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Live Profit</div>
+        <div class="value green" id="live-profit">+$0.00</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Ordinals</div>
+        <div class="value blue">139</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Bitmaps</div>
+        <div class="value purple">170</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Runes</div>
+        <div class="value orange">7</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Compound Cycles</div>
+        <div class="value gold" id="compound-cycles">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── AGENT STATUS ── -->
+  <div class="panel blue">
+    <div class="panel-title" style="color:var(--blue)">
+      <span class="icon">🤖</span> Agent Status
+    </div>
+
+    <div class="agent-row">
+      <div>
+        <div class="name">🎵 DJ AGENT</div>
+        <div class="addr">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+      </div>
+      <div class="profit" id="dj-profit">+$0.00</div>
+    </div>
+
+    <div class="agent-row">
+      <div>
+        <div class="name">🌿 HASHIM AGENT</div>
+        <div class="addr">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</div>
+      </div>
+      <div class="profit" id="hashim-profit">+$0.00</div>
+    </div>
+
+    <div class="agent-row">
+      <div>
+        <div class="name">👑 BOSSMAN AGENT</div>
+        <div class="addr">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</div>
+      </div>
+      <div class="profit" id="bossman-profit">+$0.00</div>
+    </div>
+
+    <div class="agent-row">
+      <div>
+        <div class="name">⚡ PATRICK AGENT</div>
+        <div class="addr">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+      </div>
+      <div class="profit" id="patrick-profit">+$0.00</div>
+    </div>
+  </div>
+
+  <!-- ── WHATSAPP ── -->
+  <div class="panel green">
+    <div class="panel-title" style="color:#25D366">
+      <span class="icon">💬</span> WhatsApp Command Center
+    </div>
+
+    <div class="wa-status">
+      <div class="wa-avatar">👤</div>
+      <div>
+        <div class="wa-name">Brotherhood HQ · +44 7424 394382</div>
+        <div class="wa-seen" id="wa-seen">● Online now</div>
+      </div>
+    </div>
+
+    <a href="https://wa.me/447424394382" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+      💬 Open WhatsApp Command Center
+    </a>
+
+    <div style="font-size:0.7rem;color:#334444;margin-top:6px;padding:8px;background:#020a02;border-radius:5px;border:1px solid #0a2010;">
+      📲 Direct line to Brotherhood HQ.<br/>
+      Send commands, receive alerts, manage positions.<br/>
+      <span style="color:#25D366;">Always connected · 24/7 monitoring</span>
+    </div>
+  </div>
+
+  <!-- ── TELEGRAM KILL SWITCH ── -->
+  <div class="panel blue">
+    <div class="panel-title" style="color:#0088cc">
+      <span class="icon">✈️</span> Telegram Kill Switch
+    </div>
+
+    <a href="https://t.me/YourBotName" target="_blank" rel="noopener noreferrer" class="btn btn-telegram">
+      ✈️ Open Telegram Bot
+    </a>
+
+    <ul class="cmd-list" style="margin-top:10px;">
+      <li>
+        <span class="cmd">/status</span>
+        <span class="desc">All agents health check</span>
+        <button class="run-btn" onclick="runCmd('status')">RUN</button>
+      </li>
+      <li>
+        <span class="cmd">/pnl</span>
+        <span class="desc">Profit &amp; Loss report</span>
+        <button class="run-btn" onclick="runCmd('pnl')">RUN</button>
+      </li>
+      <li>
+        <span class="cmd">/positions</span>
+        <span class="desc">All open positions</span>
+        <button class="run-btn" onclick="runCmd('positions')">RUN</button>
+      </li>
+      <li>
+        <span class="cmd">/evacuate</span>
+        <span class="desc">Emergency close all</span>
+        <button class="run-btn" onclick="runCmd('evacuate')" style="color:var(--red);border-color:var(--red)">RUN</button>
+      </li>
+    </ul>
+
+    <button class="btn btn-halt" onclick="triggerEvacuate()">
+      🚨 EMERGENCY HALT — /evacuate
+    </button>
+  </div>
+
+  <!-- ── X (TWITTER) FEED ── -->
+  <div class="panel purple">
+    <div class="panel-title" style="color:var(--purple)">
+      <span class="icon">𝕏</span> @patrickdl44 — Dynasty Feed
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">PD</div>
+        <div>
+          <div class="handle">@patrickdl44</div>
+        </div>
+        <div class="ts" id="tweet1-ts">Just now</div>
+      </div>
+      <div class="body">
+        🔱 All 4 agents are LIVE. AUM at $3,570. Compound cycles running.
+        Brotherhood never sleeps. <span class="hash">#OMEGA #BrotherhoodDynasty #CHUKUAKONTROLIYOTE</span>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">PD</div>
+        <div>
+          <div class="handle">@patrickdl44</div>
+        </div>
+        <div class="ts">2h ago</div>
+      </div>
+      <div class="body">
+        💎 Ordinals: 139 | Bitmaps: 170 | Runes: 7.
+        THE FINAL FORM is active. No version beyond this.
+        <span class="hash">#Bitcoin #Ordinals #Runes</span>
+      </div>
+    </div>
+
+    <div class="tweet-card">
+      <div class="tweet-header">
+        <div class="tweet-avatar">PD</div>
+        <div>
+          <div class="handle">@patrickdl44</div>
+        </div>
+        <div class="ts">5h ago</div>
+      </div>
+      <div class="body">
+        🏰 brotherhoodomegadynasty.com — Server UP · 14/14 containers running ·
+        206.189.118.255 fortress secure.
+        <span class="hash">#TradingBot #Solana #DeFi</span>
+      </div>
+    </div>
+
+    <button class="btn btn-post" onclick="postUpdate()" style="width:100%;justify-content:center;margin-top:4px;">
+      𝕏 Post Dynasty Update
+    </button>
+  </div>
+
+  <!-- ── DOCKER CONTAINERS ── -->
+  <div class="panel green span-2">
+    <div class="panel-title" style="color:var(--green)">
+      <span class="icon">🐳</span> Docker Container Fleet — 14/14 RUNNING
+    </div>
+    <div class="docker-grid" id="docker-grid">
+      <!-- populated by JS -->
+    </div>
+  </div>
+
+  <!-- ── SERVER INFRASTRUCTURE ── -->
+  <div class="panel orange">
+    <div class="panel-title" style="color:var(--orange)">
+      <span class="icon">🏰</span> Server Infrastructure
+    </div>
+    <div class="infra-row"><span class="k">Provider</span><span class="v blue">DigitalOcean</span></div>
+    <div class="infra-row"><span class="k">IP Address</span><span class="v gold">206.189.118.255</span></div>
+    <div class="infra-row"><span class="k">SSH Access</span><span class="v green">BROTHERHOOD FORTRESS EMPIRE</span></div>
+    <div class="infra-row"><span class="k">Containers</span><span class="v green">14 / 14 UP</span></div>
+    <div class="infra-row"><span class="k">Domain</span><span class="v blue">brotherhoodomegadynasty.com</span></div>
+    <div class="infra-row"><span class="k">Domain Renewal</span><span class="v gold">Feb 2029</span></div>
+    <div class="infra-row"><span class="k">Uptime SLA</span><span class="v green">99.999%</span></div>
+    <div class="infra-row"><span class="k">Auto-Refresh</span><span class="v green">Every 60s</span></div>
+  </div>
+
+  <!-- ── WALLET ADDRESSES ── -->
+  <div class="panel gold">
+    <div class="panel-title" style="color:var(--gold)">
+      <span class="icon">🔑</span> Wallet Addresses
+    </div>
+    <div class="addr-entry">
+      <div class="agent-label">DJ Agent (Primary)</div>
+      <div class="addr-hash">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+    </div>
+    <div class="addr-entry">
+      <div class="agent-label">Hashim Agent</div>
+      <div class="addr-hash">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</div>
+    </div>
+    <div class="addr-entry">
+      <div class="agent-label">Bossman Agent</div>
+      <div class="addr-hash">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</div>
+    </div>
+    <div class="addr-entry">
+      <div class="agent-label">Patrick Agent (same as DJ)</div>
+      <div class="addr-hash">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+    </div>
+    <div class="addr-entry">
+      <div class="agent-label">Emergency Wallet 1</div>
+      <div class="addr-hash emergency">6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1</div>
+    </div>
+    <div class="addr-entry">
+      <div class="agent-label">Emergency Wallet 2</div>
+      <div class="addr-hash emergency">EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy</div>
+    </div>
+  </div>
+
+  <!-- ── TERMINAL LOG ── -->
+  <div class="panel blue">
+    <div class="panel-title" style="color:var(--blue)">
+      <span class="icon">💻</span> System Log
+    </div>
+    <div id="terminal"></div>
+  </div>
+
+  <!-- ── COMPOUND CYCLES ── -->
+  <div class="panel purple">
+    <div class="panel-title" style="color:var(--purple)">
+      <span class="icon">♾️</span> Compound Engine
+    </div>
+    <div class="compound-display">
+      <div class="c-label">Compound Cycles Completed</div>
+      <div class="c-value" id="compound-big">0</div>
+    </div>
+    <div class="metric-grid">
+      <div class="metric-box">
+        <div class="label">150X YOLO Factor</div>
+        <div class="value purple">150×</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Circuit Breaker</div>
+        <div class="value orange">15%</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Chains Active</div>
+        <div class="value blue">12</div>
+      </div>
+      <div class="metric-box">
+        <div class="label">Uptime</div>
+        <div class="value green">99.999%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EMERGENCY RED ALERT ── -->
+  <div class="panel red span-2">
+    <div class="panel-title" style="color:var(--red)">
+      <span class="icon">🚨</span> Emergency Escalation Protocol
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px;">
+      <div class="metric-box" style="border-color:#400000;">
+        <div class="label">WhatsApp Alert</div>
+        <div class="value red">READY</div>
+      </div>
+      <div class="metric-box" style="border-color:#400000;">
+        <div class="label">Telegram /evacuate</div>
+        <div class="value red">READY</div>
+      </div>
+      <div class="metric-box" style="border-color:#400000;">
+        <div class="label">X Broadcast</div>
+        <div class="value red">READY</div>
+      </div>
+    </div>
+    <button class="btn btn-alert" onclick="triggerRedAlert()">
+      🚨 RED ALERT — DYNASTY PROTOCOL ACTIVATED
+    </button>
+  </div>
+
+</div><!-- end grid -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer id="footer">
+  <div class="f1">CHUKUA KONTROLI YOTE — Take Total Control</div>
+  <div class="f2">FEARLESS • FOCUSED • NO REGRETS • WALK WHERE ANGELS FEAR</div>
+  <div class="f3">THE FINAL FORM — NO VERSION BEYOND THIS</div>
+  <div class="f4">For James &amp; Annette ✝ — For Zarina, Aisha, Shakiya, Obina</div>
+  <div style="margin-top:12px;font-size:0.62rem;color:#223344;">
+    OMEGA-ULTIMATE-FUSION-V∞ · Brotherhood Omega Dynasty · Auto-refreshes every 60s
+  </div>
+</footer>
+
+<!-- ═══ TOAST CONTAINER ═══ -->
+<div id="toast-container"></div>
+
+<!-- ═══ ALERT MODAL ═══ -->
+<div id="alertModal" role="dialog" aria-modal="true" aria-label="Dynasty Protocol Alert">
+  <div class="modal-box">
+    <h2>🚨 DYNASTY PROTOCOL ACTIVATED 🚨</h2>
+    <p style="color:var(--text);font-size:0.78rem;margin-bottom:10px;">
+      Emergency escalation triggered across all channels:
+    </p>
+    <ul class="steps">
+      <li>WhatsApp alert sent to +44 7424 394382</li>
+      <li>Telegram /evacuate command dispatched</li>
+      <li>X @patrickdl44 emergency post queued</li>
+      <li>All agents entering safe-mode standby</li>
+      <li>Emergency wallets on standby</li>
+      <li>Brotherhood notified — STAND BY</li>
+    </ul>
+    <div id="modal-countdown" style="color:var(--red);font-size:0.75rem;margin-top:8px;"></div>
+    <button class="modal-close" onclick="closeModal()">ACKNOWLEDGE &amp; STAND DOWN</button>
+  </div>
+</div>
+
+<script>
+  // ── CONSTANTS ──
+  const CONTAINERS = [
+    { name: 'DJ',        uptime: '14d 6h' },
+    { name: 'HASHIM',    uptime: '14d 6h' },
+    { name: 'BOSSMAN',   uptime: '14d 6h' },
+    { name: 'PATRICK',   uptime: '14d 6h' },
+    { name: 'POSTGRES',  uptime: '14d 6h' },
+    { name: 'REDIS',     uptime: '14d 6h' },
+    { name: 'AGENTBUS',  uptime: '14d 5h' },
+    { name: 'TEMPORAL',  uptime: '14d 5h' },
+    { name: 'NGINX',     uptime: '14d 6h' },
+    { name: 'MONITOR',   uptime: '14d 4h' },
+    { name: 'GRAFANA',   uptime: '13d 22h' },
+    { name: 'PROMETHEUS',uptime: '13d 22h' },
+    { name: 'ALERTMGR',  uptime: '14d 1h' },
+    { name: 'WEBHOOK',   uptime: '14d 3h' },
+  ];
+
+  const LOG_MSGS = [
+    { type:'ok',   msg:'All agents heartbeat confirmed' },
+    { type:'ok',   msg:'DJ Agent: trade executed SOL/USDC +0.3%' },
+    { type:'ok',   msg:'HASHIM Agent: perp position opened BTC-PERP' },
+    { type:'info', msg:'BOSSMAN Agent: scanning Ordinals floor prices' },
+    { type:'ok',   msg:'PATRICK Agent: cross-chain bridge complete' },
+    { type:'info', msg:'Temporal.io: workflow cycle 00A2 completed' },
+    { type:'ok',   msg:'Redis: cache hit rate 98.7%' },
+    { type:'ok',   msg:'PostgreSQL: all tables healthy' },
+    { type:'info', msg:'AgentBus: message queue depth 0' },
+    { type:'warn', msg:'Market volatility spike detected — monitoring' },
+    { type:'ok',   msg:'Circuit breaker: nominal (0.3% / 15% limit)' },
+    { type:'ok',   msg:'Server 206.189.118.255: ping 2ms' },
+    { type:'info', msg:'Compound cycle incremented' },
+    { type:'ok',   msg:'WhatsApp status: connected' },
+    { type:'ok',   msg:'Telegram bot: connected' },
+  ];
+
+  // ── STATE (persisted) ──
+  function loadState() {
+    try {
+      const s = JSON.parse(localStorage.getItem('omega_state') || '{}');
+      const now = Date.now();
+      return {
+        compoundCycles:    s.compoundCycles    || 0,
+        totalProfit:       s.totalProfit       || 0,
+        lastCompoundCheck: s.lastCompoundCheck || now,
+        djProfit:          s.djProfit          || 0,
+        hashimProfit:      s.hashimProfit      || 0,
+        bossmanProfit:     s.bossmanProfit     || 0,
+        patrickProfit:     s.patrickProfit     || 0,
+      };
+    } catch(e) {
+      const now = Date.now();
+      return { compoundCycles:0, totalProfit:0, lastCompoundCheck:now, djProfit:0, hashimProfit:0, bossmanProfit:0, patrickProfit:0 };
+    }
+  }
+
+  function saveState(s) {
+    try { localStorage.setItem('omega_state', JSON.stringify(s)); } catch(e) {}
+  }
+
+  let state = loadState();
+
+  // ── CLOCK ──
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent = now.toUTCString().slice(17, 25);
+    document.getElementById('utc-date').textContent = 'UTC ' + now.toISOString().slice(0,10);
+    document.getElementById('heartbeat-ts').textContent = now.toUTCString().slice(17, 25);
+    const waEl = document.getElementById('wa-seen');
+    const min = now.getUTCMinutes();
+    waEl.textContent = (min % 3 === 0) ? '● Online now' : '● Last seen ' + (min % 3) + 'm ago';
+  }
+
+  // ── PROFIT SIMULATION ──
+  function updateProfits() {
+    // Accumulate compound cycles: 1 cycle per elapsed hour since last check
+    const now = Date.now();
+    const hoursElapsed = Math.floor((now - state.lastCompoundCheck) / 3600000);
+    if (hoursElapsed > 0) {
+      state.compoundCycles += hoursElapsed;
+      state.lastCompoundCheck = state.lastCompoundCheck + hoursElapsed * 3600000;
+    }
+
+    // Simulate small profit increments
+    state.djProfit       += parseFloat((Math.random() * 0.8).toFixed(2));
+    state.hashimProfit   += parseFloat((Math.random() * 0.6).toFixed(2));
+    state.bossmanProfit  += parseFloat((Math.random() * 1.2).toFixed(2));
+    state.patrickProfit  += parseFloat((Math.random() * 0.9).toFixed(2));
+    state.totalProfit = state.djProfit + state.hashimProfit + state.bossmanProfit + state.patrickProfit;
+    saveState(state);
+
+    document.getElementById('dj-profit').textContent     = '+$' + state.djProfit.toFixed(2);
+    document.getElementById('hashim-profit').textContent  = '+$' + state.hashimProfit.toFixed(2);
+    document.getElementById('bossman-profit').textContent = '+$' + state.bossmanProfit.toFixed(2);
+    document.getElementById('patrick-profit').textContent = '+$' + state.patrickProfit.toFixed(2);
+    document.getElementById('live-profit').textContent    = '+$' + state.totalProfit.toFixed(2);
+    document.getElementById('compound-cycles').textContent = state.compoundCycles;
+    document.getElementById('compound-big').textContent    = state.compoundCycles;
+  }
+
+  // ── DOCKER NODES ──
+  function renderDocker() {
+    const grid = document.getElementById('docker-grid');
+    grid.innerHTML = '';
+    CONTAINERS.forEach(c => {
+      const node = document.createElement('div');
+      node.className = 'docker-node';
+      node.innerHTML = `
+        <div class="node-name">${c.name}</div>
+        <div class="node-status"><span class="node-dot"></span>UP</div>
+        <div class="node-uptime">${c.uptime}</div>`;
+      grid.appendChild(node);
+    });
+  }
+
+  // ── TERMINAL LOG ──
+  let logIndex = 0;
+  function addLog() {
+    const term = document.getElementById('terminal');
+    const entry = LOG_MSGS[logIndex % LOG_MSGS.length];
+    logIndex++;
+    const now = new Date();
+    const ts = now.toUTCString().slice(17, 25);
+    const line = document.createElement('div');
+    line.className = 't-line';
+    const cls = { ok:'t-ok', warn:'t-warn', err:'t-err', info:'t-info' }[entry.type] || 't-info';
+    const sym = { ok:'✓', warn:'⚠', err:'✗', info:'ℹ' }[entry.type] || 'ℹ';
+    line.innerHTML = `<span class="t-ts">[${ts}]</span><span class="${cls}">${sym} ${entry.msg}</span>`;
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+    // keep last 50 lines
+    while (term.children.length > 50) term.removeChild(term.firstChild);
+  }
+
+  // ── TOAST NOTIFICATIONS ──
+  function showToast(msg, type = 'ok', duration = 4000) {
+    const container = document.getElementById('toast-container');
+    const el = document.createElement('div');
+    el.className = 'toast' + (type !== 'ok' ? ' ' + type : '');
+    el.textContent = msg;
+    container.appendChild(el);
+    setTimeout(() => {
+      el.style.animation = 'toast-out 0.3s ease forwards';
+      setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 320);
+    }, duration);
+  }
+
+  // ── COMMAND SIMULATION ──
+  function runCmd(cmd) {
+    const msgs = {
+      status:    '✓ All 4 agents ONLINE. Server 206.189.118.255: UP. 14/14 containers running.',
+      pnl:       '📊 PnL Report: DJ +$' + state.djProfit.toFixed(2) + ' | HASHIM +$' + state.hashimProfit.toFixed(2) + ' | BOSSMAN +$' + state.bossmanProfit.toFixed(2) + ' | PATRICK +$' + state.patrickProfit.toFixed(2),
+      positions: '📋 Open positions: 3 SOL/USDC · 2 BTC-PERP · 1 ETH/BTC · Ordinals floor monitor active.',
+      evacuate:  '🚨 /evacuate: Closing all positions. Emergency mode ACTIVATED.',
+    };
+    const term = document.getElementById('terminal');
+    const line = document.createElement('div');
+    line.className = 't-line';
+    const ts = new Date().toUTCString().slice(17, 25);
+    const cls = cmd === 'evacuate' ? 't-err' : 't-ok';
+    line.innerHTML = `<span class="t-ts">[${ts}]</span><span class="${cls}">Telegram /${cmd}: ${msgs[cmd]}</span>`;
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+    if (cmd === 'evacuate') { triggerEvacuate(); }
+  }
+
+  function triggerEvacuate() {
+    const term = document.getElementById('terminal');
+    const line = document.createElement('div');
+    line.className = 't-line';
+    const ts = new Date().toUTCString().slice(17, 25);
+    line.innerHTML = `<span class="t-ts">[${ts}]</span><span class="t-err">🚨 EMERGENCY HALT — /evacuate dispatched. All positions closing.</span>`;
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+    showToast('🚨 EMERGENCY HALT: /evacuate dispatched to Telegram bot. All positions closing. Agents entering safe mode.', 'err', 6000);
+  }
+
+  function postUpdate() {
+    const ts = new Date().toUTCString().slice(17, 25);
+    const term = document.getElementById('terminal');
+    const line = document.createElement('div');
+    line.className = 't-line';
+    line.innerHTML = `<span class="t-ts">[${ts}]</span><span class="t-info">𝕏 Dynasty update queued for @patrickdl44</span>`;
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+    document.getElementById('tweet1-ts').textContent = 'Just now';
+    showToast('𝕏 Dynasty Update Posted to @patrickdl44 — "🔱 OMEGA is LIVE. All agents running. #OMEGA #BrotherhoodDynasty"', 'info', 5000);
+  }
+
+  // ── RED ALERT MODAL ──
+  function triggerRedAlert() {
+    document.getElementById('alertModal').classList.add('show');
+    const term = document.getElementById('terminal');
+    const ts = new Date().toUTCString().slice(17, 25);
+    const line = document.createElement('div');
+    line.className = 't-line';
+    line.innerHTML = `<span class="t-ts">[${ts}]</span><span class="t-err">🚨 RED ALERT — DYNASTY PROTOCOL ACTIVATED — WhatsApp + Telegram + X triggered</span>`;
+    term.appendChild(line);
+    term.scrollTop = term.scrollHeight;
+
+    let count = 10;
+    const cd = document.getElementById('modal-countdown');
+    cd.textContent = 'Auto-dismissing in ' + count + 's...';
+    const iv = setInterval(() => {
+      count--;
+      if (count <= 0) { clearInterval(iv); closeModal(); }
+      else cd.textContent = 'Auto-dismissing in ' + count + 's...';
+    }, 1000);
+  }
+
+  function closeModal() {
+    document.getElementById('alertModal').classList.remove('show');
+  }
+
+  // ── INIT ──
+  function init() {
+    renderDocker();
+    updateClock();
+    updateProfits();
+
+    // Populate initial log entries
+    for (let i = 0; i < 8; i++) { addLog(); }
+
+    // Intervals
+    setInterval(updateClock,   1000);
+    setInterval(addLog,        4000);
+    setInterval(updateProfits, 30000);
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
