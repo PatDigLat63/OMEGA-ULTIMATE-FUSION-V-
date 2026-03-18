@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔱 OMEGA-ULTIMATE-FUSION-V∞ — Master Console</title>
+  <style>
+    :root {
+      --gold: #FFD700;
+      --green: #00FF88;
+      --cyan: #00BFFF;
+      --red: #FF4444;
+      --purple: #9B59B6;
+      --bg: #0A0A0F;
+      --panel: #12121A;
+      --border: #2A2A3A;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: #E0E0E0;
+      font-family: 'Courier New', Courier, monospace;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #0A0A0F 0%, #1A0A2E 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      color: var(--gold);
+      font-size: 2rem;
+      letter-spacing: 4px;
+      text-shadow: 0 0 20px var(--gold);
+    }
+    header p { color: var(--cyan); margin-top: 6px; font-size: 0.85rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .panel h2 {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .panel h2.gold  { color: var(--gold); }
+    .panel h2.cyan  { color: var(--cyan); }
+    .panel h2.green { color: var(--green); }
+    .panel h2.purple{ color: var(--purple); }
+    .service-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid #1A1A2A;
+      font-size: 0.85rem;
+    }
+    .service-row:last-child { border-bottom: none; }
+    .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 8px;
+    }
+    .dot.green  { background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot.yellow { background: #FFD700; box-shadow: 0 0 6px #FFD700; }
+    .dot.red    { background: var(--red); box-shadow: 0 0 6px var(--red); }
+    .port { color: var(--cyan); font-size: 0.75rem; }
+    .priority-zero {
+      margin: 0 24px 24px;
+      padding: 16px 20px;
+      background: rgba(255, 68, 68, 0.1);
+      border: 2px solid var(--red);
+      border-radius: 8px;
+      color: var(--red);
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+    .priority-zero strong { display: block; font-size: 1rem; margin-bottom: 4px; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #444;
+      font-size: 0.75rem;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+    footer span { color: var(--gold); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🔱 OMEGA-ULTIMATE-FUSION-V∞ 🔱</h1>
+  <p>MASTER CONSOLE · BROTHERHOOD OMEGA DYNASTY · CHUKUA KONTROLI YOTE</p>
+</header>
+
+<div class="priority-zero">
+  <strong>🔥 PRIORITY-ZERO DIRECTIVE</strong>
+  LIQUIDIUM LOAN LQ-004 IS URGENT. THE SYSTEM IS AWARE AND ACTING.
+</div>
+
+<div class="grid">
+
+  <!-- Core Infrastructure -->
+  <div class="panel">
+    <h2 class="gold">⚡ Core Infrastructure</h2>
+    <div class="service-row">
+      <span><span class="dot green"></span>PostgreSQL 15</span>
+      <span class="port">:5432</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Redis 7</span>
+      <span class="port">:6379</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Agent Bus</span>
+      <span class="port">:8081 / :9081</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Dashboard (nginx)</span>
+      <span class="port">:8082</span>
+    </div>
+  </div>
+
+  <!-- Autonomous Agents -->
+  <div class="panel">
+    <h2 class="cyan">🤖 Autonomous Agents</h2>
+    <div class="service-row">
+      <span><span class="dot green"></span>Agent DJ</span>
+      <span class="port">:3003</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Agent Hashim</span>
+      <span class="port">:3004</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Agent Bossman</span>
+      <span class="port">:3006</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Agent Patrick</span>
+      <span class="port">:3005</span>
+    </div>
+  </div>
+
+  <!-- Core Services -->
+  <div class="panel">
+    <h2 class="green">🔧 Core Services</h2>
+    <div class="service-row">
+      <span><span class="dot green"></span>Ledger</span>
+      <span class="port">:3010</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Learner</span>
+      <span class="port">:3011</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Evolver</span>
+      <span class="port">:3012</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Telegram</span>
+      <span class="port">:3013</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Scanner</span>
+      <span class="port">:3014</span>
+    </div>
+    <div class="service-row">
+      <span><span class="dot green"></span>Hustle</span>
+      <span class="port">:3001</span>
+    </div>
+  </div>
+
+  <!-- System Stats -->
+  <div class="panel">
+    <h2 class="purple">📊 System Overview</h2>
+    <div class="service-row">
+      <span>Total Containers</span>
+      <span style="color:var(--gold)">15</span>
+    </div>
+    <div class="service-row">
+      <span>Network</span>
+      <span style="color:var(--cyan)">omega_net</span>
+    </div>
+    <div class="service-row">
+      <span>Domain</span>
+      <span style="color:var(--cyan)">brotherhoodomegadynasty.com</span>
+    </div>
+    <div class="service-row">
+      <span>Uptime Target</span>
+      <span style="color:var(--green)">99.999%</span>
+    </div>
+    <div class="service-row">
+      <span>Chains</span>
+      <span style="color:var(--gold)">12</span>
+    </div>
+    <div class="service-row">
+      <span>Leverage</span>
+      <span style="color:var(--red)">150X YOLO</span>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>🔱 OMEGA-ULTIMATE-FUSION-V∞ · BROTHERHOOD OMEGA DYNASTY · CHUKUA KONTROLI YOTE 🔱</span>
+</footer>
+
+</body>
+</html>
