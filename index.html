@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OMEGA ULTIMATE FUSION V∞ — Brotherhood Omega Dynasty</title>
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111520;
+      --surface2: #161b27;
+      --border: #1e2a3a;
+      --accent: #00ff88;
+      --accent2: #00c6ff;
+      --gold: #ffd700;
+      --red: #ff4444;
+      --orange: #ff8c00;
+      --purple: #9b59b6;
+      --text: #e0e8f0;
+      --muted: #7a8a9a;
+      --urgent: #ff2244;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      padding: 32px 16px 24px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 32px;
+    }
+    .header h1 {
+      font-size: clamp(1.4rem, 4vw, 2.6rem);
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 20px rgba(255,215,0,0.4);
+    }
+    .header .subtitle {
+      margin-top: 8px;
+      color: var(--accent);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+    }
+    .trident { font-size: 2rem; color: var(--gold); }
+
+    /* ── Grid Layout ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+
+    /* ── Section ── */
+    .section { margin-bottom: 32px; }
+    .section-title {
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-left: 4px;
+      border-left: 3px solid var(--accent);
+      padding-left: 10px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--accent2); }
+    .card .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .card .card-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+    }
+    .card .card-role {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .card .wallet {
+      font-size: 0.65rem;
+      color: var(--accent);
+      word-break: break-all;
+      background: rgba(0,255,136,0.05);
+      border: 1px solid rgba(0,255,136,0.15);
+      border-radius: 4px;
+      padding: 6px 8px;
+      margin-top: 6px;
+    }
+    .card .wallet-label {
+      font-size: 0.62rem;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .card .port-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,198,255,0.1);
+      border: 1px solid rgba(0,198,255,0.3);
+      color: var(--accent2);
+      font-size: 0.68rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+
+    /* ── Status Dot ── */
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .dot-green { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+    .dot-orange { background: #ff8c00; box-shadow: 0 0 6px #ff8c00; }
+    .dot-red { background: #ff2244; box-shadow: 0 0 6px #ff2244; animation: pulse-red 1s infinite; }
+    @keyframes pulse-red { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+    /* ── Emergency Wallets ── */
+    .emergency-card {
+      background: rgba(255,34,68,0.06);
+      border: 1px solid rgba(255,34,68,0.3);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .emergency-card .e-label {
+      font-size: 0.68rem;
+      color: var(--urgent);
+      letter-spacing: 0.15em;
+      margin-bottom: 6px;
+    }
+    .emergency-card .e-wallet {
+      font-size: 0.7rem;
+      color: #ffaaaa;
+      word-break: break-all;
+    }
+
+    /* ── Server Info ── */
+    .info-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .info-key { color: var(--muted); min-width: 140px; flex-shrink: 0; }
+    .info-row .info-val { color: var(--text); word-break: break-all; }
+    .info-row .info-val.highlight { color: var(--accent2); }
+
+    /* ── Container Table ── */
+    .container-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+    .container-table th {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .container-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid rgba(30,42,58,0.6);
+    }
+    .container-table tr:last-child td { border-bottom: none; }
+    .container-table .port-col { color: var(--accent2); }
+    .container-table .name-col { color: var(--text); font-weight: bold; }
+
+    /* ── Federation ── */
+    .fed-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .fed-card .fed-icon { font-size: 1.5rem; }
+    .fed-card .fed-name { font-size: 0.9rem; color: var(--accent2); font-weight: bold; }
+    .fed-card .fed-role { font-size: 0.68rem; color: var(--muted); }
+
+    /* ── Runes ── */
+    .rune-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .rune-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 0 12px rgba(155,89,182,0.25);
+    }
+    .rune-card .rune-sym { font-size: 1.8rem; margin-bottom: 6px; }
+    .rune-card .rune-name { font-size: 0.85rem; color: var(--gold); font-weight: bold; letter-spacing: 0.1em; }
+    .rune-card .rune-idx { font-size: 0.62rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── Liquidium Loans ── */
+    .loan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .loan-card.urgent {
+      border-color: var(--urgent);
+      background: rgba(255,34,68,0.06);
+      animation: border-pulse 2s infinite;
+    }
+    @keyframes border-pulse {
+      0%,100%{ box-shadow: 0 0 0 0 rgba(255,34,68,0); }
+      50%{ box-shadow: 0 0 0 4px rgba(255,34,68,0.2); }
+    }
+    .loan-card .loan-id { font-size: 0.9rem; font-weight: bold; color: var(--accent2); }
+    .loan-card.urgent .loan-id { color: var(--urgent); }
+    .loan-card .loan-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-left: 8px;
+      vertical-align: middle;
+    }
+    .badge-urgent { background: rgba(255,34,68,0.2); color: var(--urgent); border: 1px solid var(--urgent); }
+    .badge-active { background: rgba(0,255,136,0.1); color: var(--accent); border: 1px solid var(--accent); }
+    .loan-card .loan-detail { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+    .loan-card .loan-amount { font-size: 1rem; color: var(--gold); font-weight: bold; margin-top: 4px; }
+
+    /* ── Dynasty ── */
+    .dynasty-card {
+      background: linear-gradient(135deg, #0e1520 0%, #12182a 100%);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .dynasty-card::before {
+      content: '🔱';
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 3rem;
+      opacity: 0.12;
+    }
+    .dynasty-card .commander {
+      font-size: 1.2rem;
+      color: var(--gold);
+      font-weight: bold;
+      letter-spacing: 0.08em;
+    }
+    .dynasty-card .codename {
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-top: 2px;
+      letter-spacing: 0.15em;
+    }
+    .dynasty-card .dynasty-detail {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 14px;
+      line-height: 1.8;
+    }
+    .dynasty-card .dynasty-detail span { color: var(--text); }
+    .dynasty-card .memorial {
+      margin-top: 14px;
+      font-size: 0.75rem;
+      color: #c0a0a0;
+      font-style: italic;
+      border-top: 1px solid rgba(255,215,0,0.15);
+      padding-top: 12px;
+    }
+    .dynasty-card .daughters {
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: var(--text);
+    }
+    .dynasty-card .daughters span { color: var(--accent2); }
+    .dynasty-card .values {
+      margin-top: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .dynasty-card .value-chip {
+      background: rgba(255,215,0,0.08);
+      border: 1px solid rgba(255,215,0,0.25);
+      color: var(--gold);
+      font-size: 0.68rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+    }
+    .dynasty-card .restaurant {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .dynasty-card .restaurant span { color: var(--accent2); }
+
+    /* ── Social Links ── */
+    .social-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: border-color 0.2s;
+    }
+    .social-card:hover { border-color: var(--accent); }
+    .social-card .social-icon { font-size: 1.4rem; }
+    .social-card .social-name { font-size: 0.9rem; color: var(--text); font-weight: bold; }
+    .social-card .social-handle { font-size: 0.72rem; color: var(--accent); }
+    .social-card .social-info { flex: 1; }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px 16px;
+      border-top: 1px solid var(--border);
+      margin-top: 32px;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+    .footer .motto {
+      color: var(--gold);
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ HEADER ══════════════════════════════════════════ -->
+<div class="header">
+  <div class="trident">🔱</div>
+  <h1>OMEGA ULTIMATE FUSION V∞</h1>
+  <div class="subtitle">BROTHERHOOD OMEGA DYNASTY · AUTONOMOUS TRADING FEDERATION · CHUKUA KONTROLI YOTE</div>
+</div>
+
+<!-- ══════════════════════════════════════════ AGENT CARDS ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">⚡ Autonomous Agents</div>
+  <div class="grid-4">
+
+    <!-- DJ -->
+    <div class="card">
+      <div class="port-badge">:3003</div>
+      <div class="card-header">
+        <span class="dot dot-green"></span>
+        <span class="card-name">DJ</span>
+      </div>
+      <div class="card-role">Alpha Trader · Market Maker</div>
+      <div class="wallet-label">SOLANA WALLET</div>
+      <div class="wallet">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+    </div>
+
+    <!-- HASHIM -->
+    <div class="card">
+      <div class="port-badge">:3004</div>
+      <div class="card-header">
+        <span class="dot dot-green"></span>
+        <span class="card-name">HASHIM</span>
+      </div>
+      <div class="card-role">Risk Engine · Portfolio Guard</div>
+      <div class="wallet-label">SOLANA WALLET</div>
+      <div class="wallet">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</div>
+    </div>
+
+    <!-- BOSSMAN -->
+    <div class="card">
+      <div class="port-badge">:3006</div>
+      <div class="card-header">
+        <span class="dot dot-green"></span>
+        <span class="card-name">BOSSMAN</span>
+      </div>
+      <div class="card-role">Operations Commander · Executor</div>
+      <div class="wallet-label">SOLANA WALLET</div>
+      <div class="wallet">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</div>
+    </div>
+
+    <!-- PATRICK -->
+    <div class="card">
+      <div class="port-badge">:3005</div>
+      <div class="card-header">
+        <span class="dot dot-green"></span>
+        <span class="card-name">PATRICK</span>
+      </div>
+      <div class="card-role">Dynasty Commander · DJ Sharpshooter</div>
+      <div class="wallet-label">SOLANA WALLET (SHARED WITH DJ)</div>
+      <div class="wallet">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ EMERGENCY WALLETS ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">🚨 Emergency Wallets</div>
+  <div class="grid-2">
+    <div class="emergency-card">
+      <div class="e-label">EMERGENCY WALLET #1</div>
+      <div class="e-wallet">6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1</div>
+    </div>
+    <div class="emergency-card">
+      <div class="e-label">EMERGENCY WALLET #2</div>
+      <div class="e-wallet">EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ INFRASTRUCTURE ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">🖥 Server Infrastructure</div>
+  <div class="grid-2">
+
+    <!-- Server Details -->
+    <div class="card">
+      <div class="card-header">
+        <span class="dot dot-green"></span>
+        <span class="card-name" style="color:var(--gold)">SERVER</span>
+      </div>
+      <div class="info-row"><span class="info-key">IP Address</span><span class="info-val highlight">206.189.118.255</span></div>
+      <div class="info-row"><span class="info-key">Domain</span><span class="info-val highlight">brotherhoodomegadynasty.com</span></div>
+      <div class="info-row"><span class="info-key">Domain Renewal</span><span class="info-val">February 2029</span></div>
+      <div class="info-row"><span class="info-key">Provider</span><span class="info-val">DigitalOcean</span></div>
+      <div class="info-row"><span class="info-key">DO Token</span><span class="info-val" style="color:var(--muted);font-size:0.65rem;">●●●●●●●●●●●●●●●●●●●● (secured)</span></div>
+    </div>
+
+    <!-- Containers -->
+    <div class="card">
+      <div class="card-header">
+        <span class="dot dot-green"></span>
+        <span class="card-name" style="color:var(--gold)">15 CONTAINERS</span>
+      </div>
+      <table class="container-table">
+        <thead>
+          <tr>
+            <th>Container</th>
+            <th>Port(s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name-col">DJ</td><td class="port-col">3003</td></tr>
+          <tr><td class="name-col">HASHIM</td><td class="port-col">3004</td></tr>
+          <tr><td class="name-col">PATRICK</td><td class="port-col">3005</td></tr>
+          <tr><td class="name-col">BOSSMAN</td><td class="port-col">3006</td></tr>
+          <tr><td class="name-col">POSTGRES</td><td class="port-col">5432</td></tr>
+          <tr><td class="name-col">REDIS</td><td class="port-col">6379</td></tr>
+          <tr><td class="name-col">AGENTBUS</td><td class="port-col">8081 / 9081</td></tr>
+          <tr><td class="name-col">DASHBOARD</td><td class="port-col">8082</td></tr>
+          <tr><td class="name-col">LEDGER</td><td class="port-col">3010</td></tr>
+          <tr><td class="name-col">LEARNER</td><td class="port-col">3011</td></tr>
+          <tr><td class="name-col">EVOLVER</td><td class="port-col">3012</td></tr>
+          <tr><td class="name-col">TELEGRAM</td><td class="port-col">3013</td></tr>
+          <tr><td class="name-col">SCANNER</td><td class="port-col">3014</td></tr>
+          <tr><td class="name-col">HUSTLE</td><td class="port-col">3001</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ FEDERATION SWARM ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">🤖 Federation Swarm</div>
+  <div class="grid-4">
+
+    <div class="fed-card">
+      <div class="fed-icon">🧠</div>
+      <div>
+        <div class="fed-name">Claude</div>
+        <div class="fed-role">Strategic Reasoning · Anthropic</div>
+      </div>
+      <span class="dot dot-green" style="margin-left:auto"></span>
+    </div>
+
+    <div class="fed-card">
+      <div class="fed-icon">🌊</div>
+      <div>
+        <div class="fed-name">Deep Seeker</div>
+        <div class="fed-role">Deep Research · Chain Analysis</div>
+      </div>
+      <span class="dot dot-green" style="margin-left:auto"></span>
+    </div>
+
+    <div class="fed-card">
+      <div class="fed-icon">🦙</div>
+      <div>
+        <div class="fed-name">Meta AI</div>
+        <div class="fed-role">Pattern Recognition · Llama</div>
+      </div>
+      <span class="dot dot-green" style="margin-left:auto"></span>
+    </div>
+
+    <div class="fed-card">
+      <div class="fed-icon">⚡</div>
+      <div>
+        <div class="fed-name">Agenthustle</div>
+        <div class="fed-role">Execution Engine · Alpha Hunter</div>
+      </div>
+      <span class="dot dot-green" style="margin-left:auto"></span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ RUNES ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">🔮 Runes — Active Signals</div>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:12px;">
+
+    <div class="rune-card">
+      <div class="rune-sym">🐱</div>
+      <div class="rune-name">QCAT</div>
+      <div class="rune-idx">Rune I</div>
+    </div>
+    <div class="rune-card">
+      <div class="rune-sym">🛢️</div>
+      <div class="rune-name">OIL</div>
+      <div class="rune-idx">Rune II</div>
+    </div>
+    <div class="rune-card">
+      <div class="rune-sym">📉</div>
+      <div class="rune-name">SHORT</div>
+      <div class="rune-idx">Rune III</div>
+    </div>
+    <div class="rune-card">
+      <div class="rune-sym">🗺️</div>
+      <div class="rune-name">BMAP</div>
+      <div class="rune-idx">Rune IV</div>
+    </div>
+    <div class="rune-card">
+      <div class="rune-sym">🧙</div>
+      <div class="rune-name">WZRD</div>
+      <div class="rune-idx">Rune V</div>
+    </div>
+    <div class="rune-card">
+      <div class="rune-sym">🎭</div>
+      <div class="rune-name">MIM</div>
+      <div class="rune-idx">Rune VI</div>
+    </div>
+    <div class="rune-card">
+      <div class="rune-sym">🔗</div>
+      <div class="rune-name">BND</div>
+      <div class="rune-idx">Rune VII</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ LIQUIDIUM LOANS ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">💎 Liquidium Loans</div>
+  <div class="grid-4">
+
+    <div class="loan-card">
+      <div class="loan-id">LQ-001 <span class="loan-badge badge-active">ACTIVE</span></div>
+      <div class="loan-detail">Ordinal-backed · 30-day term</div>
+      <div class="loan-amount">0.15 BTC</div>
+    </div>
+
+    <div class="loan-card">
+      <div class="loan-id">LQ-002 <span class="loan-badge badge-active">ACTIVE</span></div>
+      <div class="loan-detail">Rune-backed · 14-day term</div>
+      <div class="loan-amount">0.08 BTC</div>
+    </div>
+
+    <div class="loan-card">
+      <div class="loan-id">LQ-003 <span class="loan-badge badge-active">ACTIVE</span></div>
+      <div class="loan-detail">BRC-20 collateral · 21-day term</div>
+      <div class="loan-amount">0.22 BTC</div>
+    </div>
+
+    <div class="loan-card urgent">
+      <div class="loan-id">LQ-004 <span class="loan-badge badge-urgent">⚠ URGENT</span></div>
+      <div class="loan-detail" style="color:#ff8888;">Liquidation risk · Expires soon</div>
+      <div class="loan-amount" style="color:var(--urgent);">0.35 BTC</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ DYNASTY ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">👑 The Dynasty</div>
+  <div class="dynasty-card">
+    <div class="commander">Commander Patrick La Touche</div>
+    <div class="codename">⚡ DJ SHARPSHOOTER · BROTHERHOOD OMEGA DYNASTY</div>
+
+    <div class="dynasty-detail">
+      <div><span style="color:var(--muted)">Born:</span> <span>Tanzania, 1963</span></div>
+      <div><span style="color:var(--muted)">Citizenship:</span> <span>🇮🇪 Irish Citizen</span></div>
+    </div>
+
+    <div class="memorial">
+      ✝ In loving memory of <strong>James</strong> and <strong>Annette</strong> — forever in our hearts.
+    </div>
+
+    <div class="daughters">
+      Daughters: <span>Zarina</span> · <span>Aisha</span> · <span>Shakiya</span> · <span>Obina</span>
+    </div>
+
+    <div class="restaurant" style="margin-top:12px;">
+      🍽 <span>M'Tanga Restaurant</span> &nbsp;·&nbsp; Dar es Salaam, Tanzania
+    </div>
+
+    <div class="values">
+      <span class="value-chip">FEARLESS</span>
+      <span class="value-chip">FOCUSED</span>
+      <span class="value-chip">NO REGRETS</span>
+      <span class="value-chip">WALK WHERE ANGELS FEAR</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ SOCIAL / CONTACT ══════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-title">📡 Contact &amp; Communication</div>
+  <div class="grid-2" style="max-width:700px;">
+
+    <a class="social-card" href="https://wa.me/447424394382" target="_blank" rel="noopener noreferrer">
+      <div class="social-icon">💬</div>
+      <div class="social-info">
+        <div class="social-name">WhatsApp</div>
+        <div class="social-handle">wa.me/447424394382</div>
+      </div>
+      <span class="dot dot-green"></span>
+    </a>
+
+    <a class="social-card" href="https://t.me/evacuate" target="_blank" rel="noopener noreferrer">
+      <div class="social-icon">✈️</div>
+      <div class="social-info">
+        <div class="social-name">Telegram</div>
+        <div class="social-handle">/evacuate command</div>
+      </div>
+      <span class="dot dot-green"></span>
+    </a>
+
+    <a class="social-card" href="https://x.com/patrickdl44" target="_blank" rel="noopener noreferrer">
+      <div class="social-icon">𝕏</div>
+      <div class="social-info">
+        <div class="social-name">X (Twitter)</div>
+        <div class="social-handle">@patrickdl44</div>
+      </div>
+      <span class="dot dot-green"></span>
+    </a>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ FOOTER ══════════════════════════════════════════ -->
+<div class="footer">
+  <div class="motto">FEARLESS • FOCUSED • NO REGRETS • WALK WHERE ANGELS FEAR</div>
+  <div>🔱 BROTHERHOOD OMEGA DYNASTY · OMEGA ULTIMATE FUSION V∞ · CHUKUA KONTROLI YOTE</div>
+</div>
+
+</body>
+</html>
