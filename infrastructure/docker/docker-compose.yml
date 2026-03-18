@@ -1,0 +1,514 @@
+# OMEGA-ULTIMATE-FUSION-V∞ — Docker Compose Fleet
+# 32 Containers · Brotherhood Omega Dynasty
+# DigitalOcean Droplet: 206.189.118.255
+version: "3.9"
+
+networks:
+  omega-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres-data:
+  redis-data:
+  grafana-data:
+  prometheus-data:
+  temporal-data:
+  agent-logs:
+  nginx-logs:
+
+services:
+
+  # ── CORE TRADING AGENTS ──────────────────────────────────────────
+
+  agent-dj:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-agent-dj
+    environment:
+      - AGENT_NAME=DJ
+      - AGENT_STRATEGY=spot
+      - AGENT_CHAINS=SOL,BTC,ETH
+      - AGENT_WALLET=GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8
+      - YOLO_FACTOR=150
+      - CIRCUIT_BREAKER_PCT=15
+      - TEMPORAL_HOST=temporal:7233
+      - REDIS_URL=redis://redis:6379/0
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+      - agentbus
+    networks: [omega-net]
+    restart: unless-stopped
+    volumes:
+      - agent-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8001/health', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  agent-hashim:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-agent-hashim
+    environment:
+      - AGENT_NAME=HASHIM
+      - AGENT_STRATEGY=derivatives
+      - AGENT_CHAINS=SOL,BTC,ETH,AVAX
+      - AGENT_WALLET=GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8
+      - YOLO_FACTOR=150
+      - CIRCUIT_BREAKER_PCT=15
+      - TEMPORAL_HOST=temporal:7233
+      - REDIS_URL=redis://redis:6379/1
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+      - agentbus
+    networks: [omega-net]
+    restart: unless-stopped
+    volumes:
+      - agent-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8002/health', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  agent-bossman:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-agent-bossman
+    environment:
+      - AGENT_NAME=BOSSMAN
+      - AGENT_STRATEGY=ordinals
+      - AGENT_CHAINS=BTC
+      - AGENT_WALLET=GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8
+      - YOLO_FACTOR=150
+      - CIRCUIT_BREAKER_PCT=15
+      - TEMPORAL_HOST=temporal:7233
+      - REDIS_URL=redis://redis:6379/2
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+      - agentbus
+    networks: [omega-net]
+    restart: unless-stopped
+    volumes:
+      - agent-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8003/health', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  agent-patrick:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-agent-patrick
+    environment:
+      - AGENT_NAME=PATRICK
+      - AGENT_STRATEGY=crosschain
+      - AGENT_CHAINS=SOL,BTC,ETH,AVAX,MATIC,ARB,OP,BSC,FTM,NEAR,ATOM,DOT
+      - AGENT_WALLET=GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8
+      - YOLO_FACTOR=150
+      - CIRCUIT_BREAKER_PCT=15
+      - TEMPORAL_HOST=temporal:7233
+      - REDIS_URL=redis://redis:6379/3
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+      - agentbus
+    networks: [omega-net]
+    restart: unless-stopped
+    volumes:
+      - agent-logs:/app/logs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8004/health', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── ORCHESTRATOR ──────────────────────────────────────────────────
+
+  orchestrator:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-orchestrator
+    command: ["python", "-m", "agents.orchestrator"]
+    environment:
+      - TEMPORAL_HOST=temporal:7233
+      - REDIS_URL=redis://redis:6379/4
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - WHATSAPP_NUMBER=447424394382
+      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+      - EMERGENCY_WALLET_1=6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1
+      - EMERGENCY_WALLET_2=EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+      - agentbus
+      - agent-dj
+      - agent-hashim
+      - agent-bossman
+      - agent-patrick
+    networks: [omega-net]
+    restart: unless-stopped
+    volumes:
+      - agent-logs:/app/logs
+
+  # ── CIRCUIT BREAKER ───────────────────────────────────────────────
+
+  circuit-breaker:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-circuit-breaker
+    command: ["python", "-m", "agents.circuit_breaker"]
+    environment:
+      - CIRCUIT_BREAKER_PCT=15
+      - REDIS_URL=redis://redis:6379/5
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+      - TEMPORAL_HOST=temporal:7233
+    depends_on:
+      - postgres
+      - redis
+      - temporal
+    networks: [omega-net]
+    restart: unless-stopped
+
+  # ── DATA STORE ────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: omega-postgres
+    environment:
+      - POSTGRES_DB=omega
+      - POSTGRES_USER=omega
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks: [omega-net]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U omega"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: omega-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis-data:/data
+    networks: [omega-net]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── TEMPORAL.IO BRAIN ─────────────────────────────────────────────
+
+  temporal:
+    image: temporalio/auto-setup:1.24
+    container_name: omega-temporal
+    environment:
+      - DB=postgresql
+      - DB_PORT=5432
+      - POSTGRES_USER=omega
+      - POSTGRES_PWD=${POSTGRES_PASSWORD}
+      - POSTGRES_SEEDS=postgres
+      - DYNAMIC_CONFIG_FILE_PATH=config/dynamicconfig/development-sql.yaml
+    depends_on:
+      - postgres
+    networks: [omega-net]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "tctl", "cluster", "health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  temporal-ui:
+    image: temporalio/ui:2.26
+    container_name: omega-temporal-ui
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:8080
+    depends_on:
+      - temporal
+    networks: [omega-net]
+    restart: unless-stopped
+
+  temporal-worker:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-temporal-worker
+    command: ["python", "-m", "agents.temporal_worker"]
+    environment:
+      - TEMPORAL_HOST=temporal:7233
+      - REDIS_URL=redis://redis:6379/6
+    depends_on:
+      - temporal
+    networks: [omega-net]
+    restart: unless-stopped
+
+  # ── MESSAGE BUS ───────────────────────────────────────────────────
+
+  agentbus:
+    image: rabbitmq:3.13-management-alpine
+    container_name: omega-agentbus
+    environment:
+      - RABBITMQ_DEFAULT_USER=omega
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+    networks: [omega-net]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ── INTEGRATIONS ──────────────────────────────────────────────────
+
+  telegram-bot:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-telegram-bot
+    command: ["python", "-m", "integrations.telegram.bot"]
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - REDIS_URL=redis://redis:6379/7
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+    depends_on:
+      - redis
+      - postgres
+    networks: [omega-net]
+    restart: unless-stopped
+
+  webhook-server:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-webhook
+    command: ["python", "-m", "integrations.webhook.server"]
+    environment:
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+      - REDIS_URL=redis://redis:6379/8
+      - PORT=9000
+    ports:
+      - "9000:9000"
+    depends_on:
+      - redis
+    networks: [omega-net]
+    restart: unless-stopped
+
+  twitter-bot:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-twitter-bot
+    command: ["python", "-m", "integrations.twitter.bot"]
+    environment:
+      - TWITTER_BEARER_TOKEN=${TWITTER_BEARER_TOKEN}
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+      - REDIS_URL=redis://redis:6379/9
+    depends_on:
+      - redis
+    networks: [omega-net]
+    restart: unless-stopped
+
+  # ── REVERSE PROXY ─────────────────────────────────────────────────
+
+  nginx:
+    image: nginx:1.26-alpine
+    container_name: omega-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx-logs:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - orchestrator
+      - webhook-server
+      - grafana
+      - temporal-ui
+    networks: [omega-net]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nginx", "-t"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── OBSERVABILITY ─────────────────────────────────────────────────
+
+  prometheus:
+    image: prom/prometheus:v2.52
+    container_name: omega-prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=30d'
+    networks: [omega-net]
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4
+    container_name: omega-grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_ROOT_URL=https://brotherhoodomegadynasty.com/grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+    networks: [omega-net]
+    restart: unless-stopped
+
+  alertmanager:
+    image: prom/alertmanager:v0.27
+    container_name: omega-alertmanager
+    volumes:
+      - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+    networks: [omega-net]
+    restart: unless-stopped
+
+  monitor:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.agent
+    container_name: omega-monitor
+    command: ["python", "-m", "agents.monitor"]
+    environment:
+      - REDIS_URL=redis://redis:6379/10
+      - DATABASE_URL=postgresql://omega:${POSTGRES_PASSWORD}@postgres:5432/omega
+      - PROMETHEUS_PUSHGATEWAY=http://prometheus:9091
+    depends_on:
+      - prometheus
+      - redis
+    networks: [omega-net]
+    restart: unless-stopped
+
+  # ── BACKUP ────────────────────────────────────────────────────────
+
+  backup:
+    image: alpine:3.19
+    container_name: omega-backup
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - BACKUP_INTERVAL=3600
+    volumes:
+      - postgres-data:/data/postgres:ro
+      - ./../../backup/scripts:/scripts:ro
+      - /var/backups/omega:/backups
+    command: ["sh", "/scripts/backup.sh"]
+    depends_on:
+      - postgres
+    networks: [omega-net]
+    restart: unless-stopped
+
+  # ── CHAIN NODES (light clients / RPC proxies) ─────────────────────
+
+  rpc-solana:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-solana
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-bitcoin:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-bitcoin
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-ethereum:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-ethereum
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-avalanche:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-avalanche
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-polygon:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-polygon
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-arbitrum:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-arbitrum
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-optimism:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-optimism
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-bsc:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-bsc
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-fantom:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-fantom
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-near:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-near
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-cosmos:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-cosmos
+    networks: [omega-net]
+    restart: unless-stopped
+
+  rpc-polkadot:
+    image: nginx:1.26-alpine
+    container_name: omega-rpc-polkadot
+    networks: [omega-net]
+    restart: unless-stopped

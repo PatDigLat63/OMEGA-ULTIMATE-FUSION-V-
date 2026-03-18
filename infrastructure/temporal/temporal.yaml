@@ -1,0 +1,33 @@
+# Temporal.io dynamic config for OMEGA trading workflows
+# See: https://docs.temporal.io/references/dynamic-configuration
+
+# Workflow task timeout
+limit.maxWorkflowTaskTimeout:
+  - value: "120s"
+
+# Workflow execution timeout (24 hours max for long-running positions)
+limit.maxWorkflowExecutionTimeout:
+  - value: "86400s"
+
+# History size limits
+limit.maxWorkflowSize:
+  - value: 50000000
+
+# Concurrency limits per namespace
+frontend.enableServerVersionCheck:
+  - value: false
+
+history.defaultWorkflowTaskTimeout:
+  - value: "30s"
+
+# Retry policy defaults
+history.defaultActivityRetryPolicy:
+  - value:
+      initialIntervalInSeconds: 1
+      backoffCoefficient: 2.0
+      maximumIntervalInSeconds: 30
+      maximumAttempts: 10
+
+# Omega Dynasty namespaces
+system.enableNamespaceNotActiveAutoForwarding:
+  - value: true
