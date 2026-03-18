@@ -1,0 +1,14 @@
+/* ═══════════════════════════════════════════════
+   OMEGA-ULTIMATE-FUSION-V∞ — DASHBOARD EXTRA CSS
+   ═══════════════════════════════════════════════ */
+
+/* Dashboard-specific overrides and additions */
+.dash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.stat-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 11px; border-bottom: 1px solid rgba(255,215,0,0.06); }
+.stat-row:last-child { border-bottom: none; }
+.stat-row .sk { color: var(--text-dim); }
+.stat-row .sv { color: var(--text-primary); }
+.stat-row .sv.g { color: var(--green); }
+.stat-row .sv.c { color: var(--cyan); }
+.stat-row .sv.r { color: var(--red); }
+.stat-row .sv.o { color: var(--gold); }

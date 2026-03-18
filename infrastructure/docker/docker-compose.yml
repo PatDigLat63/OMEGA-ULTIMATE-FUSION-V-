@@ -1,0 +1,375 @@
+version: '3.9'
+
+# ═══════════════════════════════════════════════════════════
+# OMEGA-ULTIMATE-FUSION-V∞ — Full 14-Service Docker Stack
+# Brotherhood Omega Dynasty
+# ═══════════════════════════════════════════════════════════
+
+networks:
+  omega-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  omega_logs:
+    driver: local
+  omega_backups:
+    driver: local
+
+services:
+
+  # ── DATABASES ─────────────────────────────────────────
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: omega-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-omega_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-omega_db}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - omega-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-omega_user}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  redis:
+    image: redis:7-alpine
+    container_name: omega-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD} --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - omega-net
+    healthcheck:
+      test: ["CMD", "redis-cli", "--pass", "${REDIS_PASSWORD}", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ── AGENT BUS ─────────────────────────────────────────
+
+  agentbus:
+    image: node:20-alpine
+    container_name: omega-agentbus
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../agents:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${AGENTBUS_HTTP_PORT:-8081}:8081"
+      - "${AGENTBUS_WS_PORT:-9081}:9081"
+    environment:
+      - NODE_ENV=production
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+    networks:
+      - omega-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ── TRADING AGENTS ────────────────────────────────────
+
+  dj:
+    image: node:20-alpine
+    container_name: omega-dj
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../agents/dj:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${DJ_PORT:-3003}:3003"
+    environment:
+      - NODE_ENV=production
+      - PORT=3003
+      - AGENT_NAME=DJ_SHARPSHOOTER
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL}
+      - HELIUS_API_KEY=${HELIUS_API_KEY}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+      - AGENTBUS_URL=http://agentbus:8081
+      - YOLO_MULTIPLIER=${YOLO_MULTIPLIER:-10}
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  hashim:
+    image: node:20-alpine
+    container_name: omega-hashim
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../agents/hashim:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${HASHIM_PORT:-3004}:3004"
+    environment:
+      - NODE_ENV=production
+      - PORT=3004
+      - AGENT_NAME=HASHIM_TREASURY
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL}
+      - HELIUS_API_KEY=${HELIUS_API_KEY}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+      - AGENTBUS_URL=http://agentbus:8081
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  patrick:
+    image: node:20-alpine
+    container_name: omega-patrick
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../agents/patrick:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${PATRICK_PORT:-3005}:3005"
+    environment:
+      - NODE_ENV=production
+      - PORT=3005
+      - AGENT_NAME=PATRICK_SCANNER
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL}
+      - HELIUS_API_KEY=${HELIUS_API_KEY}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+      - AGENTBUS_URL=http://agentbus:8081
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  bossman:
+    image: node:20-alpine
+    container_name: omega-bossman
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../agents/bossman:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${BOSSMAN_PORT:-3006}:3006"
+    environment:
+      - NODE_ENV=production
+      - PORT=3006
+      - AGENT_NAME=BOSSMAN_RISK
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL}
+      - HELIUS_API_KEY=${HELIUS_API_KEY}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+      - AGENTBUS_URL=http://agentbus:8081
+      - CIRCUIT_BREAKER_PCT=${CIRCUIT_BREAKER_PCT:-15}
+      - MAX_DRAWDOWN_PCT=${MAX_DRAWDOWN_PCT:-20}
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ── SUPPORT SERVICES ──────────────────────────────────
+
+  dashboard:
+    image: nginx:alpine
+    container_name: omega-dashboard
+    restart: unless-stopped
+    volumes:
+      - ../../index.html:/usr/share/nginx/html/index.html:ro
+      - ../../dashboard.html:/usr/share/nginx/html/dashboard.html:ro
+      - ../../assets:/usr/share/nginx/html/assets:ro
+      - ../server/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "${DASHBOARD_PORT:-8082}:80"
+    networks:
+      - omega-net
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ledger:
+    image: node:20-alpine
+    container_name: omega-ledger
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - omega_logs:/app/logs
+    ports:
+      - "${LEDGER_PORT:-3010}:3010"
+    environment:
+      - NODE_ENV=production
+      - PORT=3010
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+      - DAILY_PROFIT_TARGET=${DAILY_PROFIT_TARGET:-16.67}
+      - TOTAL_PROFIT_TARGET=${TOTAL_PROFIT_TARGET:-16670}
+    networks:
+      - omega-net
+    depends_on:
+      - postgres
+
+  learner:
+    image: node:20-alpine
+    container_name: omega-learner
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - omega_logs:/app/logs
+    ports:
+      - "${LEARNER_PORT:-3011}:3011"
+    environment:
+      - NODE_ENV=production
+      - PORT=3011
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+    networks:
+      - omega-net
+    depends_on:
+      - postgres
+      - redis
+
+  evolver:
+    image: node:20-alpine
+    container_name: omega-evolver
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - omega_logs:/app/logs
+    ports:
+      - "${EVOLVER_PORT:-3012}:3012"
+    environment:
+      - NODE_ENV=production
+      - PORT=3012
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - POSTGRES_URL=postgres://${POSTGRES_USER:-omega_user}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-omega_db}
+      - COMPOUND_INTERVAL_HOURS=${COMPOUND_INTERVAL_HOURS:-1}
+    networks:
+      - omega-net
+    depends_on:
+      - postgres
+      - redis
+
+  telegram:
+    image: node:20-alpine
+    container_name: omega-telegram
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../integrations/telegram:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${TELEGRAM_PORT:-3013}:3013"
+    environment:
+      - NODE_ENV=production
+      - PORT=3013
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TELEGRAM_WEBHOOK_URL=${TELEGRAM_WEBHOOK_URL}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - AGENTBUS_URL=http://agentbus:8081
+      - TWITTER_API_KEY=${TWITTER_API_KEY}
+      - TWITTER_API_SECRET=${TWITTER_API_SECRET}
+      - TWITTER_ACCESS_TOKEN=${TWITTER_ACCESS_TOKEN}
+      - TWITTER_ACCESS_SECRET=${TWITTER_ACCESS_SECRET}
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
+
+  scanner:
+    image: node:20-alpine
+    container_name: omega-scanner
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - omega_logs:/app/logs
+    ports:
+      - "${SCANNER_PORT:-3014}:3014"
+    environment:
+      - NODE_ENV=production
+      - PORT=3014
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL}
+      - HELIUS_API_KEY=${HELIUS_API_KEY}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - AGENTBUS_URL=http://agentbus:8081
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
+
+  hustle-bridge:
+    image: node:20-alpine
+    container_name: omega-hustle-bridge
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ../../integrations/whatsapp:/app
+      - omega_logs:/app/logs
+    ports:
+      - "${HUSTLE_BRIDGE_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - WHATSAPP_API_KEY=${WHATSAPP_API_KEY}
+      - WHATSAPP_PHONE=${WHATSAPP_PHONE}
+      - WHATSAPP_WEBHOOK_SECRET=${WHATSAPP_WEBHOOK_SECRET}
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379
+      - AGENTBUS_URL=http://agentbus:8081
+    networks:
+      - omega-net
+    depends_on:
+      - agentbus
