@@ -1,0 +1,40 @@
+name: 🔱 OMEGA-FUSION Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy to DigitalOcean
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to droplet via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            DEPLOY_DIR="/opt/omega-fusion"
+
+            if [ -d "$DEPLOY_DIR/.git" ]; then
+              cd "$DEPLOY_DIR" && git pull origin main
+            else
+              git clone https://github.com/${{ github.repository }}.git "$DEPLOY_DIR"
+              cd "$DEPLOY_DIR"
+            fi
+
+            if [ ! -f "$DEPLOY_DIR/.env" ]; then
+              cp "$DEPLOY_DIR/.env.template" "$DEPLOY_DIR/.env"
+              echo "⚠️  .env created from template — fill in secrets before full restart."
+            fi
+
+            docker-compose pull --quiet
+            docker-compose up -d --build
+            docker-compose ps

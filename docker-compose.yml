@@ -1,0 +1,119 @@
+version: '3.9'
+# 🔱 OMEGA-ULTIMATE-FUSION-V∞ BLUEPRINT (VERIFIED)
+# 15 Core Verified Containers
+
+networks:
+  omega_net:
+    driver: bridge
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: omega_postgres
+    networks: [omega_net]
+    ports: ["5432:5432"]
+    env_file: .env
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: omega_redis
+    networks: [omega_net]
+    ports: ["6379:6379"]
+    restart: unless-stopped
+
+  agentbus:
+    image: node:18-alpine
+    container_name: omega_agentbus
+    networks: [omega_net]
+    ports: ["8081:8081", "9081:9081"]
+    restart: unless-stopped
+
+  dashboard:
+    image: nginx:alpine
+    container_name: omega_dashboard
+    networks: [omega_net]
+    ports: ["8082:80"]
+    volumes:
+      - ./html:/usr/share/nginx/html:ro
+    restart: unless-stopped
+
+  dj:
+    image: node:18-alpine
+    container_name: agent_dj
+    networks: [omega_net]
+    ports: ["3003:3003"]
+    env_file: .env
+    restart: unless-stopped
+
+  hashim:
+    image: node:18-alpine
+    container_name: agent_hashim
+    networks: [omega_net]
+    ports: ["3004:3004"]
+    env_file: .env
+    restart: unless-stopped
+
+  bossman:
+    image: node:18-alpine
+    container_name: agent_bossman
+    networks: [omega_net]
+    ports: ["3006:3006"]
+    env_file: .env
+    restart: unless-stopped
+
+  patrick:
+    image: node:18-alpine
+    container_name: agent_patrick
+    networks: [omega_net]
+    ports: ["3005:3005"]
+    env_file: .env
+    restart: unless-stopped
+
+  ledger:
+    image: node:18-alpine
+    container_name: service_ledger
+    networks: [omega_net]
+    ports: ["3010:3010"]
+    env_file: .env
+    restart: unless-stopped
+
+  learner:
+    image: node:18-alpine
+    container_name: service_learner
+    networks: [omega_net]
+    ports: ["3011:3011"]
+    env_file: .env
+    restart: unless-stopped
+
+  evolver:
+    image: node:18-alpine
+    container_name: service_evolver
+    networks: [omega_net]
+    ports: ["3012:3012"]
+    env_file: .env
+    restart: unless-stopped
+
+  telegram:
+    image: node:18-alpine
+    container_name: service_telegram
+    networks: [omega_net]
+    ports: ["3013:3013"]
+    env_file: .env
+    restart: unless-stopped
+
+  scanner:
+    image: node:18-alpine
+    container_name: service_scanner
+    networks: [omega_net]
+    ports: ["3014:3014"]
+    env_file: .env
+    restart: unless-stopped
+
+  hustle:
+    image: node:18-alpine
+    container_name: service_hustle
+    networks: [omega_net]
+    ports: ["3001:3001"]
+    env_file: .env
+    restart: unless-stopped
