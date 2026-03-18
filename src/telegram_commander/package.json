@@ -1,0 +1,12 @@
+{
+  "name": "omega-telegram_commander",
+  "version": "1.0.0",
+  "description": "Telegram bot command interface",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

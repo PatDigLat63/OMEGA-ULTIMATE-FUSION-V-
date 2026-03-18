@@ -1,0 +1,52 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: agentbus
+    static_configs:
+      - targets: ["omega_agentbus:9081"]
+
+  - job_name: patrick_scanner
+    static_configs:
+      - targets: ["patrick_scanner:3005"]
+
+  - job_name: hashim_treasury
+    static_configs:
+      - targets: ["hashim_treasury:3004"]
+
+  - job_name: dj_executor
+    static_configs:
+      - targets: ["dj_executor:3003"]
+
+  - job_name: bossman_risk
+    static_configs:
+      - targets: ["bossman_risk:3006"]
+
+  - job_name: hustle_bridge
+    static_configs:
+      - targets: ["hustle_bridge:3001"]
+
+  - job_name: ledger
+    static_configs:
+      - targets: ["omega_ledger:3010"]
+
+  - job_name: learner
+    static_configs:
+      - targets: ["omega_learner:3011"]
+
+  - job_name: evolver
+    static_configs:
+      - targets: ["omega_evolver:3012"]
+
+  - job_name: auto_scanner
+    static_configs:
+      - targets: ["omega_auto_scanner:3014"]
+
+  - job_name: telegram_commander
+    static_configs:
+      - targets: ["telegram_commander:3013"]
