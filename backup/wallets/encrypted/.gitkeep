@@ -1,0 +1,3 @@
+# OMEGA encrypted wallet backups
+# NEVER commit actual wallet files or private keys here
+# See backup/wallets/README.md for the backup system documentation
