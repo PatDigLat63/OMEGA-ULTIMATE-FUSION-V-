@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OMEGA-ULTIMATE-FUSION-V∞</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:    #ffd700;
+      --gold2:   #ffaa00;
+      --cyan:    #00e5ff;
+      --cyan2:   #00bcd4;
+      --dark:    #050a12;
+      --panel:   rgba(0,20,40,0.85);
+      --border:  rgba(0,229,255,0.25);
+      --urgent:  #ff4444;
+      --green:   #00ff88;
+      --radius:  10px;
+      --font:    'Segoe UI', system-ui, sans-serif;
+    }
+    html, body { height: 100%; background: var(--dark); color: #dde; font-family: var(--font); }
+
+    /* ── Starfield ── */
+    #stars-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    }
+
+    /* ── Layout ── */
+    #app {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      min-height: 100dvh; max-width: 900px; margin: 0 auto;
+      padding: 0 8px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center; padding: 18px 8px 10px;
+    }
+    header h1 {
+      font-size: clamp(1.1rem, 4vw, 1.8rem);
+      font-weight: 900; letter-spacing: 2px;
+      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--gold));
+      background-size: 200%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite;
+    }
+    header p {
+      font-size: .7rem; color: var(--cyan2); letter-spacing: 1px;
+      margin-top: 3px; text-transform: uppercase;
+    }
+    @keyframes shimmer { from{background-position:0%} to{background-position:200%} }
+
+    /* ── Live clock ── */
+    #clock {
+      font-size: .75rem; color: var(--gold2); letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* ── Tab nav ── */
+    nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      display: flex; background: rgba(5,10,18,0.97);
+      border-top: 1px solid var(--border);
+    }
+    nav button {
+      flex: 1; padding: 10px 0 12px; border: none; background: transparent;
+      color: #778; font-size: .65rem; font-weight: 700;
+      letter-spacing: .5px; cursor: pointer; transition: color .2s;
+      text-transform: uppercase;
+    }
+    nav button.active { color: var(--gold); border-top: 2px solid var(--gold); }
+    nav button span { display: block; font-size: 1.1rem; margin-bottom: 1px; }
+
+    /* ── Panels ── */
+    .panel { display: none; animation: fadeIn .25s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+    /* ── Card ── */
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; margin: 10px 0;
+      backdrop-filter: blur(8px);
+    }
+    .card h2 {
+      font-size: .85rem; font-weight: 800; letter-spacing: 1px;
+      color: var(--cyan); text-transform: uppercase; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .card h3 {
+      font-size: .78rem; color: var(--gold); font-weight: 700;
+      margin: 10px 0 4px; text-transform: uppercase; letter-spacing: .5px;
+    }
+
+    /* ── Status badge ── */
+    .badge {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 20px; font-size: .62rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .5px;
+    }
+    .badge.ok     { background: rgba(0,255,136,.15); color: var(--green); border: 1px solid var(--green); }
+    .badge.warn   { background: rgba(255,170,0,.15);  color: var(--gold2); border: 1px solid var(--gold2); }
+    .badge.urgent { background: rgba(255,68,68,.18);  color: var(--urgent); border: 1px solid var(--urgent); animation: pulse-urgent 1s ease-in-out infinite; }
+    @keyframes pulse-urgent { 0%,100%{opacity:1} 50%{opacity:.5} }
+
+    /* ── Address / mono ── */
+    .addr {
+      font-family: 'Courier New', monospace; font-size: .62rem;
+      color: var(--cyan2); word-break: break-all;
+      background: rgba(0,229,255,.06); padding: 3px 6px;
+      border-radius: 4px; display: inline-block; margin-top: 2px;
+    }
+    .copy-btn {
+      background: none; border: 1px solid var(--border); color: var(--cyan);
+      font-size: .6rem; padding: 2px 6px; border-radius: 4px;
+      cursor: pointer; margin-left: 6px; vertical-align: middle;
+    }
+    .copy-btn:active { background: rgba(0,229,255,.15); }
+
+    /* ── Grid helpers ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media(max-width:420px){ .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── Stat row ── */
+    .stat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.05);
+      font-size: .78rem;
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { color: #8aa; }
+    .stat-val   { color: var(--gold); font-weight: 700; }
+
+    /* ── Agent card ── */
+    .agent-card {
+      background: rgba(0,229,255,.04); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px; margin: 8px 0;
+    }
+    .agent-name {
+      font-size: .95rem; font-weight: 900; color: var(--gold);
+      letter-spacing: 1px;
+    }
+    .agent-role { font-size: .68rem; color: var(--cyan2); margin-bottom: 6px; }
+
+    /* ── Container list ── */
+    .container-list { list-style: none; }
+    .container-list li {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,.04);
+      font-size: .75rem;
+    }
+    .container-list li:last-child { border-bottom: none; }
+    .cnt-name { color: #cce; }
+    .cnt-port { color: var(--cyan2); font-family: monospace; font-size: .68rem; }
+
+    /* ── Rune grid ── */
+    .rune-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px; margin-top: 8px;
+    }
+    .rune-tile {
+      background: rgba(255,215,0,.06); border: 1px solid rgba(255,215,0,.25);
+      border-radius: 8px; padding: 8px 4px; text-align: center;
+      font-size: .65rem; color: var(--gold2);
+    }
+    .rune-tile .rune-symbol { font-size: 1.4rem; display: block; margin-bottom: 3px; }
+
+    /* ── Loan card ── */
+    .loan-card {
+      border-radius: var(--radius); padding: 10px 14px; margin: 6px 0;
+      border-left: 3px solid var(--cyan2);
+      background: rgba(0,20,40,.7);
+      font-size: .76rem;
+    }
+    .loan-card.urgent-loan { border-left-color: var(--urgent); }
+    .loan-id { font-weight: 800; font-size: .8rem; color: var(--cyan); }
+    .loan-urgent .loan-id { color: var(--urgent); }
+
+    /* ── Integration links ── */
+    .int-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+    .int-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 24px; font-size: .78rem;
+      font-weight: 700; text-decoration: none; border: 1px solid;
+      transition: opacity .2s;
+    }
+    .int-link:active { opacity: .7; }
+    .int-link.wa  { color: #25d366; border-color: #25d366; background: rgba(37,211,102,.08); }
+    .int-link.tg  { color: #2ca5e0; border-color: #2ca5e0; background: rgba(44,165,224,.08); }
+    .int-link.tw  { color: #1da1f2; border-color: #1da1f2; background: rgba(29,161,242,.08); }
+
+    /* ── Family list ── */
+    .family-list { list-style: none; }
+    .family-list li {
+      padding: 5px 0; font-size: .82rem; border-bottom: 1px solid rgba(255,255,255,.05);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .family-list li:last-child { border-bottom: none; }
+    .family-list .icon { font-size: 1rem; }
+
+    /* ── Motto ── */
+    .motto {
+      text-align: center; padding: 16px;
+      font-size: clamp(1rem, 4vw, 1.4rem);
+      font-weight: 900; letter-spacing: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      text-transform: uppercase; margin: 14px 0;
+    }
+
+    /* ── AI federation ── */
+    .ai-grid {
+      display: grid; grid-template-columns: repeat(2,1fr); gap: 10px;
+      margin-top: 8px;
+    }
+    @media(max-width:380px){ .ai-grid { grid-template-columns: 1fr; } }
+    .ai-tile {
+      background: rgba(0,229,255,.04); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px; text-align: center;
+    }
+    .ai-tile .ai-icon { font-size: 1.6rem; display: block; margin-bottom: 4px; }
+    .ai-tile .ai-name { font-size: .78rem; font-weight: 800; color: var(--cyan); }
+    .ai-tile .ai-status { font-size: .62rem; color: var(--green); }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--cyan2); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div id="app">
+  <header>
+    <h1>⚡ OMEGA-ULTIMATE-FUSION-V∞</h1>
+    <p>Brotherhood Omega Dynasty · Self-Evolving Trading System</p>
+    <div id="clock">—</div>
+  </header>
+
+  <!-- ═══════════════════ CMD ═══════════════════ -->
+  <section id="tab-cmd" class="panel active">
+
+    <div class="card">
+      <h2>🎛️ Command Status</h2>
+      <div class="stat-row"><span class="stat-label">System</span><span class="stat-val"><span class="badge ok">ONLINE</span></span></div>
+      <div class="stat-row"><span class="stat-label">Uptime Target</span><span class="stat-val">99.999 %</span></div>
+      <div class="stat-row"><span class="stat-label">Active Chains</span><span class="stat-val">12</span></div>
+      <div class="stat-row"><span class="stat-label">Containers</span><span class="stat-val">15 / 32 target</span></div>
+      <div class="stat-row"><span class="stat-label">Leverage</span><span class="stat-val">150× YOLO</span></div>
+      <div class="stat-row"><span class="stat-label">Circuit Breaker</span><span class="stat-val">15 %</span></div>
+      <div class="stat-row"><span class="stat-label">Agents Online</span><span class="stat-val">8 Autonomous</span></div>
+    </div>
+
+    <div class="card">
+      <h2>🔗 Integrations</h2>
+      <div class="int-links">
+        <a class="int-link wa" href="https://wa.me/447424394382" target="_blank" rel="noopener">
+          💬 WhatsApp
+        </a>
+        <a class="int-link tg" href="https://t.me/evacuate" target="_blank" rel="noopener">
+          ✈️ Telegram /evacuate
+        </a>
+        <a class="int-link tw" href="https://x.com/patrickdl44" target="_blank" rel="noopener">
+          🐦 @patrickdl44
+        </a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🚨 Emergency Addresses</h2>
+      <div style="margin-bottom:8px">
+        <div style="font-size:.7rem;color:#8aa;margin-bottom:3px">Emergency #1</div>
+        <span class="addr" id="em1">6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1</span>
+        <button class="copy-btn" onclick="copyAddr('em1')">⎘ Copy</button>
+      </div>
+      <div>
+        <div style="font-size:.7rem;color:#8aa;margin-bottom:3px">Emergency #2</div>
+        <span class="addr" id="em2">EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy</span>
+        <button class="copy-btn" onclick="copyAddr('em2')">⎘ Copy</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════ AGENTS ═══════════════════ -->
+  <section id="tab-agents" class="panel">
+
+    <div class="card">
+      <h2>🤖 Active Agents</h2>
+
+      <div class="agent-card">
+        <div class="agent-name">🎧 DJ</div>
+        <div class="agent-role">Primary Trading Agent</div>
+        <span class="addr" id="addr-dj">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</span>
+        <button class="copy-btn" onclick="copyAddr('addr-dj')">⎘ Copy</button>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-name">🔷 HASHIM</div>
+        <div class="agent-role">Strategy &amp; Analysis Agent</div>
+        <span class="addr" id="addr-hashim">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</span>
+        <button class="copy-btn" onclick="copyAddr('addr-hashim')">⎘ Copy</button>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-name">💼 BOSSMAN</div>
+        <div class="agent-role">Operations &amp; Oversight Agent</div>
+        <span class="addr" id="addr-bossman">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</span>
+        <button class="copy-btn" onclick="copyAddr('addr-bossman')">⎘ Copy</button>
+      </div>
+
+      <div class="agent-card">
+        <div class="agent-name">⚡ PATRICK</div>
+        <div class="agent-role">Commander Agent — same address as DJ</div>
+        <span class="addr" id="addr-patrick">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</span>
+        <button class="copy-btn" onclick="copyAddr('addr-patrick')">⎘ Copy</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🚨 Emergency Wallet Addresses</h2>
+      <h3>Emergency #1</h3>
+      <span class="addr" id="em1b">6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1</span>
+      <button class="copy-btn" onclick="copyAddr('em1b')">⎘ Copy</button>
+      <h3>Emergency #2</h3>
+      <span class="addr" id="em2b">EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy</span>
+      <button class="copy-btn" onclick="copyAddr('em2b')">⎘ Copy</button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════ INFRA ═══════════════════ -->
+  <section id="tab-infra" class="panel">
+
+    <div class="card">
+      <h2>🖥️ Server Details</h2>
+      <div class="stat-row"><span class="stat-label">IP Address</span><span class="stat-val">206.189.118.255</span></div>
+      <div class="stat-row"><span class="stat-label">Domain</span><span class="stat-val">brotherhoodomegadynasty.com</span></div>
+      <div class="stat-row"><span class="stat-label">Brain</span><span class="stat-val">Temporal.io</span></div>
+      <div class="stat-row"><span class="stat-label">Active Containers</span><span class="stat-val">15</span></div>
+      <div class="stat-row"><span class="stat-label">Target Containers</span><span class="stat-val">32</span></div>
+    </div>
+
+    <div class="card">
+      <h2>📦 Container Registry</h2>
+      <ul class="container-list">
+        <li><span class="cnt-name">omega-core</span>          <span class="cnt-port badge ok">:8080</span></li>
+        <li><span class="cnt-name">temporal-server</span>     <span class="cnt-port badge ok">:7233</span></li>
+        <li><span class="cnt-name">temporal-ui</span>         <span class="cnt-port badge ok">:8088</span></li>
+        <li><span class="cnt-name">agent-dj</span>            <span class="cnt-port badge ok">:9001</span></li>
+        <li><span class="cnt-name">agent-hashim</span>        <span class="cnt-port badge ok">:9002</span></li>
+        <li><span class="cnt-name">agent-bossman</span>       <span class="cnt-port badge ok">:9003</span></li>
+        <li><span class="cnt-name">agent-patrick</span>       <span class="cnt-port badge ok">:9004</span></li>
+        <li><span class="cnt-name">redis-cluster</span>       <span class="cnt-port badge ok">:6379</span></li>
+        <li><span class="cnt-name">postgres-primary</span>    <span class="cnt-port badge ok">:5432</span></li>
+        <li><span class="cnt-name">prometheus</span>          <span class="cnt-port badge ok">:9090</span></li>
+        <li><span class="cnt-name">grafana</span>             <span class="cnt-port badge ok">:3000</span></li>
+        <li><span class="cnt-name">nginx-proxy</span>         <span class="cnt-port badge ok">:443</span></li>
+        <li><span class="cnt-name">federation-gateway</span>  <span class="cnt-port badge warn">:8200</span></li>
+        <li><span class="cnt-name">omega-dashboard</span>     <span class="cnt-port badge ok">:4000</span></li>
+        <li><span class="cnt-name">circuit-breaker</span>     <span class="cnt-port badge ok">:8500</span></li>
+      </ul>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════ FEDERATION ═══════════════════ -->
+  <section id="tab-federation" class="panel">
+
+    <div class="card">
+      <h2>🌐 AI Federation</h2>
+      <div class="ai-grid">
+        <div class="ai-tile">
+          <span class="ai-icon">🧠</span>
+          <div class="ai-name">Claude</div>
+          <div class="ai-status">● LINKED</div>
+        </div>
+        <div class="ai-tile">
+          <span class="ai-icon">🔍</span>
+          <div class="ai-name">Deep Seeker</div>
+          <div class="ai-status">● LINKED</div>
+        </div>
+        <div class="ai-tile">
+          <span class="ai-icon">⚙️</span>
+          <div class="ai-name">Meta AI</div>
+          <div class="ai-status">● LINKED</div>
+        </div>
+        <div class="ai-tile">
+          <span class="ai-icon">🚀</span>
+          <div class="ai-name">Agenthustle</div>
+          <div class="ai-status">● LINKED</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔮 The Seven Runes</h2>
+      <div class="rune-grid">
+        <div class="rune-tile"><span class="rune-symbol">ᚠ</span>Fehu · Wealth</div>
+        <div class="rune-tile"><span class="rune-symbol">ᚢ</span>Uruz · Power</div>
+        <div class="rune-tile"><span class="rune-symbol">ᚦ</span>Thurisaz · Force</div>
+        <div class="rune-tile"><span class="rune-symbol">ᚨ</span>Ansuz · Signal</div>
+        <div class="rune-tile"><span class="rune-symbol">ᚱ</span>Raidho · Journey</div>
+        <div class="rune-tile"><span class="rune-symbol">ᚲ</span>Kenaz · Vision</div>
+        <div class="rune-tile"><span class="rune-symbol">ᚷ</span>Gebo · Gift</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💰 Liquidity Loans</h2>
+
+      <div class="loan-card urgent-loan">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="loan-id">LQ-004</span>
+          <span class="badge urgent">⚡ URGENT</span>
+        </div>
+        <div style="font-size:.75rem;color:#cce;margin-top:6px">Priority liquidity deployment required. Immediate action needed.</div>
+      </div>
+
+      <div class="loan-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="loan-id">LQ-001</span>
+          <span class="badge ok">ACTIVE</span>
+        </div>
+        <div style="font-size:.75rem;color:#aac;margin-top:4px">Initial liquidity tranche — operational.</div>
+      </div>
+
+      <div class="loan-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="loan-id">LQ-002</span>
+          <span class="badge ok">ACTIVE</span>
+        </div>
+        <div style="font-size:.75rem;color:#aac;margin-top:4px">Secondary liquidity tranche — operational.</div>
+      </div>
+
+      <div class="loan-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="loan-id">LQ-003</span>
+          <span class="badge warn">PENDING</span>
+        </div>
+        <div style="font-size:.75rem;color:#aac;margin-top:4px">Tertiary tranche — awaiting confirmation.</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════ LEGACY ═══════════════════ -->
+  <section id="tab-legacy" class="panel">
+
+    <div class="motto">CHUKUA KONTROLI YOTE</div>
+
+    <div class="card">
+      <h2>👑 Commander</h2>
+      <div style="font-size:1.1rem;font-weight:900;color:var(--gold);margin-bottom:4px">Patrick La Touche</div>
+      <div style="font-size:.75rem;color:var(--cyan2)">Founder · Commander · Brotherhood Omega Dynasty</div>
+    </div>
+
+    <div class="card">
+      <h2>👨‍👩‍👧‍👦 Legacy Family</h2>
+      <ul class="family-list">
+        <li><span class="icon">🕊️</span><span>James <em style="color:#aac;font-size:.7rem">(In Memoriam ✝)</em></span></li>
+        <li><span class="icon">🕊️</span><span>Annette <em style="color:#aac;font-size:.7rem">(In Memoriam ✝)</em></span></li>
+        <li><span class="icon">⭐</span><span>Zarina</span></li>
+        <li><span class="icon">⭐</span><span>Aisha</span></li>
+        <li><span class="icon">⭐</span><span>Shakiya</span></li>
+        <li><span class="icon">⭐</span><span>Obina</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>🍽️ M'Tanga Restaurant</h2>
+      <div style="font-size:.82rem;color:#cce;line-height:1.6">
+        The Brotherhood's heartbeat. Where deals are made, loyalty is forged,
+        and the legacy of OMEGA lives on at every table.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>📜 Mission</h2>
+      <div style="font-size:.8rem;color:#cce;line-height:1.7">
+        The <strong style="color:var(--gold)">OMEGA-ULTIMATE-FUSION-V∞</strong> is the
+        <em>final form</em> — a self-deploying, self-evolving, unstoppable trading system.
+        8 Autonomous Trading Agents. 32 Containers. Temporal.io Brain. 12 Chains.
+        150× YOLO. 15% Circuit Breaker. 99.999% Uptime.
+        <br /><br />
+        <strong style="color:var(--cyan)">Deploy once. Dominate forever.</strong>
+      </div>
+    </div>
+
+  </section>
+
+</div><!-- /app -->
+
+<!-- ══════ Tab Nav ══════ -->
+<nav id="tabnav">
+  <button class="active" onclick="switchTab('cmd',this)">
+    <span>🎛️</span>CMD
+  </button>
+  <button onclick="switchTab('agents',this)">
+    <span>🤖</span>AGENTS
+  </button>
+  <button onclick="switchTab('infra',this)">
+    <span>🖥️</span>INFRA
+  </button>
+  <button onclick="switchTab('federation',this)">
+    <span>🌐</span>FED
+  </button>
+  <button onclick="switchTab('legacy',this)">
+    <span>👑</span>LEGACY
+  </button>
+</nav>
+
+<script>
+/* ── Tab switching ── */
+function switchTab(id, btn) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Copy address ── */
+function copyAddr(elemId) {
+  const text = document.getElementById(elemId).textContent.trim();
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => showToast('Copied!'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    showToast('Copied!');
+  }
+}
+
+/* ── Toast ── */
+function showToast(msg) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    Object.assign(t.style, {
+      position:'fixed', bottom:'72px', left:'50%', transform:'translateX(-50%)',
+      background:'rgba(0,229,255,.9)', color:'#050a12',
+      padding:'6px 18px', borderRadius:'20px', fontSize:'.75rem',
+      fontWeight:'700', zIndex:'999', pointerEvents:'none',
+      transition:'opacity .3s'
+    });
+    document.body.appendChild(t);
+  }
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._to);
+  t._to = setTimeout(() => { t.style.opacity = '0'; }, 1500);
+}
+
+/* ── Live Clock ── */
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toUTCString().replace('GMT','UTC');
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* ── Starfield ── */
+(function() {
+  const canvas = document.getElementById('stars-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H, stars = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function mkStar() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.2 + .2,
+      speed: Math.random() * .3 + .05,
+      opacity: Math.random() * .7 + .2,
+      twinkle: Math.random() * Math.PI * 2
+    };
+  }
+
+  function init() {
+    resize();
+    stars = Array.from({ length: 180 }, mkStar);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    const t = Date.now() / 1000;
+    stars.forEach(s => {
+      s.y += s.speed;
+      if (s.y > H + 2) { s.y = -2; s.x = Math.random() * W; }
+      const alpha = s.opacity * (.6 + .4 * Math.sin(t * 1.5 + s.twinkle));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(200,230,255,${alpha})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  init();
+  draw();
+})();
+</script>
+</body>
+</html>
