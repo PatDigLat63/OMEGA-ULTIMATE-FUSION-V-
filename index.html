@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>OMEGA-ULTIMATE-FUSION-V∞</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cinzel:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:   #FFD700;
+    --cyan:   #00FFFF;
+    --green:  #00FF88;
+    --red:    #FF0040;
+    --purple: #BF00FF;
+    --bg:     #020408;
+    --panel:  #060c14;
+    --border: #1a2a3a;
+    --text:   #c8d8e8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; max-width: 460px;
+    margin: 0 auto;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── STARFIELD ── */
+  #starfield {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle var(--d, 3s) infinite alternate;
+  }
+  @keyframes twinkle {
+    from { opacity: 0.1; }
+    to   { opacity: 0.9; }
+  }
+
+  /* ── HEADER ── */
+  #header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(2,4,8,0.97);
+    border-bottom: 2px solid var(--gold);
+    padding: 10px 12px 6px;
+    text-align: center;
+  }
+  #header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 15px; font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 12px var(--gold);
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+  #header .sub {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    color: var(--cyan);
+    letter-spacing: 2px;
+    margin-top: 2px;
+    text-shadow: 0 0 8px var(--cyan);
+  }
+  #clock {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--green);
+    margin-top: 4px;
+    text-shadow: 0 0 6px var(--green);
+  }
+
+  /* ── TABS ── */
+  #tab-bar {
+    display: flex;
+    position: sticky; top: 74px; z-index: 99;
+    background: rgba(2,4,8,0.97);
+    border-bottom: 1px solid var(--border);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 8px 0;
+    background: transparent;
+    border: none; border-bottom: 3px solid transparent;
+    color: #556; font-family: 'Orbitron', sans-serif;
+    font-size: 9px; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    text-shadow: 0 0 8px var(--gold);
+  }
+  .tab-btn:hover { color: var(--cyan); }
+
+  /* ── CONTENT ── */
+  #content {
+    position: relative; z-index: 1;
+    padding: 12px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .gold { color: var(--gold); text-shadow: 0 0 8px var(--gold); }
+  .cyan { color: var(--cyan); text-shadow: 0 0 8px var(--cyan); }
+  .green { color: var(--green); text-shadow: 0 0 6px var(--green); }
+  .red { color: var(--red); text-shadow: 0 0 6px var(--red); }
+  .purple { color: var(--purple); text-shadow: 0 0 8px var(--purple); }
+
+  /* ── METRICS GRID ── */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .metric-box {
+    background: rgba(255,215,0,0.04);
+    border: 1px solid rgba(255,215,0,0.2);
+    border-radius: 6px;
+    padding: 8px;
+    text-align: center;
+  }
+  .metric-box .val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+  }
+  .metric-box .lbl {
+    font-size: 9px; color: #668; margin-top: 2px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+
+  /* ── 666 ARMS ANIMATION ── */
+  #arms-container {
+    text-align: center;
+    padding: 10px 0;
+    margin-bottom: 10px;
+  }
+  #arms-ring {
+    display: inline-block;
+    width: 90px; height: 90px;
+    border: 3px solid var(--red);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--red), inset 0 0 20px rgba(255,0,64,0.2);
+    animation: ring-pulse 1.5s infinite;
+    position: relative;
+  }
+  @keyframes ring-pulse {
+    0%,100% { box-shadow: 0 0 20px var(--red), inset 0 0 20px rgba(255,0,64,0.2); }
+    50%      { box-shadow: 0 0 40px var(--red), inset 0 0 30px rgba(255,0,64,0.4); }
+  }
+  #arms-number {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px; font-weight: 900;
+    color: var(--red);
+    text-shadow: 0 0 15px var(--red);
+    animation: count-up 4s ease-out forwards;
+  }
+  @keyframes count-up {
+    from { content: "0"; }
+  }
+  #arms-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px; letter-spacing: 2px;
+    color: var(--red); margin-top: 6px;
+    text-shadow: 0 0 8px var(--red);
+  }
+  .arm-line {
+    position: absolute;
+    width: 2px; height: 38px;
+    background: linear-gradient(to top, transparent, var(--red));
+    transform-origin: bottom center;
+    left: 50%; bottom: 50%;
+    margin-left: -1px;
+    opacity: 0.7;
+  }
+
+  /* ── TARGET BAR ── */
+  .target-row {
+    display: flex; align-items: center;
+    gap: 8px; margin-bottom: 8px;
+  }
+  .target-label { font-size: 11px; white-space: nowrap; }
+  .progress-track {
+    flex: 1; height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    box-shadow: 0 0 8px var(--green);
+    transition: width 1s ease;
+  }
+  .target-val { font-size: 11px; color: var(--green); white-space: nowrap; }
+
+  /* ── COMMAND LOG ── */
+  #cmd-log {
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(0,255,136,0.2);
+    border-radius: 6px;
+    height: 140px; overflow-y: auto;
+    padding: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--green) transparent;
+  }
+  #cmd-log::-webkit-scrollbar { width: 4px; }
+  #cmd-log::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+  .log-entry { margin-bottom: 3px; }
+  .log-ts { color: #446; margin-right: 6px; }
+  .log-sys { color: var(--green); }
+  .log-warn { color: var(--gold); }
+  .log-err { color: var(--red); }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex; gap: 8px;
+    flex-wrap: wrap; margin-top: 10px;
+  }
+  .btn {
+    flex: 1; min-width: 80px;
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: 1px solid;
+    background: transparent;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px; font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .btn-gold  { border-color: var(--gold);   color: var(--gold); }
+  .btn-cyan  { border-color: var(--cyan);   color: var(--cyan); }
+  .btn-green { border-color: var(--green);  color: var(--green); }
+  .btn-red   { border-color: var(--red);    color: var(--red); }
+  .btn:hover {
+    background: rgba(255,255,255,0.07);
+    transform: translateY(-1px);
+  }
+  .btn:active { transform: scale(0.96); }
+
+  /* ── WALLET CARD ── */
+  .wallet-card {
+    background: rgba(255,215,0,0.03);
+    border: 1px solid rgba(255,215,0,0.25);
+    border-radius: 8px;
+    padding: 10px; margin-bottom: 10px;
+  }
+  .wallet-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--gold); margin-bottom: 4px;
+  }
+  .wallet-addr {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--cyan);
+    word-break: break-all; margin-bottom: 6px;
+    text-shadow: 0 0 4px var(--cyan);
+  }
+  .copy-btn {
+    background: rgba(0,255,255,0.1);
+    border: 1px solid var(--cyan);
+    border-radius: 4px;
+    color: var(--cyan);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px; padding: 4px 8px;
+    cursor: pointer; transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+  .copy-btn:hover { background: rgba(0,255,255,0.25); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green); background: rgba(0,255,136,0.1); }
+
+  /* ── EMERGENCY WALLETS ── */
+  .emg-card {
+    background: rgba(255,0,64,0.04);
+    border: 1px solid rgba(255,0,64,0.3);
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .emg-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px; color: var(--red);
+    letter-spacing: 2px; margin-bottom: 8px;
+    text-shadow: 0 0 8px var(--red);
+  }
+
+  /* ── INFRA ── */
+  .infra-row {
+    display: flex; justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  .infra-row:last-child { border-bottom: none; }
+  .infra-key { font-size: 10px; color: #668; }
+  .infra-val { font-size: 10px; color: var(--cyan); text-align: right; }
+
+  /* ── HEALTH BARS ── */
+  .health-item { margin-bottom: 8px; }
+  .health-header {
+    display: flex; justify-content: space-between;
+    font-size: 10px; margin-bottom: 3px;
+  }
+  .health-bar {
+    height: 6px; background: rgba(255,255,255,0.06);
+    border-radius: 3px; overflow: hidden;
+  }
+  .health-fill {
+    height: 100%; border-radius: 3px;
+    transition: width 1.5s ease;
+  }
+  .hf-green { background: linear-gradient(90deg, var(--green), #00ccaa); box-shadow: 0 0 6px var(--green); }
+  .hf-cyan  { background: linear-gradient(90deg, var(--cyan),  #0088ff); box-shadow: 0 0 6px var(--cyan); }
+  .hf-gold  { background: linear-gradient(90deg, var(--gold),  #ffaa00); box-shadow: 0 0 6px var(--gold); }
+  .hf-purple{ background: linear-gradient(90deg, var(--purple),#8800ff); box-shadow: 0 0 6px var(--purple); }
+
+  /* ── FEDERATION GRID ── */
+  .fed-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .agent-card {
+    background: rgba(191,0,255,0.05);
+    border: 1px solid rgba(191,0,255,0.3);
+    border-radius: 8px; padding: 10px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .agent-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    animation: scan 2s infinite;
+  }
+  @keyframes scan {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .agent-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px; font-weight: 700;
+    color: var(--cyan); letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .agent-badge {
+    display: inline-block;
+    background: rgba(0,255,136,0.15);
+    border: 1px solid var(--green);
+    border-radius: 3px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 7px; padding: 2px 5px;
+    color: var(--green); letter-spacing: 1px;
+    animation: blink 2s infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity: 1; }
+    50%      { opacity: 0.5; }
+  }
+  .agent-icon {
+    font-size: 22px; margin-bottom: 4px;
+    filter: drop-shadow(0 0 6px var(--purple));
+  }
+
+  /* ── TOKEN CARD ── */
+  .token-card {
+    background: rgba(255,215,0,0.04);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 8px; padding: 12px;
+    text-align: center; margin-top: 8px;
+  }
+  .token-symbol {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px; font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 20px var(--gold);
+    letter-spacing: 3px;
+  }
+  .token-name {
+    font-size: 10px; color: var(--cyan);
+    letter-spacing: 2px; margin-top: 2px;
+  }
+  .btc-rune {
+    background: rgba(255,165,0,0.1);
+    border: 1px solid orange;
+    border-radius: 6px; padding: 8px;
+    margin-top: 8px;
+    font-size: 11px; color: orange;
+    text-align: center;
+  }
+
+  /* ── LEGACY ── */
+  .legacy-hero {
+    text-align: center; padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  .legacy-name {
+    font-family: 'Cinzel', serif;
+    font-size: 16px; font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 15px var(--gold);
+  }
+  .legacy-aka {
+    font-size: 10px; color: var(--cyan);
+    letter-spacing: 2px; margin-top: 3px;
+  }
+  .heritage-row {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    justify-content: center; margin: 8px 0;
+  }
+  .heritage-badge {
+    background: rgba(255,215,0,0.08);
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 4px; padding: 3px 8px;
+    font-size: 10px; color: var(--gold);
+  }
+  .family-card {
+    background: rgba(191,0,255,0.04);
+    border: 1px solid rgba(191,0,255,0.2);
+    border-radius: 8px; padding: 10px;
+    margin-bottom: 8px;
+  }
+  .family-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 9px; color: var(--purple);
+    letter-spacing: 2px; margin-bottom: 6px;
+  }
+  .family-member {
+    font-size: 11px; margin-bottom: 4px;
+    padding-left: 10px;
+  }
+  .daughters-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px; margin-top: 4px;
+  }
+  .daughter-chip {
+    background: rgba(0,255,255,0.06);
+    border: 1px solid rgba(0,255,255,0.2);
+    border-radius: 4px; padding: 5px 8px;
+    font-size: 11px; color: var(--cyan);
+    text-align: center;
+  }
+  .dynasty-creed {
+    background: linear-gradient(135deg, rgba(255,215,0,0.06), rgba(0,255,255,0.04));
+    border: 1px solid rgba(255,215,0,0.3);
+    border-radius: 8px; padding: 12px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .creed-line {
+    font-family: 'Cinzel', serif;
+    font-size: 9px; letter-spacing: 2px;
+    color: var(--gold); margin-bottom: 6px;
+    text-shadow: 0 0 6px rgba(255,215,0,0.5);
+  }
+  .creed-swahili {
+    font-family: 'Cinzel', serif;
+    font-size: 11px; font-weight: 700;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan);
+    letter-spacing: 1px;
+  }
+  .final-form {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 8px; color: var(--purple);
+    letter-spacing: 3px; margin-top: 8px;
+    text-shadow: 0 0 8px var(--purple);
+    text-transform: uppercase;
+  }
+
+  /* ── STATUS DOT ── */
+  .status-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+    animation: pulse-dot 1.5s infinite;
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; box-shadow: 0 0 6px var(--green); }
+    50%      { opacity: 0.5; box-shadow: 0 0 12px var(--green); }
+  }
+
+  /* ── GLOW DIVIDER ── */
+  .glow-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 10px 0;
+    opacity: 0.4;
+  }
+
+  /* ── FOOTER ── */
+  #footer {
+    position: relative; z-index: 1;
+    text-align: center; padding: 14px 12px;
+    border-top: 1px solid var(--border);
+    font-family: 'Cinzel', serif;
+    font-size: 8px; letter-spacing: 2px;
+    color: rgba(255,215,0,0.4);
+  }
+</style>
+</head>
+<body>
+
+<!-- STARFIELD -->
+<div id="starfield"></div>
+
+<!-- HEADER -->
+<div id="header">
+  <h1>⚡ OMEGA-ULTIMATE-FUSION-V∞ ⚡</h1>
+  <div class="sub">BROTHERHOOD OMEGA DYNASTY · THE FINAL FORM</div>
+  <div id="clock">⏱ --:--:-- UTC</div>
+</div>
+
+<!-- TAB BAR -->
+<div id="tab-bar">
+  <button class="tab-btn active" data-tab="cmd">CMD</button>
+  <button class="tab-btn" data-tab="agents">AGENTS</button>
+  <button class="tab-btn" data-tab="infra">INFRA</button>
+  <button class="tab-btn" data-tab="federation">FED</button>
+  <button class="tab-btn" data-tab="legacy">LEGACY</button>
+</div>
+
+<!-- CONTENT -->
+<div id="content">
+
+  <!-- ══════════════ CMD TAB ══════════════ -->
+  <div class="tab-panel active" id="tab-cmd">
+
+    <!-- Demon Profit Extractor -->
+    <div class="card">
+      <div class="card-title gold">⚙ DEMON PROFIT EXTRACTOR</div>
+
+      <div id="arms-container">
+        <div id="arms-ring">
+          <div id="arms-number">666</div>
+        </div>
+        <div id="arms-label">ARMS DEPLOYED</div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="val" id="m-profit">£0.00</div>
+          <div class="lbl">Today Profit <span style="font-size:7px;color:#446;">(DEMO)</span></div>
+        </div>
+        <div class="metric-box">
+          <div class="val" id="m-trades">0</div>
+          <div class="lbl">Trades</div>
+        </div>
+        <div class="metric-box">
+          <div class="val" id="m-win">0%</div>
+          <div class="lbl">Win Rate <span style="font-size:7px;color:#446;">(DEMO)</span></div>
+        </div>
+        <div class="metric-box">
+          <div class="val" id="m-chains">12</div>
+          <div class="lbl">Chains Live</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Financial Escape Target -->
+    <div class="card">
+      <div class="card-title cyan">🎯 FINANCIAL ESCAPE TARGET</div>
+      <div style="font-size:11px;color:#668;margin-bottom:10px;">Daily target to achieve financial freedom</div>
+
+      <div class="target-row">
+        <div class="target-label gold">£16.67/day</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="target-bar" style="width:0%"></div>
+        </div>
+        <div class="target-val" id="target-pct">0%</div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="val gold" style="font-size:13px;">£16.67</div>
+          <div class="lbl">Daily Target</div>
+        </div>
+        <div class="metric-box">
+          <div class="val green" style="font-size:13px;">£500/mo</div>
+          <div class="lbl">Monthly</div>
+        </div>
+        <div class="metric-box">
+          <div class="val cyan" style="font-size:13px;">£6,083</div>
+          <div class="lbl">Annual</div>
+        </div>
+        <div class="metric-box">
+          <div class="val purple" style="font-size:13px;">150X</div>
+          <div class="lbl">YOLO Max</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Command Log -->
+    <div class="card">
+      <div class="card-title green">
+        <span class="status-dot"></span>COMMAND LOG
+      </div>
+      <div id="cmd-log"></div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button class="btn btn-gold" onclick="addLog('SYSTEM','EXTRACT mode activated','sys')">▶ EXTRACT</button>
+        <button class="btn btn-cyan" onclick="addLog('BOT','Scanning all 12 chains…','sys')">⊕ SCAN</button>
+        <button class="btn btn-green" onclick="addLog('PROFIT','Harvesting gains…','sys')">$ HARVEST</button>
+        <button class="btn btn-red" onclick="addLog('ALERT','CIRCUIT BREAKER armed at 15%','err')">⛔ STOP</button>
+      </div>
+    </div>
+
+  </div><!-- /cmd -->
+
+
+  <!-- ══════════════ AGENTS TAB ══════════════ -->
+  <div class="tab-panel" id="tab-agents">
+
+    <div class="card">
+      <div class="card-title gold">👛 AGENT WALLETS</div>
+
+      <div class="wallet-card">
+        <div class="wallet-name">🎵 DJ (GJ8d…fhe8)</div>
+        <div class="wallet-addr" id="addr-dj">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+        <button class="copy-btn" onclick="copyWallet('addr-dj',this)">⎘ COPY ADDRESS</button>
+      </div>
+
+      <div class="wallet-card">
+        <div class="wallet-name">🔱 HASHIM (JCYTo…Q28e)</div>
+        <div class="wallet-addr" id="addr-hashim">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</div>
+        <button class="copy-btn" onclick="copyWallet('addr-hashim',this)">⎘ COPY ADDRESS</button>
+      </div>
+
+      <div class="wallet-card">
+        <div class="wallet-name">💼 BOSSMAN (FodX…wLwF)</div>
+        <div class="wallet-addr" id="addr-bossman">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</div>
+        <button class="copy-btn" onclick="copyWallet('addr-bossman',this)">⎘ COPY ADDRESS</button>
+      </div>
+
+      <div class="wallet-card">
+        <div class="wallet-name">⚡ PATRICK (GJ8d…fhe8)</div>
+        <div class="wallet-addr" id="addr-patrick">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+        <button class="copy-btn" onclick="copyWallet('addr-patrick',this)">⎘ COPY ADDRESS</button>
+        <div style="font-size:9px;color:#556;margin-top:4px;">⚠ Shared address with DJ wallet</div>
+      </div>
+    </div>
+
+    <div class="emg-card">
+      <div class="emg-title">⚠ EMERGENCY WALLETS</div>
+
+      <div class="wallet-card" style="background:rgba(255,0,64,0.04);border-color:rgba(255,0,64,0.25);">
+        <div class="wallet-name" style="color:var(--red);">🆘 EMERGENCY-1 (6q7w…de1)</div>
+        <div class="wallet-addr" id="addr-emg1">6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1</div>
+        <button class="copy-btn" onclick="copyWallet('addr-emg1',this)">⎘ COPY ADDRESS</button>
+      </div>
+
+      <div class="wallet-card" style="background:rgba(255,0,64,0.04);border-color:rgba(255,0,64,0.25);">
+        <div class="wallet-name" style="color:var(--red);">🆘 EMERGENCY-2 (EcxN…3xy)</div>
+        <div class="wallet-addr" id="addr-emg2">EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy</div>
+        <button class="copy-btn" onclick="copyWallet('addr-emg2',this)">⎘ COPY ADDRESS</button>
+      </div>
+    </div>
+
+  </div><!-- /agents -->
+
+
+  <!-- ══════════════ INFRA TAB ══════════════ -->
+  <div class="tab-panel" id="tab-infra">
+
+    <div class="card">
+      <div class="card-title cyan">🖥 INFRASTRUCTURE</div>
+
+      <div class="infra-row">
+        <div class="infra-key">Server IP</div>
+        <div class="infra-val">206.189.118.255</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Domain</div>
+        <div class="infra-val">brotherhoodomegadynasty.com</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">GitHub</div>
+        <div class="infra-val">PatDigLat63</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Containers</div>
+        <div class="infra-val">32 Docker</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Brain</div>
+        <div class="infra-val">Temporal.io</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Chains</div>
+        <div class="infra-val">12 Active</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Agents</div>
+        <div class="infra-val">8 Autonomous</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Uptime SLA</div>
+        <div class="infra-val green">99.999%</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title green">📊 SYSTEM HEALTH</div>
+
+      <div class="health-item">
+        <div class="health-header">
+          <span>CPU Load</span><span class="green" id="h-cpu">72%</span>
+        </div>
+        <div class="health-bar"><div class="health-fill hf-green" id="hb-cpu" style="width:0%"></div></div>
+      </div>
+
+      <div class="health-item">
+        <div class="health-header">
+          <span>Memory</span><span class="cyan" id="h-mem">61%</span>
+        </div>
+        <div class="health-bar"><div class="health-fill hf-cyan" id="hb-mem" style="width:0%"></div></div>
+      </div>
+
+      <div class="health-item">
+        <div class="health-header">
+          <span>Network</span><span class="gold" id="h-net">88%</span>
+        </div>
+        <div class="health-bar"><div class="health-fill hf-gold" id="hb-net" style="width:0%"></div></div>
+      </div>
+
+      <div class="health-item">
+        <div class="health-header">
+          <span>Storage</span><span class="purple" id="h-stor">44%</span>
+        </div>
+        <div class="health-bar"><div class="health-fill hf-purple" id="hb-stor" style="width:0%"></div></div>
+      </div>
+
+      <div class="glow-divider"></div>
+
+      <div class="infra-row">
+        <div class="infra-key">Docker Engine</div>
+        <div class="infra-val"><span class="status-dot"></span>RUNNING</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Temporal.io</div>
+        <div class="infra-val"><span class="status-dot"></span>RUNNING</div>
+      </div>
+      <div class="infra-row">
+        <div class="infra-key">Circuit Breaker</div>
+        <div class="infra-val gold">15% ARMED</div>
+      </div>
+    </div>
+
+  </div><!-- /infra -->
+
+
+  <!-- ══════════════ FEDERATION TAB ══════════════ -->
+  <div class="tab-panel" id="tab-federation">
+
+    <div class="card">
+      <div class="card-title purple">🌐 SWARM FEDERATION GRID</div>
+
+      <div class="fed-grid">
+        <div class="agent-card">
+          <div class="agent-icon">🤖</div>
+          <div class="agent-name">CLAUDE</div>
+          <div class="agent-badge">ACTIVE</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">🧠</div>
+          <div class="agent-name">DEEP SEEKER</div>
+          <div class="agent-badge">ACTIVE</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">⚡</div>
+          <div class="agent-name">META AI</div>
+          <div class="agent-badge">ACTIVE</div>
+        </div>
+        <div class="agent-card">
+          <div class="agent-icon">🚀</div>
+          <div class="agent-name">AGENTHUSTLE</div>
+          <div class="agent-badge">ACTIVE</div>
+        </div>
+      </div>
+
+      <div class="glow-divider"></div>
+
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <div class="val purple">4</div>
+          <div class="lbl">AI Agents</div>
+        </div>
+        <div class="metric-box">
+          <div class="val cyan">8</div>
+          <div class="lbl">Total Agents</div>
+        </div>
+        <div class="metric-box">
+          <div class="val green">100%</div>
+          <div class="lbl">Uptime</div>
+        </div>
+        <div class="metric-box">
+          <div class="val gold">∞</div>
+          <div class="lbl">Capacity</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- $PAT Token -->
+    <div class="token-card">
+      <div class="token-symbol">$PAT</div>
+      <div class="token-name">BROTHERHOOD OMEGA TOKEN</div>
+      <div class="glow-divider"></div>
+      <div style="font-size:10px;color:#668;margin-top:6px;">Solana SPL · Brotherhood Governance</div>
+      <div class="btn-row" style="margin-top:8px;">
+        <button class="btn btn-gold">↗ BUY</button>
+        <button class="btn btn-purple" style="border-color:var(--purple);color:var(--purple);">⊕ STAKE</button>
+      </div>
+    </div>
+
+    <!-- Bitcoin Runes -->
+    <div class="btc-rune">
+      ₿ BITCOIN RUNES PROTOCOL
+      <br><span style="font-size:9px;color:#aaa;letter-spacing:1px;">Brotherhood Omega Dynasty Runes · BTC Layer</span>
+    </div>
+
+  </div><!-- /federation -->
+
+
+  <!-- ══════════════ LEGACY TAB ══════════════ -->
+  <div class="tab-panel" id="tab-legacy">
+
+    <div class="card">
+      <div class="legacy-hero">
+        <div class="legacy-name">Patrick La Touche</div>
+        <div class="legacy-aka">DJ SHARPSHOOTER</div>
+        <div class="heritage-row">
+          <div class="heritage-badge">🇹🇿 TANZANIAN</div>
+          <div class="heritage-badge">🇮🇪 IRISH</div>
+          <div class="heritage-badge">🇬🇧 BRITISH</div>
+        </div>
+      </div>
+
+      <div class="family-card">
+        <div class="family-title">✝ IN LOVING MEMORY</div>
+        <div class="family-member" style="color:var(--gold);">♔ James La Touche ✝</div>
+        <div class="family-member" style="color:var(--gold);">♕ Annette La Touche ✝</div>
+      </div>
+
+      <div class="family-card">
+        <div class="family-title">👑 DAUGHTERS</div>
+        <div class="daughters-grid">
+          <div class="daughter-chip">✨ Zarina</div>
+          <div class="daughter-chip">✨ Aisha</div>
+          <div class="daughter-chip">✨ Shakiya</div>
+          <div class="daughter-chip">✨ Obina</div>
+        </div>
+      </div>
+
+      <div class="family-card">
+        <div class="family-title">🍽 DYNASTY BUSINESS</div>
+        <div class="family-member" style="color:var(--cyan);">M'Tanga Restaurant</div>
+        <div class="family-member" style="font-size:10px;color:#668;">Brotherhood Omega · Heritage Cuisine</div>
+      </div>
+    </div>
+
+    <div class="dynasty-creed">
+      <div class="creed-swahili">CHUKUA KONTROLI YOTE</div>
+      <div class="creed-line" style="font-size:10px;margin-top:4px;">Take Total Control</div>
+      <div class="glow-divider"></div>
+      <div class="creed-line">FEARLESS • FOCUSED • NO REGRETS</div>
+      <div class="creed-line">WALK WHERE ANGELS FEAR</div>
+      <div class="glow-divider"></div>
+      <div class="final-form">THE FINAL FORM — NO VERSION BEYOND THIS</div>
+    </div>
+
+  </div><!-- /legacy -->
+
+</div><!-- /content -->
+
+<div id="footer">
+  OMEGA-ULTIMATE-FUSION-V∞ · BROTHERHOOD OMEGA DYNASTY · DEPLOY ONCE · DOMINATE FOREVER
+</div>
+
+<script>
+// ── STARFIELD ──
+(function(){
+  const sf = document.getElementById('starfield');
+  for (let i = 0; i < 120; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top  = Math.random() * 100 + '%';
+    s.style.setProperty('--d', (1.5 + Math.random() * 4) + 's');
+    s.style.animationDelay = (Math.random() * 4) + 's';
+    s.style.width = s.style.height = (Math.random() > 0.8 ? 3 : 2) + 'px';
+    sf.appendChild(s);
+  }
+})();
+
+// ── ARMS RING ──
+(function(){
+  const ring = document.getElementById('arms-ring');
+  const NUM = 12;
+  for (let i = 0; i < NUM; i++) {
+    const arm = document.createElement('div');
+    arm.className = 'arm-line';
+    arm.style.transform = `rotate(${(360/NUM)*i}deg)`;
+    arm.style.animationDelay = (i * 0.1) + 's';
+    ring.appendChild(arm);
+  }
+})();
+
+// ── LIVE CLOCK ──
+function updateClock() {
+  const now = new Date();
+  const p = n => String(n).padStart(2,'0');
+  document.getElementById('clock').textContent =
+    '⏱ ' + p(now.getUTCHours()) + ':' + p(now.getUTCMinutes()) + ':' + p(now.getUTCSeconds()) + ' UTC';
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+// ── TABS ──
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    this.classList.add('active');
+    const panel = document.getElementById('tab-' + this.dataset.tab);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+// ── COPY WALLET ──
+function copyWallet(id, btn) {
+  const addr = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(addr).then(() => {
+    btn.textContent = '✔ COPIED!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '⎘ COPY ADDRESS';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // Clipboard API unavailable (non-HTTPS) — prompt manual copy
+    btn.textContent = '⚠ MANUAL COPY';
+    btn.style.borderColor = 'var(--gold)';
+    btn.style.color = 'var(--gold)';
+    prompt('Copy this address:', addr);
+    setTimeout(() => {
+      btn.textContent = '⎘ COPY ADDRESS';
+      btn.style.borderColor = '';
+      btn.style.color = '';
+    }, 2000);
+  });
+}
+
+// ── COMMAND LOG ──
+const LOG_MESSAGES = [
+  ['BOOT',   'OMEGA-ULTIMATE-FUSION-V∞ initializing…',   'sys'],
+  ['CHAIN',  'Connecting to 12 blockchain networks…',      'sys'],
+  ['AGENT',  'DJ agent online — wallet verified',          'sys'],
+  ['AGENT',  'HASHIM agent online — wallet verified',      'sys'],
+  ['AGENT',  'BOSSMAN agent online — wallet verified',     'sys'],
+  ['AGENT',  'PATRICK agent online — wallet verified',     'sys'],
+  ['SWARM',  'Claude · DeepSeeker · MetaAI · Agenthustle online', 'sys'],
+  ['EXTRACT','Demon Profit Extractor armed — 666 arms',   'warn'],
+  ['TARGET', 'Financial escape target: £16.67/day',        'sys'],
+  ['YOLO',   'Max leverage 150X — circuit breaker 15%',   'warn'],
+  ['TRADE',  'Scanning alpha across all chains…',          'sys'],
+  ['PROFIT', 'Harvesting micro-profits…',                  'sys'],
+  ['UPTIME', 'SLA target: 99.999% — Temporal.io brain active', 'sys'],
+  ['TOKEN',  '$PAT token governance module loaded',        'sys'],
+  ['RUNE',   'Bitcoin Runes protocol connected',           'sys'],
+  ['STATUS', 'All systems nominal — DOMINATING',           'sys'],
+];
+
+let logIdx = 0;
+const logEl = document.getElementById('cmd-log');
+
+function addLog(tag, msg, type) {
+  const now = new Date();
+  const ts = String(now.getUTCHours()).padStart(2,'0') + ':' +
+             String(now.getUTCMinutes()).padStart(2,'0') + ':' +
+             String(now.getUTCSeconds()).padStart(2,'0');
+  const entry = document.createElement('div');
+  entry.className = 'log-entry';
+  const cls = type === 'err' ? 'log-err' : type === 'warn' ? 'log-warn' : 'log-sys';
+  entry.innerHTML = `<span class="log-ts">${ts}</span><span class="log-sys">[${tag}]</span> <span class="${cls}">${msg}</span>`;
+  logEl.appendChild(entry);
+  logEl.scrollTop = logEl.scrollHeight;
+  if (logEl.children.length > 60) logEl.removeChild(logEl.firstChild);
+}
+
+// Boot messages with stagger
+(function bootLog() {
+  let i = 0;
+  function next() {
+    if (i < LOG_MESSAGES.length) {
+      const [tag, msg, type] = LOG_MESSAGES[i++];
+      addLog(tag, msg, type);
+      setTimeout(next, 400 + Math.random() * 600);
+    }
+  }
+  setTimeout(next, 600);
+})();
+
+// Continuous random log
+setInterval(() => {
+  const msgs = [
+    ['SCAN',   'New opportunity detected on SOL/BTC',      'sys'],
+    ['TRADE',  'Position opened — 0.0042 SOL',             'sys'],
+    ['PROFIT', '£' + (Math.random()*2).toFixed(2) + ' extracted', 'sys'],
+    ['ALERT',  'Volatility spike — adjusting…',            'warn'],
+    ['CHAIN',  'ETH block ' + (18000000 + Math.floor(Math.random()*9999)), 'sys'],
+    ['AGENT',  'HASHIM executing arb route',               'sys'],
+    ['YOLO',   'Leverage check — within limits',           'sys'],
+    ['BOT',    'Win rate holding above 70%',               'sys'],
+  ];
+  const [tag, msg, type] = msgs[Math.floor(Math.random() * msgs.length)];
+  addLog(tag, msg, type);
+}, 3500);
+
+// ── LIVE METRICS ──
+let profit = 0, trades = 0, winRate = 67;
+function updateMetrics() {
+  const gain = Math.random() * 0.8;
+  profit += gain;
+  trades += Math.random() > 0.7 ? 1 : 0;
+  winRate = 65 + Math.random() * 20;
+
+  document.getElementById('m-profit').textContent = '£' + profit.toFixed(2);
+  document.getElementById('m-trades').textContent = trades;
+  document.getElementById('m-win').textContent = winRate.toFixed(0) + '%';
+
+  const pct = Math.min((profit / 16.67) * 100, 100);
+  document.getElementById('target-bar').style.width = pct + '%';
+  document.getElementById('target-pct').textContent = pct.toFixed(0) + '%';
+}
+setInterval(updateMetrics, 2000);
+
+// ── HEALTH BARS ANIMATE IN ──
+setTimeout(() => {
+  document.getElementById('hb-cpu').style.width  = '72%';
+  document.getElementById('hb-mem').style.width  = '61%';
+  document.getElementById('hb-net').style.width  = '88%';
+  document.getElementById('hb-stor').style.width = '44%';
+}, 500);
+
+// Fluctuate health bars
+setInterval(() => {
+  const cpu  = 65 + Math.random() * 20;
+  const mem  = 55 + Math.random() * 15;
+  const net  = 80 + Math.random() * 18;
+  const stor = 40 + Math.random() * 10;
+  document.getElementById('hb-cpu').style.width  = cpu  + '%';
+  document.getElementById('hb-mem').style.width  = mem  + '%';
+  document.getElementById('hb-net').style.width  = net  + '%';
+  document.getElementById('hb-stor').style.width = stor + '%';
+  document.getElementById('h-cpu').textContent   = cpu.toFixed(0)  + '%';
+  document.getElementById('h-mem').textContent   = mem.toFixed(0)  + '%';
+  document.getElementById('h-net').textContent   = net.toFixed(0)  + '%';
+  document.getElementById('h-stor').textContent  = stor.toFixed(0) + '%';
+}, 4000);
+</script>
+</body>
+</html>
