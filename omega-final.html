@@ -1,10 +1,856 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Omega Final</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="OMEGA-ULTIMATE-FUSION-V∞ — THE FINAL FORM. 8 Autonomous Trading Agents · 32 Containers · Temporal.io Brain · 12 Chains · 150X YOLO · 15% Circuit Breaker · 99.999% Uptime. The complete self-deploying, self-evolving, unstoppable trading system for the Brotherhood Omega Dynasty." />
+  <title>OMEGA-ULTIMATE-FUSION-V∞ | THE FINAL FORM</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #050a0f;
+      --panel: rgba(0, 255, 170, 0.04);
+      --border: rgba(0, 255, 170, 0.25);
+      --accent: #00ffaa;
+      --accent2: #00ccff;
+      --accent3: #ff6b00;
+      --text: #c8ffe8;
+      --muted: #5a8a70;
+      --danger: #ff4444;
+      --warning: #ffaa00;
+      --success: #00ff88;
+      --font: 'Courier New', Courier, monospace;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 13px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── Starfield ── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Layout ── */
+    #app {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 12px 40px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 24px 12px 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: clamp(20px, 4vw, 32px);
+      font-weight: bold;
+      color: var(--accent);
+      text-shadow: 0 0 18px var(--accent), 0 0 40px rgba(0,255,170,0.4);
+      letter-spacing: 2px;
+    }
+
+    .tagline {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 6px;
+      letter-spacing: 1px;
+    }
+
+    #clock {
+      font-size: clamp(13px, 2.5vw, 18px);
+      color: var(--accent2);
+      margin-top: 8px;
+      text-shadow: 0 0 10px var(--accent2);
+      letter-spacing: 2px;
+    }
+
+    .status-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .badge {
+      padding: 3px 10px;
+      border-radius: 3px;
+      font-size: 10px;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    .badge-green  { background: rgba(0,255,136,0.12); border: 1px solid var(--success); color: var(--success); }
+    .badge-blue   { background: rgba(0,204,255,0.12); border: 1px solid var(--accent2); color: var(--accent2); }
+    .badge-orange { background: rgba(255,107,0,0.12); border: 1px solid var(--accent3); color: var(--accent3); }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      flex: 1 1 auto;
+      min-width: 80px;
+      padding: 9px 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--font);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .tab-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(0,255,170,0.08);
+    }
+    .tab-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(0,255,170,0.12);
+      text-shadow: 0 0 8px var(--accent);
+      box-shadow: 0 0 12px rgba(0,255,170,0.2);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── Panel ── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title {
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      text-shadow: 0 0 8px var(--accent);
+    }
+
+    /* ── Grid ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+
+    /* ── Wallet Card ── */
+    .wallet-card {
+      background: rgba(0,255,170,0.04);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .wallet-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 16px rgba(0,255,170,0.15);
+    }
+    .wallet-name {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+    .wallet-role {
+      color: var(--muted);
+      font-size: 10px;
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .wallet-addr {
+      color: var(--accent2);
+      font-size: 9px;
+      word-break: break-all;
+      background: rgba(0,204,255,0.06);
+      border: 1px solid rgba(0,204,255,0.2);
+      padding: 6px 8px;
+      border-radius: 3px;
+      letter-spacing: 0.5px;
+    }
+    .wallet-status {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      margin-right: 5px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── Stat row ── */
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(0,255,170,0.07);
+    }
+    .stat-row:last-child { border-bottom: none; }
+    .stat-label { color: var(--muted); font-size: 11px; letter-spacing: 1px; }
+    .stat-value { color: var(--text); font-size: 11px; text-align: right; }
+    .stat-value.green { color: var(--success); }
+    .stat-value.blue  { color: var(--accent2); }
+    .stat-value.orange{ color: var(--accent3); }
+    .stat-value.red   { color: var(--danger); }
+
+    /* ── Terminal ── */
+    .terminal {
+      background: #020c06;
+      border: 1px solid rgba(0,255,170,0.3);
+      border-radius: 4px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.7;
+      min-height: 220px;
+      overflow-y: auto;
+      max-height: 400px;
+    }
+    .terminal .line { color: var(--muted); }
+    .terminal .line .prompt { color: var(--accent); }
+    .terminal .line .out { color: var(--text); }
+    .terminal .line .ok  { color: var(--success); }
+    .terminal .line .err { color: var(--danger); }
+    .terminal .line .warn{ color: var(--warning); }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 13px;
+      background: var(--accent);
+      animation: blink 1s step-end infinite;
+      vertical-align: middle;
+      margin-left: 2px;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Progress bar ── */
+    .progress-wrap { margin: 6px 0; }
+    .progress-label { display: flex; justify-content: space-between; margin-bottom: 3px; font-size: 10px; }
+    .progress-bar {
+      height: 6px;
+      background: rgba(0,255,170,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 1s;
+    }
+
+    /* ── Key/Value table ── */
+    .kv-table { width: 100%; border-collapse: collapse; }
+    .kv-table td {
+      padding: 5px 8px;
+      font-size: 11px;
+      border-bottom: 1px solid rgba(0,255,170,0.06);
+      vertical-align: top;
+    }
+    .kv-table td:first-child { color: var(--muted); width: 38%; white-space: nowrap; }
+    .kv-table td:last-child  { color: var(--text); word-break: break-all; }
+    .kv-table tr:last-child td { border-bottom: none; }
+
+    /* ── Chain badge ── */
+    .chain-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chain-item {
+      padding: 5px 12px;
+      border-radius: 3px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      background: rgba(0,204,255,0.08);
+      border: 1px solid rgba(0,204,255,0.3);
+      color: var(--accent2);
+    }
+    .chain-item.active { border-color: var(--success); color: var(--success); background: rgba(0,255,136,0.06); }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #020c06; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .panel { padding: 12px 10px; }
+      .tab-btn { font-size: 10px; padding: 8px 8px; letter-spacing: 1px; }
+      .wallet-addr { font-size: 8px; }
+    }
+  </style>
 </head>
 <body>
-    <h1>Current Date and Time (UTC)</h1>
-    <p>2026-03-19 02:23:36</p>
+
+<canvas id="starfield"></canvas>
+
+<div id="app">
+  <!-- ── HEADER ── -->
+  <header>
+    <div class="logo">🔱 OMEGA-ULTIMATE-FUSION-V∞</div>
+    <div class="tagline">THE FINAL FORM · BROTHERHOOD OMEGA DYNASTY · CHUKUA KONTROLI YOTE</div>
+    <div id="clock">Loading...</div>
+    <div class="status-bar">
+      <span class="badge badge-green">● ONLINE</span>
+      <span class="badge badge-green">8 AGENTS ACTIVE</span>
+      <span class="badge badge-blue">32 CONTAINERS</span>
+      <span class="badge badge-orange">12 CHAINS</span>
+      <span class="badge badge-green">99.999% UPTIME</span>
+      <span class="badge badge-orange">150X YOLO</span>
+    </div>
+  </header>
+
+  <!-- ── TABS ── -->
+  <nav class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="openTab('cmd')"        role="tab" aria-selected="true">⌨ CMD</button>
+    <button class="tab-btn"        onclick="openTab('agents')"     role="tab">🤖 AGENTS</button>
+    <button class="tab-btn"        onclick="openTab('infra')"      role="tab">🏗 INFRA</button>
+    <button class="tab-btn"        onclick="openTab('federation')" role="tab">🌐 FEDERATION</button>
+    <button class="tab-btn"        onclick="openTab('legacy')"     role="tab">📜 LEGACY</button>
+  </nav>
+
+  <!-- ══════════════════════ CMD TAB ══════════════════════ -->
+  <div id="tab-cmd" class="tab-content active">
+    <div class="panel">
+      <div class="panel-title">⌨ COMMAND CENTER</div>
+      <div class="terminal" id="terminal-output">
+        <div class="line"><span class="prompt">omega@dynasty:~$</span> <span class="out">system init --mode=FINAL_FORM</span></div>
+        <div class="line"><span class="ok">  ✓ Temporal.io brain: ONLINE</span></div>
+        <div class="line"><span class="ok">  ✓ 8 autonomous agents: DEPLOYED</span></div>
+        <div class="line"><span class="ok">  ✓ 32 containers: RUNNING</span></div>
+        <div class="line"><span class="ok">  ✓ 12 chains: CONNECTED</span></div>
+        <div class="line"><span class="ok">  ✓ 150X leverage cap: SET</span></div>
+        <div class="line"><span class="ok">  ✓ 15% circuit breaker: ARMED</span></div>
+        <div class="line"><span class="ok">  ✓ Vault encryption: ACTIVE</span></div>
+        <div class="line"><span class="ok">  ✓ Federation sync: COMPLETE</span></div>
+        <div class="line"><span class="prompt">omega@dynasty:~$</span> <span class="out">agent status --all</span></div>
+        <div class="line"><span class="ok">  AGENT-ALPHA    [TRADING]  PnL: +$12,847</span></div>
+        <div class="line"><span class="ok">  AGENT-BETA     [TRADING]  PnL: +$9,321</span></div>
+        <div class="line"><span class="ok">  AGENT-GAMMA    [SCANNING] PnL: +$6,542</span></div>
+        <div class="line"><span class="ok">  AGENT-DELTA    [TRADING]  PnL: +$18,003</span></div>
+        <div class="line"><span class="ok">  AGENT-EPSILON  [IDLE]     PnL: +$3,219</span></div>
+        <div class="line"><span class="ok">  AGENT-ZETA     [TRADING]  PnL: +$7,884</span></div>
+        <div class="line"><span class="ok">  AGENT-ETA      [TRADING]  PnL: +$14,120</span></div>
+        <div class="line"><span class="ok">  AGENT-THETA    [SCANNING] PnL: +$5,437</span></div>
+        <div class="line"><span class="prompt">omega@dynasty:~$</span> <span class="out">uptime --verbose</span></div>
+        <div class="line"><span class="out">  System uptime: <span id="uptime-cmd"></span> · Load: 0.18 0.22 0.19</span></div>
+        <div class="line"><span class="prompt">omega@dynasty:~$</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">📊 SYSTEM METRICS</div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>CPU</span><span>18%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:18%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>RAM</span><span>54%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:54%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>DISK</span><span>37%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:37%"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>NETWORK</span><span>9%</span></div>
+          <div class="progress-bar"><div class="progress-fill" style="width:9%"></div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">🔑 VAULT ACCESS</div>
+        <table class="kv-table">
+          <tr><td>VAULT ID</td><td>OMG-VAULT-001</td></tr>
+          <tr><td>VAULT STATUS</td><td class="stat-value green">SEALED &amp; ACTIVE</td></tr>
+          <tr><td>VAULT TIER</td><td class="stat-value blue">OMEGA SUPREME</td></tr>
+          <tr><td>API KEY (PROD)</td><td>omg_pk_a1b2c3d4e5f6a7b8c9d0</td></tr>
+          <tr><td>API KEY (TEST)</td><td>omg_sk_t1e2s3t4k5e6y7890ab</td></tr>
+          <tr><td>WEBHOOK SECRET</td><td>whsec_omega_final_fusion_v</td></tr>
+          <tr><td>ENCRYPTION</td><td class="stat-value green">AES-256-GCM</td></tr>
+          <tr><td>LAST AUDIT</td><td>2026-03-19 00:00 UTC</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════ AGENTS TAB ══════════════════════ -->
+  <div id="tab-agents" class="tab-content">
+
+    <div class="panel">
+      <div class="panel-title">👥 BROTHERHOOD WALLETS</div>
+      <div class="grid-2">
+
+        <div class="wallet-card">
+          <div class="wallet-name"><span class="wallet-status"></span>HASHIM</div>
+          <div class="wallet-role">COMMANDER · SOLANA CHAIN</div>
+          <div class="wallet-addr">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</div>
+          <div style="margin-top:10px">
+            <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">SOLANA</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-value green">ACTIVE</span></div>
+            <div class="stat-row"><span class="stat-label">ROLE</span><span class="stat-value">COMMANDER</span></div>
+          </div>
+        </div>
+
+        <div class="wallet-card">
+          <div class="wallet-name"><span class="wallet-status"></span>PATRICK</div>
+          <div class="wallet-role">STRATEGIST · SOLANA CHAIN</div>
+          <div class="wallet-addr">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+          <div style="margin-top:10px">
+            <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">SOLANA</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-value green">ACTIVE</span></div>
+            <div class="stat-row"><span class="stat-label">ROLE</span><span class="stat-value">STRATEGIST</span></div>
+          </div>
+        </div>
+
+        <div class="wallet-card">
+          <div class="wallet-name"><span class="wallet-status"></span>DJ</div>
+          <div class="wallet-role">OPERATOR · SOLANA CHAIN</div>
+          <div class="wallet-addr">8NTRRA5s7Lj1AxPa6H5Z3TNvNS9CQzECM9Wne4722Dnv</div>
+          <div style="margin-top:10px">
+            <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">SOLANA</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-value green">ACTIVE</span></div>
+            <div class="stat-row"><span class="stat-label">ROLE</span><span class="stat-value">OPERATOR</span></div>
+          </div>
+        </div>
+
+        <div class="wallet-card">
+          <div class="wallet-name"><span class="wallet-status"></span>BOSSMAN</div>
+          <div class="wallet-role">OVERSEER · SOLANA CHAIN</div>
+          <div class="wallet-addr">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</div>
+          <div style="margin-top:10px">
+            <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">SOLANA</span></div>
+            <div class="stat-row"><span class="stat-label">STATUS</span><span class="stat-value green">ACTIVE</span></div>
+            <div class="stat-row"><span class="stat-label">ROLE</span><span class="stat-value">OVERSEER</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">🤖 AUTONOMOUS TRADING AGENTS (8/8 ONLINE)</div>
+      <div class="grid-4">
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value green">ALPHA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value green">TRADING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$12,847</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">SOL</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value green">BETA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value green">TRADING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$9,321</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">ETH</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value green">GAMMA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value orange">SCANNING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$6,542</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">BNB</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value green">DELTA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value green">TRADING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$18,003</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">ARB</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value blue">EPSILON</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value blue">IDLE</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$3,219</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">AVAX</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value green">ZETA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value green">TRADING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$7,884</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">MATIC</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value green">ETA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value green">TRADING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$14,120</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">OP</span></div>
+        </div>
+        <div class="panel" style="margin-bottom:0">
+          <div class="stat-row"><span class="stat-label">NAME</span><span class="stat-value orange">THETA</span></div>
+          <div class="stat-row"><span class="stat-label">STATE</span><span class="stat-value orange">SCANNING</span></div>
+          <div class="stat-row"><span class="stat-label">PnL</span><span class="stat-value green">+$5,437</span></div>
+          <div class="stat-row"><span class="stat-label">CHAIN</span><span class="stat-value blue">BASE</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">🔑 VAULT IDs &amp; API KEYS</div>
+      <table class="kv-table">
+        <tr><td>MASTER VAULT ID</td><td>OMG-VAULT-001-FINAL</td></tr>
+        <tr><td>HASHIM VAULT</td><td>OMG-VAULT-HSH-001</td></tr>
+        <tr><td>PATRICK VAULT</td><td>OMG-VAULT-PAT-002</td></tr>
+        <tr><td>DJ VAULT</td><td>OMG-VAULT-DJ-003</td></tr>
+        <tr><td>BOSSMAN VAULT</td><td>OMG-VAULT-BSS-004</td></tr>
+        <tr><td>PROD API KEY</td><td>omg_pk_a1b2c3d4e5f6a7b8c9d0e1f2</td></tr>
+        <tr><td>TEST API KEY</td><td>omg_sk_t1e2s3t4k5e6y7890abcdef</td></tr>
+        <tr><td>EXCHANGE KEY (A)</td><td>omg_exch_bybit_01_prod_key</td></tr>
+        <tr><td>EXCHANGE KEY (B)</td><td>omg_exch_binance_01_prod_key</td></tr>
+        <tr><td>WEBHOOK SECRET</td><td>whsec_omega_final_fusion_v_prod</td></tr>
+        <tr><td>TEMPORAL NAMESPACE</td><td>omega-dynasty-prod</td></tr>
+        <tr><td>TEMPORAL TASK QUEUE</td><td>omega-trading-tasks</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════ INFRA TAB ══════════════════════ -->
+  <div id="tab-infra" class="tab-content">
+
+    <div class="panel">
+      <div class="panel-title">🏗 INFRASTRUCTURE OVERVIEW</div>
+      <div class="grid-3">
+        <div>
+          <div class="stat-row"><span class="stat-label">TOTAL CONTAINERS</span><span class="stat-value blue">32</span></div>
+          <div class="stat-row"><span class="stat-label">RUNNING</span><span class="stat-value green">32</span></div>
+          <div class="stat-row"><span class="stat-label">STOPPED</span><span class="stat-value">0</span></div>
+          <div class="stat-row"><span class="stat-label">UNHEALTHY</span><span class="stat-value green">0</span></div>
+        </div>
+        <div>
+          <div class="stat-row"><span class="stat-label">ORCHESTRATOR</span><span class="stat-value blue">Temporal.io</span></div>
+          <div class="stat-row"><span class="stat-label">VERSION</span><span class="stat-value">1.25.2</span></div>
+          <div class="stat-row"><span class="stat-label">NAMESPACE</span><span class="stat-value">omega-dynasty-prod</span></div>
+          <div class="stat-row"><span class="stat-label">WORKERS</span><span class="stat-value green">8</span></div>
+        </div>
+        <div>
+          <div class="stat-row"><span class="stat-label">UPTIME SLA</span><span class="stat-value green">99.999%</span></div>
+          <div class="stat-row"><span class="stat-label">CURRENT UPTIME</span><span class="stat-value green" id="uptime-infra"></span></div>
+          <div class="stat-row"><span class="stat-label">LAST RESTART</span><span class="stat-value" id="last-restart"></span></div>
+          <div class="stat-row"><span class="stat-label">HEALTH CHECKS</span><span class="stat-value green">PASSING</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">🐳 CONTAINER GROUPS</div>
+        <div class="stat-row"><span class="stat-label">trading-engine (×8)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">data-feed (×4)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">risk-manager (×4)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">temporal-worker (×4)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">gateway (×2)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">vault-service (×2)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">federation-sync (×4)</span><span class="stat-value green">ALL RUNNING</span></div>
+        <div class="stat-row"><span class="stat-label">monitoring (×4)</span><span class="stat-value green">ALL RUNNING</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">⚡ RISK PARAMETERS</div>
+        <div class="stat-row"><span class="stat-label">MAX LEVERAGE</span><span class="stat-value orange">150X</span></div>
+        <div class="stat-row"><span class="stat-label">CIRCUIT BREAKER</span><span class="stat-value red">15%</span></div>
+        <div class="stat-row"><span class="stat-label">DAILY LOSS LIMIT</span><span class="stat-value red">-$50,000</span></div>
+        <div class="stat-row"><span class="stat-label">MAX POSITION SIZE</span><span class="stat-value orange">$500,000</span></div>
+        <div class="stat-row"><span class="stat-label">STOP LOSS MODE</span><span class="stat-value green">AUTO</span></div>
+        <div class="stat-row"><span class="stat-label">RISK ENGINE</span><span class="stat-value green">ACTIVE</span></div>
+        <div class="stat-row"><span class="stat-label">EMERGENCY KILL</span><span class="stat-value">ARMED</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">💾 DATA &amp; STORAGE</div>
+      <div class="grid-3">
+        <div>
+          <div class="stat-row"><span class="stat-label">PRIMARY DB</span><span class="stat-value blue">PostgreSQL 16</span></div>
+          <div class="stat-row"><span class="stat-label">DB HOST</span><span class="stat-value">db.omega.internal</span></div>
+          <div class="stat-row"><span class="stat-label">REPLICATION</span><span class="stat-value green">STREAMING (2 replicas)</span></div>
+        </div>
+        <div>
+          <div class="stat-row"><span class="stat-label">CACHE</span><span class="stat-value blue">Redis 7.2</span></div>
+          <div class="stat-row"><span class="stat-label">CACHE HOST</span><span class="stat-value">cache.omega.internal</span></div>
+          <div class="stat-row"><span class="stat-label">EVICTION</span><span class="stat-value">allkeys-lru</span></div>
+        </div>
+        <div>
+          <div class="stat-row"><span class="stat-label">MESSAGE BUS</span><span class="stat-value blue">Kafka 3.6</span></div>
+          <div class="stat-row"><span class="stat-label">TOPICS</span><span class="stat-value">48 active</span></div>
+          <div class="stat-row"><span class="stat-label">THROUGHPUT</span><span class="stat-value green">~120K msg/s</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════ FEDERATION TAB ══════════════════════ -->
+  <div id="tab-federation" class="tab-content">
+
+    <div class="panel">
+      <div class="panel-title">🌐 MULTI-CHAIN FEDERATION — 12 CHAINS ACTIVE</div>
+      <div class="chain-list">
+        <span class="chain-item active">✓ SOLANA</span>
+        <span class="chain-item active">✓ ETHEREUM</span>
+        <span class="chain-item active">✓ BNB CHAIN</span>
+        <span class="chain-item active">✓ ARBITRUM</span>
+        <span class="chain-item active">✓ AVALANCHE</span>
+        <span class="chain-item active">✓ POLYGON</span>
+        <span class="chain-item active">✓ OPTIMISM</span>
+        <span class="chain-item active">✓ BASE</span>
+        <span class="chain-item active">✓ FANTOM</span>
+        <span class="chain-item active">✓ COSMOS</span>
+        <span class="chain-item active">✓ NEAR</span>
+        <span class="chain-item active">✓ SUI</span>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">🔗 FEDERATION SYNC STATUS</div>
+        <div class="stat-row"><span class="stat-label">SYNC MODE</span><span class="stat-value green">REAL-TIME</span></div>
+        <div class="stat-row"><span class="stat-label">LAST SYNC</span><span class="stat-value green">&lt;1s ago</span></div>
+        <div class="stat-row"><span class="stat-label">BLOCK LAG</span><span class="stat-value green">0 blocks</span></div>
+        <div class="stat-row"><span class="stat-label">CROSS-CHAIN TXS</span><span class="stat-value blue">1,247 today</span></div>
+        <div class="stat-row"><span class="stat-label">BRIDGE STATUS</span><span class="stat-value green">ALL BRIDGES UP</span></div>
+        <div class="stat-row"><span class="stat-label">FEDERATION ID</span><span class="stat-value">OMG-FED-OMEGA-001</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">📡 RPC ENDPOINTS</div>
+        <table class="kv-table">
+          <tr><td>SOLANA</td><td>rpc.omega.sol.internal:8899</td></tr>
+          <tr><td>ETHEREUM</td><td>rpc.omega.eth.internal:8545</td></tr>
+          <tr><td>BNB CHAIN</td><td>rpc.omega.bnb.internal:8545</td></tr>
+          <tr><td>ARBITRUM</td><td>rpc.omega.arb.internal:8545</td></tr>
+          <tr><td>AVALANCHE</td><td>rpc.omega.avax.internal:9650</td></tr>
+          <tr><td>POLYGON</td><td>rpc.omega.matic.internal:8545</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">📊 FEDERATION PERFORMANCE</div>
+      <div class="grid-3">
+        <div>
+          <div class="stat-row"><span class="stat-label">TOTAL VOLUME (24H)</span><span class="stat-value green">$4,821,047</span></div>
+          <div class="stat-row"><span class="stat-label">NET PnL (24H)</span><span class="stat-value green">+$77,373</span></div>
+          <div class="stat-row"><span class="stat-label">WIN RATE</span><span class="stat-value green">68.4%</span></div>
+        </div>
+        <div>
+          <div class="stat-row"><span class="stat-label">TRADES (24H)</span><span class="stat-value blue">3,421</span></div>
+          <div class="stat-row"><span class="stat-label">AVG TRADE SIZE</span><span class="stat-value">$1,409</span></div>
+          <div class="stat-row"><span class="stat-label">AVG HOLD TIME</span><span class="stat-value">4m 12s</span></div>
+        </div>
+        <div>
+          <div class="stat-row"><span class="stat-label">SHARPE RATIO</span><span class="stat-value green">3.42</span></div>
+          <div class="stat-row"><span class="stat-label">MAX DRAWDOWN</span><span class="stat-value orange">-4.2%</span></div>
+          <div class="stat-row"><span class="stat-label">CIRCUIT TRIPS</span><span class="stat-value green">0 today</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════ LEGACY TAB ══════════════════════ -->
+  <div id="tab-legacy" class="tab-content">
+
+    <div class="panel">
+      <div class="panel-title">📜 LEGACY SYSTEM HISTORY</div>
+      <div class="terminal">
+        <div class="line"><span class="prompt">[2024-01-01]</span> <span class="out">OMEGA v1.0 — Initial deployment. 2 agents, 4 chains.</span></div>
+        <div class="line"><span class="ok">  ✓ First profitable day: +$847</span></div>
+        <div class="line"><span class="prompt">[2024-03-15]</span> <span class="out">OMEGA v2.0 — Scaled to 4 agents, 8 chains, 50X leverage.</span></div>
+        <div class="line"><span class="ok">  ✓ Monthly record: +$128,400</span></div>
+        <div class="line"><span class="prompt">[2024-07-20]</span> <span class="out">OMEGA v3.0 — Temporal.io integration. 6 agents, 10 chains.</span></div>
+        <div class="line"><span class="ok">  ✓ Temporal brain first decision: CORRECT (SOL/USDC long)</span></div>
+        <div class="line"><span class="prompt">[2024-12-01]</span> <span class="out">OMEGA v4.0 — 32 containers. Circuit breaker added.</span></div>
+        <div class="line"><span class="ok">  ✓ Infrastructure uptime: 99.999%</span></div>
+        <div class="line"><span class="prompt">[2025-06-15]</span> <span class="out">OMEGA v5.0 — 8 agents, 12 chains, 150X YOLO mode.</span></div>
+        <div class="line"><span class="ok">  ✓ Brotherhood wallets integrated: HASHIM, PATRICK, DJ, BOSSMAN</span></div>
+        <div class="line"><span class="prompt">[2026-03-19]</span> <span class="out">OMEGA-ULTIMATE-FUSION-V∞ — THE FINAL FORM. DEPLOYED.</span></div>
+        <div class="line"><span class="ok">  ✓ ALL SYSTEMS NOMINAL. CHUKUA KONTROLI YOTE.</span></div>
+        <div class="line"><span class="prompt">legacy@omega:~$</span> <span class="cursor"></span></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-title">🏆 ALL-TIME RECORDS</div>
+        <div class="stat-row"><span class="stat-label">TOTAL PROFIT</span><span class="stat-value green">+$2,847,032</span></div>
+        <div class="stat-row"><span class="stat-label">BEST SINGLE DAY</span><span class="stat-value green">+$284,721 (2025-11-03)</span></div>
+        <div class="stat-row"><span class="stat-label">BEST MONTH</span><span class="stat-value green">+$847,200 (2025-11)</span></div>
+        <div class="stat-row"><span class="stat-label">TOTAL TRADES</span><span class="stat-value blue">1,842,477</span></div>
+        <div class="stat-row"><span class="stat-label">WIN RATE (ALL TIME)</span><span class="stat-value green">64.8%</span></div>
+        <div class="stat-row"><span class="stat-label">MAX DRAWDOWN</span><span class="stat-value orange">-12.1% (2024-08-05)</span></div>
+        <div class="stat-row"><span class="stat-label">CIRCUIT BREAKER TRIPS</span><span class="stat-value">3 (all resolved)</span></div>
+        <div class="stat-row"><span class="stat-label">CHAINS TRADED</span><span class="stat-value blue">12</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">📦 LEGACY CONFIG ARCHIVE</div>
+        <table class="kv-table">
+          <tr><td>CONFIG v1</td><td>omega-cfg-2024-01-01.tar.gz</td></tr>
+          <tr><td>CONFIG v2</td><td>omega-cfg-2024-03-15.tar.gz</td></tr>
+          <tr><td>CONFIG v3</td><td>omega-cfg-2024-07-20.tar.gz</td></tr>
+          <tr><td>CONFIG v4</td><td>omega-cfg-2024-12-01.tar.gz</td></tr>
+          <tr><td>CONFIG v5</td><td>omega-cfg-2025-06-15.tar.gz</td></tr>
+          <tr><td>FINAL FORM</td><td>omega-cfg-FINAL-FORM.tar.gz</td></tr>
+          <tr><td>BACKUP VAULT</td><td>vault-backup-2026-03-19.enc</td></tr>
+          <tr><td>KEY ARCHIVE</td><td>keys-archive-2026-03-19.enc</td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer style="text-align:center;padding:24px 0 8px;color:var(--muted);font-size:10px;letter-spacing:1px;border-top:1px solid var(--border);margin-top:16px">
+    🔱 OMEGA-ULTIMATE-FUSION-V∞ · BROTHERHOOD OMEGA DYNASTY · DEPLOY ONCE, DOMINATE FOREVER
+  </footer>
+</div>
+
+<script>
+  /* ── Starfield ── */
+  (function () {
+    var canvas = document.getElementById('starfield');
+    var ctx = canvas.getContext('2d');
+    var stars = [];
+    var W, H;
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function initStars(n) {
+      stars = [];
+      for (var i = 0; i < n; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.4 + 0.3,
+          v: Math.random() * 0.3 + 0.05,
+          o: Math.random() * 0.7 + 0.2
+        });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0,255,170,' + s.o + ')';
+        ctx.fill();
+        s.y += s.v;
+        if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', function () { resize(); initStars(180); });
+    resize();
+    initStars(180);
+    draw();
+  })();
+
+  /* ── Uptime (calculated from fixed start date) ── */
+  var SYSTEM_START = new Date('2023-11-23T14:22:00Z');
+
+  function formatUptime(ms) {
+    var secs  = Math.floor(ms / 1000);
+    var mins  = Math.floor(secs  / 60);
+    var hours = Math.floor(mins  / 60);
+    var days  = Math.floor(hours / 24);
+    return days + 'd ' + (hours % 24) + 'h ' + (mins % 60) + 'm';
+  }
+
+  function updateUptime() {
+    var up = Date.now() - SYSTEM_START.getTime();
+    var str = formatUptime(up);
+    var elCmd   = document.getElementById('uptime-cmd');
+    var elInfra = document.getElementById('uptime-infra');
+    if (elCmd)   elCmd.textContent   = str;
+    if (elInfra) elInfra.textContent = str;
+  }
+
+  var pad2 = function (n) { return n < 10 ? '0' + n : '' + n; };
+  var d = SYSTEM_START;
+  document.getElementById('last-restart').textContent =
+    d.getUTCFullYear() + '-' + pad2(d.getUTCMonth() + 1) + '-' + pad2(d.getUTCDate());
+
+  updateUptime();
+  setInterval(updateUptime, 60000);
+
+
+  function updateClock() {
+    var now = new Date();
+    var pad = function (n) { return n < 10 ? '0' + n : n; };
+    var days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    var str = days[now.getUTCDay()] + ' '
+      + now.getUTCFullYear() + '-'
+      + pad(now.getUTCMonth() + 1) + '-'
+      + pad(now.getUTCDate()) + '  '
+      + pad(now.getUTCHours()) + ':'
+      + pad(now.getUTCMinutes()) + ':'
+      + pad(now.getUTCSeconds()) + ' UTC';
+    document.getElementById('clock').textContent = str;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  /* ── Tabs ── */
+  function openTab(name) {
+    var contents = document.querySelectorAll('.tab-content');
+    var buttons  = document.querySelectorAll('.tab-btn');
+    for (var i = 0; i < contents.length; i++) {
+      contents[i].classList.remove('active');
+    }
+    for (var j = 0; j < buttons.length; j++) {
+      buttons[j].classList.remove('active');
+      buttons[j].setAttribute('aria-selected', 'false');
+    }
+    document.getElementById('tab-' + name).classList.add('active');
+    for (var k = 0; k < buttons.length; k++) {
+      if (buttons[k].textContent.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
+          buttons[k].getAttribute('onclick').indexOf("'" + name + "'") !== -1) {
+        buttons[k].classList.add('active');
+        buttons[k].setAttribute('aria-selected', 'true');
+        break;
+      }
+    }
+  }
+</script>
 </body>
 </html>
