@@ -1,0 +1,245 @@
+version: '3.9'
+# 🔱 OMEGA-SAPIENS ORGANISM BLUEPRINT
+# 18-container architecture — Brotherhood Omega Dynasty Trading Fortress
+
+networks:
+  omega_net:
+    driver: bridge
+
+volumes:
+  postgres_data: {}
+  redis_data: {}
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+
+  # ─────────────────────────────────────────────────────────────
+  # CORE INFRASTRUCTURE
+  # ─────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: omega_postgres
+    networks: [omega_net]
+    ports: ["5432:5432"]
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: omega_redis
+    networks: [omega_net]
+    ports: ["6379:6379"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  agentbus:
+    build: ./src/agentbus
+    container_name: omega_agentbus
+    networks: [omega_net]
+    ports:
+      - "8081:8081"
+      - "9081:9081"
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: redis://omega_redis:6379
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────────────────────
+  # TRADING AGENTS & EXECUTORS
+  # ─────────────────────────────────────────────────────────────
+  patrick_scanner:
+    build: ./src/patrick_scanner
+    container_name: patrick_scanner
+    networks: [omega_net]
+    ports: ["3005:3005"]
+    depends_on: [agentbus]
+    environment:
+      AGENT_API_KEY: ${PATRICK_API_KEY}
+      AGENTBUS_URL: http://omega_agentbus:8081
+      HELIUS_API_KEY: ${HELIUS_API_KEY}
+      BIRDEYE_API_KEY: ${BIRDEYE_API_KEY}
+    restart: unless-stopped
+
+  hashim_treasury:
+    build: ./src/hashim_treasury
+    container_name: hashim_treasury
+    networks: [omega_net]
+    ports: ["3004:3004"]
+    depends_on: [agentbus]
+    environment:
+      AGENT_API_KEY: ${HASHIM_API_KEY}
+      AGENTBUS_URL: http://omega_agentbus:8081
+    restart: unless-stopped
+
+  dj_executor:
+    build: ./src/dj_executor
+    container_name: dj_executor
+    networks: [omega_net]
+    ports: ["3003:3003"]
+    depends_on: [agentbus]
+    environment:
+      AGENT_API_KEY: ${DJ_API_KEY}
+      AGENTBUS_URL: http://omega_agentbus:8081
+    restart: unless-stopped
+
+  bossman_risk:
+    build: ./src/bossman_risk
+    container_name: bossman_risk
+    networks: [omega_net]
+    ports: ["3006:3006"]
+    depends_on: [agentbus]
+    environment:
+      AGENT_API_KEY: ${BOSSMAN_API_KEY}
+      AGENTBUS_URL: http://omega_agentbus:8081
+    restart: unless-stopped
+
+  hustle_bridge:
+    build: ./src/hustle_bridge
+    container_name: hustle_bridge
+    networks: [omega_net]
+    ports: ["3001:3001"]
+    depends_on: [agentbus]
+    environment:
+      AGENTBUS_URL: http://omega_agentbus:8081
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────────────────────
+  # EVOLUTION & LEDGER
+  # ─────────────────────────────────────────────────────────────
+  ledger:
+    build: ./src/ledger
+    container_name: omega_ledger
+    networks: [omega_net]
+    ports: ["3010:3010"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@omega_postgres:5432/${DB_NAME}
+    restart: unless-stopped
+
+  learner:
+    build: ./src/learner
+    container_name: omega_learner
+    networks: [omega_net]
+    ports: ["3011:3011"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@omega_postgres:5432/${DB_NAME}
+    restart: unless-stopped
+
+  evolver:
+    build: ./src/evolver
+    container_name: omega_evolver
+    networks: [omega_net]
+    ports: ["3012:3012"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://${DB_USER}:${DB_PASSWORD}@omega_postgres:5432/${DB_NAME}
+    restart: unless-stopped
+
+  auto_scanner:
+    build: ./src/auto_scanner
+    container_name: omega_auto_scanner
+    networks: [omega_net]
+    ports: ["3014:3014"]
+    depends_on: [agentbus]
+    environment:
+      AGENTBUS_URL: http://omega_agentbus:8081
+      HELIUS_API_KEY: ${HELIUS_API_KEY}
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────────────────────
+  # COMMAND & CONTROL
+  # ─────────────────────────────────────────────────────────────
+  telegram_commander:
+    build: ./src/telegram_commander
+    container_name: telegram_commander
+    networks: [omega_net]
+    ports: ["3013:3013"]
+    depends_on: [agentbus]
+    environment:
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      AGENTBUS_URL: http://omega_agentbus:8081
+    restart: unless-stopped
+
+  dashboard:
+    build: ./src/dashboard
+    container_name: omega_dashboard
+    networks: [omega_net]
+    expose: ["8082"]
+    environment:
+      AGENTBUS_URL: http://omega_agentbus:8081
+    restart: unless-stopped
+
+  # ─────────────────────────────────────────────────────────────
+  # AUXILIARY SUPPORT SYSTEMS
+  # ─────────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: omega_nginx_gateway
+    networks: [omega_net]
+    ports: ["80:80"]
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on: [dashboard]
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: omega_prometheus
+    networks: [omega_net]
+    ports: ["9090:9090"]
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+      - "--web.console.templates=/usr/share/prometheus/consoles"
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: omega_grafana
+    networks: [omega_net]
+    ports: ["3000:3000"]
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: omega_watchtower
+    networks: [omega_net]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: "--interval 300 --cleanup"
+    restart: unless-stopped

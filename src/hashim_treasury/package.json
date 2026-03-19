@@ -1,0 +1,12 @@
+{
+  "name": "omega-hashim_treasury",
+  "version": "1.0.0",
+  "description": "Treasury management and capital allocation agent",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
