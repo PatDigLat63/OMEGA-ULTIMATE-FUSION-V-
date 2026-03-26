@@ -1,0 +1,50 @@
+title: "OMEGA-ULTIMATE-FUSION-V∞"
+description: "Brotherhood Omega Dynasty — Self-deploying autonomous trading system. 8 agents · 32 containers · 12 chains · 150X YOLO · 99.999% uptime."
+url: "https://brotherhoodomegadynasty.com"
+baseurl: ""
+
+# GitHub Pages theme — using none (custom HTML)
+theme: null
+
+# Collections
+collections:
+  agents:
+    output: false
+  integrations:
+    output: false
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# SEO
+author: "Patrick La Touche — PatDigLat63"
+twitter:
+  username: patrickdl44
+social:
+  name: Brotherhood Omega Dynasty
+  links:
+    - https://twitter.com/patrickdl44
+    - https://github.com/PatDigLat63
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - "*.py"
+  - "*.sh"
+  - tests/
+  - infrastructure/
+  - integrations/
+  - agents/
+  - backup/
+  - "*.md"
+  - "!README.md"
+  - .env
+  - .env.*
