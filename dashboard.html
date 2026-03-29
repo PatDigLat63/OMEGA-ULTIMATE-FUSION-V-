@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="OMEGA-ULTIMATE-FUSION-V∞ — Backup Dashboard View" />
+  <title>🔱 OMEGA V∞ | BACKUP DASHBOARD</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/dashboard.css" />
+</head>
+<body>
+<div id="starfield"></div>
+
+<div id="status-bar">
+  <div class="status-item">
+    <span class="dot dot-green"></span>
+    <span class="status-label">BACKUP VIEW:</span>
+    <span class="status-value">ONLINE</span>
+  </div>
+  <div class="status-item">
+    <span class="dot dot-green"></span>
+    <span class="status-label">SERVER:</span>
+    <span class="status-value">206.189.118.255</span>
+  </div>
+  <div class="status-item">
+    <span class="dot dot-green"></span>
+    <span class="status-label">AGENTS:</span>
+    <span class="status-value">4/4 ACTIVE</span>
+  </div>
+  <div class="status-item">
+    <span class="dot dot-green"></span>
+    <span class="status-label">CONTAINERS:</span>
+    <span class="status-value">14/14 UP</span>
+  </div>
+</div>
+
+<div id="app">
+  <div id="header">
+    <div class="logo">🔱 OMEGA-ULTIMATE-FUSION-V∞</div>
+    <div class="subtitle">BACKUP / ALTERNATIVE DASHBOARD VIEW</div>
+    <div class="motto">CHUKUA KONTROLI YOTE — WALK WHERE ANGELS FEAR</div>
+  </div>
+
+  <div style="text-align:center;margin:12px 0">
+    <a href="index.html" class="btn" style="display:inline-block;text-decoration:none">← MAIN DASHBOARD</a>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="card">
+    <div class="card-title">📊 QUICK OVERVIEW</div>
+    <div class="grid-4">
+      <div class="metric-box">
+        <div class="metric-label">TOTAL PROFIT</div>
+        <div class="metric-value gold">£3,089.42</div>
+        <div class="metric-sub">/ £16,670 target</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">WIN RATE</div>
+        <div class="metric-value">78.4%</div>
+        <div class="metric-sub">Last 30 days</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">TRADES</div>
+        <div class="metric-value cyan">1,247</div>
+        <div class="metric-sub">Total executed</div>
+      </div>
+      <div class="metric-box">
+        <div class="metric-label">UPTIME</div>
+        <div class="metric-value">99.97%</div>
+        <div class="metric-sub">24/7 monitoring</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Summary -->
+  <div class="card card-cyan">
+    <div class="card-title">🤖 AGENT STATUS SUMMARY</div>
+    <div class="dash-grid">
+      <div class="stat-row"><span class="sk">DJ Sharpshooter (:3003)</span><span class="sv g">● ACTIVE</span></div>
+      <div class="stat-row"><span class="sk">Hashim Treasury (:3004)</span><span class="sv g">● ACTIVE</span></div>
+      <div class="stat-row"><span class="sk">Bossman Risk (:3006)</span><span class="sv g">● ACTIVE</span></div>
+      <div class="stat-row"><span class="sk">Patrick Scanner (:3005)</span><span class="sv g">● ACTIVE</span></div>
+    </div>
+  </div>
+
+  <!-- Infrastructure Summary -->
+  <div class="card">
+    <div class="card-title">🖥 INFRASTRUCTURE SUMMARY</div>
+    <div class="stat-row"><span class="sk">Server</span><span class="sv o">206.189.118.255 (London)</span></div>
+    <div class="stat-row"><span class="sk">Docker</span><span class="sv g">14/14 containers running</span></div>
+    <div class="stat-row"><span class="sk">CPU</span><span class="sv g">12%</span></div>
+    <div class="stat-row"><span class="sk">Memory</span><span class="sv c">34%</span></div>
+    <div class="stat-row"><span class="sk">Disk</span><span class="sv o">28%</span></div>
+    <div class="stat-row"><span class="sk">Network</span><span class="sv g">99.97%</span></div>
+    <div class="stat-row"><span class="sk">Domain</span><span class="sv">brotherhoodomegadynasty.com</span></div>
+    <div class="stat-row"><span class="sk">Domain Renewal</span><span class="sv">February 2029</span></div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="alert-banner" role="alert">
+    <span class="alert-icon">🚨</span>
+    <span class="alert-text">LQ-004 URGENT: Liquidium Loan expires in <strong>2 DAYS</strong></span>
+    <a href="index.html#tab-swarm" class="alert-action">VIEW</a>
+  </div>
+
+  <!-- Links -->
+  <div class="card">
+    <div class="card-title">🔗 QUICK LINKS</div>
+    <div class="btn-row">
+      <a href="index.html" class="btn" style="text-decoration:none">🔱 Main Dashboard</a>
+      <a href="https://t.me/OmegaDynastyBot" class="btn btn-cyan" target="_blank" rel="noopener" style="text-decoration:none">✈️ Telegram Bot</a>
+      <a href="https://wa.me/447424394382?text=COMMAND%20CENTER" class="btn btn-green" target="_blank" rel="noopener" style="text-decoration:none">💬 WhatsApp</a>
+      <a href="https://x.com/patrickdl44" class="btn" target="_blank" rel="noopener" style="text-decoration:none">𝕏 Twitter</a>
+    </div>
+  </div>
+
+</div>
+
+<div id="heartbeat">
+  <span class="hb-dot"></span>
+  <span>Last heartbeat: <span id="hb-time">Loading…</span></span>
+</div>
+<div id="copy-toast" role="status" aria-live="polite">Copied!</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OMEGA-ULTIMATE-FUSION-V∞ — Test Suite</title>
+  <style>
+    body { background: #050508; color: #e8e8ff; font-family: 'Courier New', monospace; padding: 20px; }
+    h1 { color: #FFD700; }
+    h2 { color: #00FFFF; margin-top: 24px; }
+    .pass { color: #00FF41; }
+    .fail { color: #FF4444; }
+    .info { color: #888; }
+    .test { padding: 4px 0; }
+    #summary { margin-top: 20px; padding: 12px; border: 1px solid #FFD700; }
+    button { background: #0f0f1a; border: 1px solid #FFD700; color: #FFD700; padding: 8px 16px; cursor: pointer; font-family: monospace; margin: 4px; }
+    button:hover { background: rgba(255,215,0,0.15); }
+  </style>
+</head>
+<body>
+  <h1>🔱 OMEGA-ULTIMATE-FUSION-V∞ — Test Suite</h1>
+  <p class="info">Browser-based test suite for dashboard functionality</p>
+  <div>
+    <button onclick="runAll()">▶ Run All Tests</button>
+    <button onclick="clearResults()">🗑 Clear</button>
+    <a href="../index.html" style="color:#00FFFF;margin-left:10px">← Dashboard</a>
+  </div>
+
+  <h2>Dashboard Tests</h2>
+  <div id="dash-results"></div>
+
+  <h2>Agent Tests</h2>
+  <div id="agent-results"></div>
+
+  <h2>UI Tests</h2>
+  <div id="ui-results"></div>
+
+  <div id="summary" style="display:none"></div>
+
+  <script>
+    let passed = 0, failed = 0;
+
+    function assert(condition, name) {
+      const el = document.createElement('div');
+      el.className = 'test ' + (condition ? 'pass' : 'fail');
+      el.textContent = (condition ? '✅ PASS' : '❌ FAIL') + ' — ' + name;
+      return { el, ok: condition };
+    }
+
+    function addResult(containerId, result) {
+      document.getElementById(containerId).appendChild(result.el);
+      if (result.ok) passed++; else failed++;
+    }
+
+    function runDashboardTests() {
+      const iframe = document.createElement('iframe');
+      iframe.src = '../index.html';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        const doc = iframe.contentDocument;
+        addResult('dash-results', assert(!!doc.getElementById('status-bar'), 'Status bar exists'));
+        addResult('dash-results', assert(!!doc.getElementById('app'), 'App container exists'));
+        addResult('dash-results', assert(!!doc.getElementById('header'), 'Header exists'));
+        addResult('dash-results', assert(!!doc.getElementById('tabs'), 'Tabs container exists'));
+        addResult('dash-results', assert(doc.querySelectorAll('.tab-btn').length === 5, 'All 5 tabs present'));
+        addResult('dash-results', assert(!!doc.getElementById('tab-command'), 'Command tab panel exists'));
+        addResult('dash-results', assert(!!doc.getElementById('tab-agents'), 'Agents tab panel exists'));
+        addResult('dash-results', assert(!!doc.getElementById('tab-infra'), 'Infrastructure tab panel exists'));
+        addResult('dash-results', assert(!!doc.getElementById('tab-swarm'), 'Federation tab panel exists'));
+        addResult('dash-results', assert(!!doc.getElementById('tab-legacy'), 'Legacy tab panel exists'));
+        addResult('dash-results', assert(!!doc.getElementById('cmd-log'), 'Command log exists'));
+        addResult('dash-results', assert(!!doc.getElementById('demon-svg'), 'Demon SVG exists'));
+        addResult('dash-results', assert(!!doc.getElementById('progress-fill'), 'Progress bar exists'));
+        addResult('dash-results', assert(!!doc.getElementById('heartbeat'), 'Heartbeat widget exists'));
+        addResult('dash-results', assert(!!doc.getElementById('copy-toast'), 'Copy toast exists'));
+        addResult('dash-results', assert(!!doc.getElementById('integration-hub'), 'Integration hub exists'));
+        updateSummary();
+      };
+    }
+
+    function runAgentTests() {
+      const wallets = [
+        'GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8',
+        'JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e',
+        'FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF',
+        '6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1',
+        'EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy',
+      ];
+      wallets.forEach(w => {
+        addResult('agent-results', assert(w.length >= 32 && w.length <= 44, `Wallet address valid length: ${w.slice(0, 8)}...`));
+        addResult('agent-results', assert(/^[1-9A-HJ-NP-Za-km-z]+$/.test(w), `Wallet base58 valid: ${w.slice(0, 8)}...`));
+      });
+      addResult('agent-results', assert(wallets.length === 5, 'All 5 wallet addresses defined'));
+    }
+
+    function runUITests() {
+      // Test CSS variables
+      const root = getComputedStyle(document.documentElement);
+      addResult('ui-results', assert(typeof window.localStorage !== 'undefined', 'LocalStorage available'));
+      addResult('ui-results', assert(typeof window.navigator !== 'undefined', 'Navigator available'));
+      addResult('ui-results', assert(typeof window.fetch !== 'undefined' || typeof XMLHttpRequest !== 'undefined', 'HTTP client available'));
+
+      // Test meta viewport
+      const meta = document.querySelector('meta[name=viewport]');
+      addResult('ui-results', assert(!!meta, 'Viewport meta tag exists in test page'));
+
+      addResult('ui-results', assert(typeof JSON.parse !== 'undefined', 'JSON parsing available'));
+      addResult('ui-results', assert(typeof Promise !== 'undefined', 'Promises supported'));
+    }
+
+    function updateSummary() {
+      const el = document.getElementById('summary');
+      el.style.display = 'block';
+      const total = passed + failed;
+      el.innerHTML = `<strong style="color:${failed === 0 ? '#00FF41' : '#FF4444'}">` +
+        `RESULTS: ${passed}/${total} tests passed` +
+        (failed > 0 ? ` · ${failed} FAILED` : ' · ALL PASS ✅') +
+        '</strong>';
+    }
+
+    function runAll() {
+      passed = 0; failed = 0;
+      ['dash-results', 'agent-results', 'ui-results'].forEach(id => {
+        document.getElementById(id).innerHTML = '';
+      });
+      runAgentTests();
+      runUITests();
+      runDashboardTests();
+    }
+
+    function clearResults() {
+      passed = 0; failed = 0;
+      ['dash-results', 'agent-results', 'ui-results'].forEach(id => {
+        document.getElementById(id).innerHTML = '';
+      });
+      document.getElementById('summary').style.display = 'none';
+    }
+
+    // Auto-run on load
+    window.addEventListener('load', runAll);
+  </script>
+</body>
+</html>

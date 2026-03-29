@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════
+# OMEGA-ULTIMATE-FUSION-V∞ — Jekyll / GitHub Pages Config
+# Brotherhood Omega Dynasty
+# ═══════════════════════════════════════════════════════════
+
+title: "🔱 OMEGA-ULTIMATE-FUSION-V∞"
+description: "Brotherhood Omega Dynasty Command Center — 4 AI Agents · 14 Containers · 24/7 Uptime"
+url: "https://brotherhoodomegadynasty.com"
+baseurl: ""
+
+# Theme
+theme: jekyll-theme-midnight
+
+# Author
+author:
+  name: "Patrick Digges La Touche (DJ Sharpshooter)"
+  twitter: "patrickdl44"
+
+# SEO
+twitter:
+  card: summary
+  username: patrickdl44
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Plugins
+plugins:
+  - jekyll-seo-tag
+
+# Exclude from build
+exclude:
+  - "*.log"
+  - backup/logs/
+  - test/
+
+# Include
+include:
+  - CNAME
+
+# Collections
+collections:
+  docs:
+    output: false
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
