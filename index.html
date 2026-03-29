@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OMEGA-ULTIMATE-FUSION-V∞ · Brotherhood Omega Dynasty</title>
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold:   #ffd700;
+      --gold2:  #ffaa00;
+      --cyan:   #00ffe7;
+      --cyan2:  #00bcd4;
+      --dark:   #05080f;
+      --dark2:  #0a1020;
+      --dark3:  #0d1830;
+      --panel:  rgba(10, 20, 40, 0.85);
+      --border: rgba(255, 215, 0, 0.35);
+      --red:    #ff3b3b;
+      --green:  #39ff14;
+    }
+    html, body {
+      min-height: 100%;
+      background: var(--dark);
+      color: #e8eaf0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── Starfield Canvas ─────────────────────────────────────── */
+    #starfield {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ─── Layout Shell ─────────────────────────────────────────── */
+    #app {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── Header ───────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, rgba(5,8,15,0.97) 0%, rgba(13,24,48,0.97) 100%);
+      border-bottom: 2px solid var(--gold);
+      padding: 14px 20px 10px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 0 30px rgba(255,215,0,0.18);
+    }
+    .header-title {
+      font-size: clamp(1.1rem, 4vw, 1.75rem);
+      font-weight: 900;
+      letter-spacing: 0.06em;
+      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--gold));
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      text-transform: uppercase;
+    }
+    .header-sub {
+      font-size: 0.72rem;
+      color: var(--cyan2);
+      letter-spacing: 0.12em;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+    .motto-badge {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 14px;
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--gold);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: rgba(255,215,0,0.07);
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* ─── Tab Bar ──────────────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: rgba(5,8,15,0.95);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 86px;
+      z-index: 99;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex: 1 0 auto;
+      min-width: 120px;
+      padding: 10px 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #7a8aaa;
+      text-transform: uppercase;
+      transition: color 0.2s, box-shadow 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--cyan); background: rgba(0,255,231,0.05); }
+    .tab-btn.active {
+      color: var(--gold);
+      box-shadow: inset 0 -2px 0 var(--gold);
+      background: rgba(255,215,0,0.06);
+    }
+    .tab-icon { margin-right: 5px; }
+
+    /* ─── Tab Content ──────────────────────────────────────────── */
+    .tab-content { display: none; padding: 24px 16px 40px; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* ─── Cards & Panels ───────────────────────────────────────── */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+    .card-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card-title .icon { font-size: 1.1rem; }
+
+    /* ─── Grid helpers ─────────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+
+    /* ─── Status Pills ─────────────────────────────────────────── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+    .pill-green  { background: rgba(57,255,20,0.15);  color: var(--green); border: 1px solid rgba(57,255,20,0.4); }
+    .pill-gold   { background: rgba(255,215,0,0.12);  color: var(--gold);  border: 1px solid rgba(255,215,0,0.4); }
+    .pill-cyan   { background: rgba(0,255,231,0.1);   color: var(--cyan);  border: 1px solid rgba(0,255,231,0.35); }
+    .pill-red    { background: rgba(255,59,59,0.15);  color: var(--red);   border: 1px solid rgba(255,59,59,0.4); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 1.5s infinite; }
+    .dot-gold  { background: var(--gold);  box-shadow: 0 0 6px var(--gold); }
+    .dot-red   { background: var(--red);   box-shadow: 0 0 8px var(--red); animation: pulse 0.8s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* ─── Stat Tile ────────────────────────────────────────────── */
+    .stat-tile {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: center;
+    }
+    .stat-label { font-size: 0.68rem; color: #7a8aaa; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-value { font-size: 1.35rem; font-weight: 900; color: var(--cyan); }
+    .stat-value.gold { color: var(--gold); }
+    .stat-value.green { color: var(--green); }
+    .stat-value.red { color: var(--red); }
+
+    /* ─── Alert Banner ─────────────────────────────────────────── */
+    .alert-banner {
+      background: linear-gradient(135deg, rgba(255,59,59,0.18), rgba(255,100,0,0.12));
+      border: 1.5px solid var(--red);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      animation: alertPulse 2s ease-in-out infinite;
+    }
+    @keyframes alertPulse {
+      0%,100% { box-shadow: 0 0 10px rgba(255,59,59,0.3); }
+      50%      { box-shadow: 0 0 30px rgba(255,59,59,0.6); }
+    }
+    .alert-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .alert-code { font-weight: 900; color: var(--red); font-size: 1rem; letter-spacing: 0.1em; }
+    .alert-msg  { font-size: 0.82rem; color: #ffb3b3; margin-top: 4px; line-height: 1.5; }
+
+    /* ─── Wallet Cards ─────────────────────────────────────────── */
+    .wallet-card {
+      background: linear-gradient(135deg, rgba(10,20,40,0.9), rgba(5,10,25,0.95));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .wallet-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 12px 12px 0 0;
+    }
+    .wallet-card.dj::before     { background: linear-gradient(90deg, var(--gold), var(--cyan)); }
+    .wallet-card.hashim::before { background: linear-gradient(90deg, var(--cyan), #9b59b6); }
+    .wallet-card.bossman::before{ background: linear-gradient(90deg, var(--red), var(--gold)); }
+    .wallet-card.patrick::before{ background: linear-gradient(90deg, var(--gold), var(--green)); }
+    .wallet-card.emergency::before { background: linear-gradient(90deg, var(--red), #ff6f00); }
+
+    .wallet-agent  { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px; }
+    .wallet-agent.dj      { color: var(--gold); }
+    .wallet-agent.hashim  { color: var(--cyan); }
+    .wallet-agent.bossman { color: var(--red); }
+    .wallet-agent.patrick { color: var(--green); }
+    .wallet-agent.emergency { color: #ff8c00; }
+
+    .wallet-name  { font-size: 1.05rem; font-weight: 900; color: #fff; margin-bottom: 8px; }
+    .wallet-addr  {
+      font-family: 'Courier New', monospace;
+      font-size: 0.68rem;
+      color: #aac8ff;
+      word-break: break-all;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      padding: 8px;
+      line-height: 1.5;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .wallet-addr:hover { background: rgba(0,255,231,0.08); }
+    .copy-hint { font-size: 0.62rem; color: #556; margin-top: 4px; text-align: right; }
+
+    /* ─── Server Info ──────────────────────────────────────────── */
+    .kv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.82rem;
+    }
+    .kv-row:last-child { border-bottom: none; }
+    .kv-key  { color: #7a8aaa; letter-spacing: 0.05em; }
+    .kv-val  { color: var(--cyan); font-weight: 700; font-family: 'Courier New', monospace; }
+    .kv-val.gold { color: var(--gold); }
+
+    /* ─── Demon Extractor ──────────────────────────────────────── */
+    #demonCanvas {
+      display: block;
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 2px solid rgba(255,59,59,0.4);
+      box-shadow: 0 0 40px rgba(255,0,0,0.25), inset 0 0 40px rgba(0,0,0,0.6);
+    }
+    .extractor-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+    .extractor-bar {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,59,59,0.25);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .extractor-bar-label { font-size: 0.65rem; color: #8a6a6a; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .extractor-bar-track { height: 5px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+    .extractor-bar-fill  { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--red), #ff6f00); animation: fillPulse 2s ease-in-out infinite; }
+    @keyframes fillPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+    .extractor-bar-val { font-size: 0.8rem; font-weight: 800; color: var(--red); margin-top: 5px; }
+
+    /* ─── Comms ────────────────────────────────────────────────── */
+    .comms-btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 14px;
+      border: 1px solid transparent;
+    }
+    .comms-btn:hover { transform: translateY(-2px); }
+    .comms-btn.whatsapp { background: linear-gradient(135deg, #128c7e, #25d366); border-color: rgba(37,211,102,0.4); }
+    .comms-btn.whatsapp:hover { box-shadow: 0 6px 24px rgba(37,211,102,0.35); }
+    .comms-btn.telegram { background: linear-gradient(135deg, #0088cc, #00b4e8); border-color: rgba(0,180,232,0.4); }
+    .comms-btn.telegram:hover { box-shadow: 0 6px 24px rgba(0,180,232,0.35); }
+    .comms-btn.twitter  { background: linear-gradient(135deg, #0f0f0f, #1a1a2e); border-color: rgba(255,255,255,0.2); }
+    .comms-btn.twitter:hover { box-shadow: 0 6px 24px rgba(255,255,255,0.1); }
+    .comms-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .comms-label  { font-size: 1rem; font-weight: 800; }
+    .comms-detail { font-size: 0.72rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+    /* ─── Dynasty Members ──────────────────────────────────────── */
+    .dynasty-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .dynasty-member {
+      background: linear-gradient(135deg, rgba(10,20,40,0.92), rgba(5,10,25,0.95));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .dynasty-member:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(255,215,0,0.15); }
+    .dynasty-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      border: 2px solid var(--gold);
+      background: rgba(255,215,0,0.1);
+    }
+    .dynasty-name  { font-size: 1rem; font-weight: 900; color: var(--gold); margin-bottom: 4px; }
+    .dynasty-role  { font-size: 0.7rem; color: var(--cyan2); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+    .dynasty-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: rgba(255,215,0,0.12);
+      color: var(--gold);
+      border: 1px solid rgba(255,215,0,0.3);
+    }
+
+    /* ─── Motto Section ────────────────────────────────────────── */
+    .motto-section {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(135deg, rgba(255,215,0,0.06), rgba(0,255,231,0.04));
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-top: 24px;
+    }
+    .motto-main {
+      font-size: clamp(1.4rem, 5vw, 2.5rem);
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, var(--gold), var(--cyan), var(--gold));
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 4s linear infinite;
+    }
+    .motto-sub {
+      font-size: 0.82rem;
+      color: #7a8aaa;
+      margin-top: 8px;
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── Progress Bar ─────────────────────────────────────────── */
+    .progress-wrap { margin-top: 8px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: #7a8aaa; margin-bottom: 5px; }
+    .progress-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+    .progress-fill  { height: 100%; border-radius: 3px; }
+    .progress-fill.gold { background: linear-gradient(90deg, var(--gold2), var(--gold)); }
+    .progress-fill.cyan { background: linear-gradient(90deg, var(--cyan2), var(--cyan)); }
+    .progress-fill.green { background: linear-gradient(90deg, #1a6e00, var(--green)); }
+
+    /* ─── Clock ────────────────────────────────────────────────── */
+    #liveClock {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: var(--cyan2);
+      text-align: center;
+      padding: 6px;
+      letter-spacing: 0.1em;
+    }
+
+    /* ─── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: rgba(5,8,15,0.97);
+      border-top: 1px solid var(--border);
+      padding: 14px 20px;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #3a4a6a;
+      letter-spacing: 0.08em;
+    }
+    footer span { color: var(--gold); }
+
+    /* ─── Tooltip / Copy Flash ─────────────────────────────────── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(0,255,231,0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* ─── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 480px) {
+      .tab-btn { min-width: 90px; font-size: 0.68rem; padding: 8px 10px; }
+      .card { padding: 14px 12px; }
+      header { padding: 10px 14px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Starfield -->
+<canvas id="starfield"></canvas>
+
+<div id="app">
+  <!-- ═══ HEADER ═══════════════════════════════════════════════ -->
+  <header>
+    <div class="header-title">⚔️ OMEGA-ULTIMATE-FUSION-V∞</div>
+    <div class="header-sub">Brotherhood Omega Dynasty · <span id="liveClock" style="display:inline;"></span></div>
+    <div class="motto-badge">CHUKUA KONTROLI YOTE</div>
+  </header>
+
+  <!-- ═══ TAB BAR ══════════════════════════════════════════════ -->
+  <nav class="tab-bar" role="tablist">
+    <button class="tab-btn active" onclick="switchTab('cmd',this)" role="tab">
+      <span class="tab-icon">🛰️</span>COMMAND
+    </button>
+    <button class="tab-btn" onclick="switchTab('wallets',this)" role="tab">
+      <span class="tab-icon">💎</span>WALLETS
+    </button>
+    <button class="tab-btn" onclick="switchTab('demon',this)" role="tab">
+      <span class="tab-icon">👹</span>EXTRACTOR
+    </button>
+    <button class="tab-btn" onclick="switchTab('comms',this)" role="tab">
+      <span class="tab-icon">📡</span>COMMS
+    </button>
+    <button class="tab-btn" onclick="switchTab('dynasty',this)" role="tab">
+      <span class="tab-icon">👑</span>DYNASTY
+    </button>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 1 · COMMAND CENTER
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-cmd" class="tab-content active">
+
+    <!-- LQ-004 Alert -->
+    <div class="alert-banner" role="alert">
+      <div class="alert-icon">🚨</div>
+      <div>
+        <div class="alert-code">⚠ ALERT: LQ-004 — LIQUIDITY THRESHOLD BREACH</div>
+        <div class="alert-msg">
+          On-chain liquidity scanner detected abnormal pool drain activity across monitored DEXes.
+          Demon Extractor 666 arms engaged · Auto-circuit-breaker armed at 15% drawdown.
+          All agents notified. Immediate response protocol active.
+        </div>
+      </div>
+    </div>
+
+    <!-- System Status Tiles -->
+    <div class="grid-3" style="margin-bottom:18px;">
+      <div class="stat-tile">
+        <div class="stat-label">System Uptime</div>
+        <div class="stat-value green">99.999%</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Active Agents</div>
+        <div class="stat-value gold">8 / 8</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Containers</div>
+        <div class="stat-value">32</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Chains Online</div>
+        <div class="stat-value gold">12</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">YOLO Leverage</div>
+        <div class="stat-value red">150×</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Circuit Breaker</div>
+        <div class="stat-value">15%</div>
+      </div>
+    </div>
+
+    <!-- Infrastructure -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">🖥️</span>Server Infrastructure</div>
+        <div class="kv-row">
+          <span class="kv-key">Server IP</span>
+          <span class="kv-val">206.189.118.255</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Domain</span>
+          <span class="kv-val gold">brotherhoodomegadynasty.com</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Brain Engine</span>
+          <span class="kv-val">Temporal.io</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Protocol</span>
+          <span class="kv-val">HTTPS / WSS</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">Region</span>
+          <span class="kv-val">Global Edge</span>
+        </div>
+        <div class="kv-row">
+          <span class="kv-key">SSL</span>
+          <span class="kv-val" style="color:var(--green);">✔ ACTIVE</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><span class="icon">📊</span>Live Performance</div>
+
+        <div class="progress-wrap" style="margin-bottom:14px;">
+          <div class="progress-label"><span>CPU Load</span><span>38%</span></div>
+          <div class="progress-track"><div class="progress-fill cyan" style="width:38%;"></div></div>
+        </div>
+        <div class="progress-wrap" style="margin-bottom:14px;">
+          <div class="progress-label"><span>Memory</span><span>61%</span></div>
+          <div class="progress-track"><div class="progress-fill gold" style="width:61%;"></div></div>
+        </div>
+        <div class="progress-wrap" style="margin-bottom:14px;">
+          <div class="progress-label"><span>Network I/O</span><span>74%</span></div>
+          <div class="progress-track"><div class="progress-fill green" style="width:74%;"></div></div>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-label"><span>Disk</span><span>22%</span></div>
+          <div class="progress-track"><div class="progress-fill cyan" style="width:22%;"></div></div>
+        </div>
+
+        <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;">
+          <span class="pill pill-green"><span class="dot dot-green"></span>ALL SYSTEMS GO</span>
+          <span class="pill pill-gold">TEMPORAL ACTIVE</span>
+          <span class="pill pill-red"><span class="dot dot-red"></span>LQ-004 ALERT</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Agent Grid -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🤖</span>Autonomous Agent Status</div>
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px;">
+        <div class="stat-tile"><div class="stat-label">🎧 DJ</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+        <div class="stat-tile"><div class="stat-label">💻 HASHIM</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+        <div class="stat-tile"><div class="stat-label">👔 BOSSMAN</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+        <div class="stat-tile"><div class="stat-label">🔱 PATRICK</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+        <div class="stat-tile"><div class="stat-label">⚡ ALPHA-5</div><div class="stat-value cyan" style="font-size:0.9rem;">STANDBY</div></div>
+        <div class="stat-tile"><div class="stat-label">🌊 DELTA-3</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+        <div class="stat-tile"><div class="stat-label">🔥 OMEGA-7</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+        <div class="stat-tile"><div class="stat-label">🛡️ SENTINEL</div><div class="stat-value green" style="font-size:0.9rem;">ONLINE</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 2 · AGENT WALLETS
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-wallets" class="tab-content">
+    <div class="card">
+      <div class="card-title"><span class="icon">🔑</span>Primary Agent Wallets</div>
+      <div class="grid-2">
+
+        <!-- DJ -->
+        <div class="wallet-card dj">
+          <div class="wallet-agent dj">🎧 Agent</div>
+          <div class="wallet-name">DJ</div>
+          <div class="wallet-addr" onclick="copyAddr(this,'DJ wallet copied!')">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+          <div class="copy-hint">tap to copy</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <span class="pill pill-green"><span class="dot dot-green"></span>ACTIVE</span>
+            <span class="pill pill-gold">LEAD TRADER</span>
+          </div>
+        </div>
+
+        <!-- HASHIM -->
+        <div class="wallet-card hashim">
+          <div class="wallet-agent hashim">💻 Agent</div>
+          <div class="wallet-name">HASHIM</div>
+          <div class="wallet-addr" onclick="copyAddr(this,'HASHIM wallet copied!')">JCYTo6YaKu4Dg6sofprHdvQXaAtkzKdLqcCeNZ21Q28e</div>
+          <div class="copy-hint">tap to copy</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <span class="pill pill-cyan">ACTIVE</span>
+            <span class="pill pill-cyan">QUANT ENGINE</span>
+          </div>
+        </div>
+
+        <!-- BOSSMAN -->
+        <div class="wallet-card bossman">
+          <div class="wallet-agent bossman">👔 Agent</div>
+          <div class="wallet-name">BOSSMAN</div>
+          <div class="wallet-addr" onclick="copyAddr(this,'BOSSMAN wallet copied!')">FodX16WmaNC1SB9aMGxws4AJrjAEqEam5dKveetpQLwF</div>
+          <div class="copy-hint">tap to copy</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <span class="pill pill-red"><span class="dot dot-red"></span>ACTIVE</span>
+            <span class="pill pill-gold">RISK MANAGER</span>
+          </div>
+        </div>
+
+        <!-- PATRICK -->
+        <div class="wallet-card patrick">
+          <div class="wallet-agent patrick">🔱 Agent</div>
+          <div class="wallet-name">PATRICK</div>
+          <div class="wallet-addr" onclick="copyAddr(this,'PATRICK wallet copied!')">GJ8ddFTVatiWpYEQZqfRNtpVFhG48JT79PL8V5AFfhe8</div>
+          <div class="copy-hint">tap to copy (same as DJ)</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">
+            <span class="pill pill-green"><span class="dot dot-green"></span>ACTIVE</span>
+            <span class="pill pill-gold">FOUNDER</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Emergency Wallets -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🚨</span>Emergency Reserve Wallets</div>
+      <div style="margin-bottom:10px; font-size:0.78rem; color:#ff8c00;">
+        ⚡ These wallets are activated only during LQ-004 or circuit-breaker events.
+      </div>
+      <div class="grid-2">
+        <div class="wallet-card emergency">
+          <div class="wallet-agent emergency">🆘 EMERGENCY RESERVE 1</div>
+          <div class="wallet-name">ERW-001</div>
+          <div class="wallet-addr" onclick="copyAddr(this,'ERW-001 wallet copied!')">6q7wbjuPnSE9pBPQ838YfcSQDyMahmXrx3RYxPSYpde1</div>
+          <div class="copy-hint">tap to copy</div>
+          <div style="margin-top:10px;">
+            <span class="pill pill-red"><span class="dot dot-red"></span>ARMED</span>
+          </div>
+        </div>
+        <div class="wallet-card emergency">
+          <div class="wallet-agent emergency">🆘 EMERGENCY RESERVE 2</div>
+          <div class="wallet-name">ERW-002</div>
+          <div class="wallet-addr" onclick="copyAddr(this,'ERW-002 wallet copied!')">EcxNACs4n6rekZR3JCYDBjaVJbyQfn9StYYNRUsHu3xy</div>
+          <div class="copy-hint">tap to copy</div>
+          <div style="margin-top:10px;">
+            <span class="pill pill-red"><span class="dot dot-red"></span>ARMED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wallet Summary -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span>Wallet Registry Summary</div>
+      <div class="kv-row"><span class="kv-key">Total Registered</span><span class="kv-val gold">6 wallets</span></div>
+      <div class="kv-row"><span class="kv-key">Primary Agents</span><span class="kv-val">4</span></div>
+      <div class="kv-row"><span class="kv-key">Emergency Reserves</span><span class="kv-val red">2</span></div>
+      <div class="kv-row"><span class="kv-key">Network</span><span class="kv-val">Solana (SOL)</span></div>
+      <div class="kv-row"><span class="kv-key">Multi-sig</span><span class="kv-val green">✔ ENABLED</span></div>
+      <div class="kv-row"><span class="kv-key">Hardware Backup</span><span class="kv-val green">✔ SECURED</span></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 3 · DEMON EXTRACTOR
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-demon" class="tab-content">
+    <div class="card">
+      <div class="card-title"><span class="icon">👹</span>DEMON EXTRACTOR — 666 ARMS ACTIVE</div>
+      <div style="text-align:center; margin-bottom:14px;">
+        <span class="pill pill-red" style="font-size:0.85rem; padding:6px 18px;">
+          <span class="dot dot-red"></span>&nbsp;666 EXTRACTION ARMS DEPLOYED
+        </span>
+      </div>
+      <canvas id="demonCanvas" width="320" height="320"></canvas>
+      <div class="extractor-stats">
+        <div class="extractor-bar">
+          <div class="extractor-bar-label">Arms Active</div>
+          <div class="extractor-bar-track"><div class="extractor-bar-fill" style="width:100%;"></div></div>
+          <div class="extractor-bar-val">666 / 666</div>
+        </div>
+        <div class="extractor-bar">
+          <div class="extractor-bar-label">Extraction Rate</div>
+          <div class="extractor-bar-track"><div class="extractor-bar-fill" style="width:87%; background:linear-gradient(90deg,#ff6f00,var(--gold));"></div></div>
+          <div class="extractor-bar-val" style="color:var(--gold);">87.3%</div>
+        </div>
+        <div class="extractor-bar">
+          <div class="extractor-bar-label">Liquidity Drained</div>
+          <div class="extractor-bar-track"><div class="extractor-bar-fill" style="width:73%; background:linear-gradient(90deg,var(--cyan2),var(--cyan));"></div></div>
+          <div class="extractor-bar-val" style="color:var(--cyan);">73.1%</div>
+        </div>
+        <div class="extractor-bar">
+          <div class="extractor-bar-label">Yield Captured</div>
+          <div class="extractor-bar-track"><div class="extractor-bar-fill" style="width:94%; background:linear-gradient(90deg,#1a6e00,var(--green));"></div></div>
+          <div class="extractor-bar-val" style="color:var(--green);">94.8%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><span class="icon">⚙️</span>Extractor Configuration</div>
+        <div class="kv-row"><span class="kv-key">Mode</span><span class="kv-val red">OMEGA-BEAST</span></div>
+        <div class="kv-row"><span class="kv-key">Total Arms</span><span class="kv-val gold">666</span></div>
+        <div class="kv-row"><span class="kv-key">Arm Type</span><span class="kv-val">Fractal Quantum</span></div>
+        <div class="kv-row"><span class="kv-key">Target Pools</span><span class="kv-val">ALL DEX</span></div>
+        <div class="kv-row"><span class="kv-key">Circuit Break</span><span class="kv-val">15% drawdown</span></div>
+        <div class="kv-row"><span class="kv-key">YOLO Multiplier</span><span class="kv-val red">150×</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><span class="icon">📈</span>Extraction Metrics</div>
+        <div class="kv-row"><span class="kv-key">Sessions Today</span><span class="kv-val gold">2,847</span></div>
+        <div class="kv-row"><span class="kv-key">Avg Duration</span><span class="kv-val">0.003s</span></div>
+        <div class="kv-row"><span class="kv-key">Total Extracted</span><span class="kv-val green">$14.2M</span></div>
+        <div class="kv-row"><span class="kv-key">Chains Covered</span><span class="kv-val">12</span></div>
+        <div class="kv-row"><span class="kv-key">Success Rate</span><span class="kv-val green">99.97%</span></div>
+        <div class="kv-row"><span class="kv-key">Status</span><span class="kv-val green">✔ EXTRACTING</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 4 · COMMUNICATIONS
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-comms" class="tab-content">
+    <div class="card">
+      <div class="card-title"><span class="icon">📡</span>Communication Channels</div>
+
+      <a href="https://wa.me/+254700000000?text=OMEGA+ULTIMATE+FUSION+CHECK+IN" target="_blank" rel="noopener" class="comms-btn whatsapp">
+        <span class="comms-icon">💬</span>
+        <div>
+          <div class="comms-label">WhatsApp</div>
+          <div class="comms-detail">Brotherhood Omega Dynasty · Direct Command Line</div>
+        </div>
+      </a>
+
+      <a href="https://t.me/BrotherhoodOmegaDynasty" target="_blank" rel="noopener" class="comms-btn telegram">
+        <span class="comms-icon">✈️</span>
+        <div>
+          <div class="comms-label">Telegram</div>
+          <div class="comms-detail">@BrotherhoodOmegaDynasty · Alert Hub & Command Channel</div>
+        </div>
+      </a>
+
+      <a href="https://x.com/OmegaDynasty" target="_blank" rel="noopener" class="comms-btn twitter">
+        <span class="comms-icon">𝕏</span>
+        <div>
+          <div class="comms-label">X (Twitter)</div>
+          <div class="comms-detail">@OmegaDynasty · Public Announcements & Intel Feed</div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔔</span>Notification Status</div>
+      <div class="kv-row"><span class="kv-key">WhatsApp Alerts</span><span class="kv-val green">✔ ENABLED</span></div>
+      <div class="kv-row"><span class="kv-key">Telegram Bot</span><span class="kv-val green">✔ CONNECTED</span></div>
+      <div class="kv-row"><span class="kv-key">X / Twitter Feed</span><span class="kv-val green">✔ LIVE</span></div>
+      <div class="kv-row"><span class="kv-key">LQ-004 Broadcast</span><span class="kv-val red">🔴 ACTIVE NOW</span></div>
+      <div class="kv-row"><span class="kv-key">Emergency Protocol</span><span class="kv-val red">ARMED</span></div>
+      <div class="kv-row"><span class="kv-key">Broadcast Delay</span><span class="kv-val">&lt; 50ms</span></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📜</span>Recent Broadcasts</div>
+      <div style="font-size:0.8rem; line-height:1.8; color:#aac8ff;">
+        <div>🔴 <strong style="color:var(--red);">[LQ-004]</strong> Liquidity breach detected — all agents notified · <span style="color:#556;">just now</span></div>
+        <div>📊 <strong style="color:var(--gold);">[MARKET]</strong> 150× YOLO position opened on SOL/USDC · <span style="color:#556;">2m ago</span></div>
+        <div>✅ <strong style="color:var(--green);">[SYSTEM]</strong> All 32 containers health-check passed · <span style="color:#556;">5m ago</span></div>
+        <div>⚡ <strong style="color:var(--cyan);">[EXTRACTOR]</strong> 666 arms extraction cycle complete — +$142K · <span style="color:#556;">8m ago</span></div>
+        <div>🔱 <strong style="color:var(--gold);">[DYNASTY]</strong> CHUKUA KONTROLI YOTE — Protocol v∞ engaged · <span style="color:#556;">15m ago</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAB 5 · DYNASTY LEGACY
+  ══════════════════════════════════════════════════════════════ -->
+  <section id="tab-dynasty" class="tab-content">
+    <div class="card">
+      <div class="card-title"><span class="icon">👑</span>Brotherhood Omega Dynasty — Legacy Members</div>
+      <div class="dynasty-grid">
+
+        <div class="dynasty-member">
+          <div class="dynasty-avatar">👴</div>
+          <div class="dynasty-name">James</div>
+          <div class="dynasty-role">Patriarch · Founder</div>
+          <span class="dynasty-badge">LEGACY TIER I</span>
+        </div>
+
+        <div class="dynasty-member">
+          <div class="dynasty-avatar">👩</div>
+          <div class="dynasty-name">Annette</div>
+          <div class="dynasty-role">Matriarch · Guardian</div>
+          <span class="dynasty-badge">LEGACY TIER I</span>
+        </div>
+
+        <div class="dynasty-member">
+          <div class="dynasty-avatar">🌟</div>
+          <div class="dynasty-name">Zarina</div>
+          <div class="dynasty-role">Strategist · Heiress</div>
+          <span class="dynasty-badge">LEGACY TIER II</span>
+        </div>
+
+        <div class="dynasty-member">
+          <div class="dynasty-avatar">⚡</div>
+          <div class="dynasty-name">Aisha</div>
+          <div class="dynasty-role">Operations · Commander</div>
+          <span class="dynasty-badge">LEGACY TIER II</span>
+        </div>
+
+        <div class="dynasty-member">
+          <div class="dynasty-avatar">🔥</div>
+          <div class="dynasty-name">Shakiya</div>
+          <div class="dynasty-role">Intelligence · Analyst</div>
+          <span class="dynasty-badge">LEGACY TIER II</span>
+        </div>
+
+        <div class="dynasty-member">
+          <div class="dynasty-avatar">🛡️</div>
+          <div class="dynasty-name">Obina</div>
+          <div class="dynasty-role">Security · Enforcer</div>
+          <span class="dynasty-badge">LEGACY TIER II</span>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📜</span>Dynasty Founding Principles</div>
+      <div style="font-size:0.83rem; line-height:1.9; color:#c8d8f0;">
+        <p>⚔️ <strong style="color:var(--gold);">Brotherhood above all</strong> — The Dynasty is bound by blood, code, and purpose.</p>
+        <p>🔱 <strong style="color:var(--cyan);">Total dominion</strong> — We hold every chain, every pool, every yield stream.</p>
+        <p>💎 <strong style="color:var(--gold);">Legacy preserved</strong> — Each member secures generational wealth for those who follow.</p>
+        <p>🛡️ <strong style="color:var(--cyan);">Impenetrable defence</strong> — 15% circuit breaker, emergency wallets, 99.999% uptime.</p>
+        <p>🌍 <strong style="color:var(--gold);">Self-evolving</strong> — Deploy once. Dominate forever. Adapt without limit.</p>
+      </div>
+    </div>
+
+    <!-- Motto -->
+    <div class="motto-section">
+      <div style="font-size:0.75rem; color:#7a8aaa; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:10px;">
+        Official Dynasty Motto
+      </div>
+      <div class="motto-main">CHUKUA KONTROLI YOTE</div>
+      <div class="motto-sub">Swahili · "Take Total Control" · Brotherhood Omega Dynasty · V∞</div>
+      <div style="margin-top:18px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+        <span class="pill pill-gold">JAMES</span>
+        <span class="pill pill-gold">ANNETTE</span>
+        <span class="pill pill-cyan">ZARINA</span>
+        <span class="pill pill-cyan">AISHA</span>
+        <span class="pill pill-cyan">SHAKIYA</span>
+        <span class="pill pill-cyan">OBINA</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>⚔️ <span>OMEGA-ULTIMATE-FUSION-V∞</span> · Brotherhood Omega Dynasty · brotherhoodomegadynasty.com</div>
+    <div style="margin-top:4px;">Server: <span>206.189.118.255</span> · 8 Agents · 32 Containers · 12 Chains · Temporal.io Brain</div>
+    <div style="margin-top:4px; color:var(--gold); letter-spacing:0.15em;">CHUKUA KONTROLI YOTE</div>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  /* ─── Starfield ──────────────────────────────────────────────── */
+  (function () {
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let W, H, stars = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    function initStars(n) {
+      stars = [];
+      for (let i = 0; i < n; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.4 + 0.2,
+          vx: (Math.random() - 0.5) * 0.15,
+          vy: (Math.random() - 0.5) * 0.15,
+          color: Math.random() > 0.7
+            ? `rgba(0,255,231,${Math.random() * 0.6 + 0.2})`
+            : `rgba(255,215,0,${Math.random() * 0.5 + 0.1})`
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      for (const s of stars) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.fill();
+        s.x = (s.x + s.vx + W) % W;
+        s.y = (s.y + s.vy + H) % H;
+      }
+      requestAnimationFrame(draw);
+    }
+    resize();
+    initStars(280);
+    draw();
+    window.addEventListener('resize', () => { resize(); initStars(280); });
+  })();
+
+  /* ─── Live Clock ─────────────────────────────────────────────── */
+  function updateClock() {
+    const el = document.getElementById('liveClock');
+    if (!el) return;
+    const now = new Date();
+    el.textContent = now.toUTCString().replace('GMT','UTC');
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  /* ─── Tab Switching ──────────────────────────────────────────── */
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    btn.classList.add('active');
+    if (id === 'demon') drawDemon();
+  }
+
+  /* ─── Copy Wallet Address ────────────────────────────────────── */
+  function copyAddr(el, msg) {
+    const text = el.textContent.trim();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => showToast(msg));
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(msg);
+    }
+  }
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = '✔ ' + msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ─── Demon Extractor Canvas ─────────────────────────────────── */
+  let demonDrawn = false;
+  function drawDemon() {
+    if (demonDrawn) return;
+    demonDrawn = true;
+
+    const canvas = document.getElementById('demonCanvas');
+    const ctx = canvas.getContext('2d');
+    const cx = canvas.width  / 2;
+    const cy = canvas.height / 2;
+    const ARMS = 666;
+    const TWO_PI = Math.PI * 2;
+    let tick = 0;
+
+    function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Background radial
+      const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 150);
+      bg.addColorStop(0, 'rgba(80,0,0,0.5)');
+      bg.addColorStop(0.5, 'rgba(30,0,0,0.3)');
+      bg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw arms
+      for (let i = 0; i < ARMS; i++) {
+        const angle = (i / ARMS) * TWO_PI + tick * 0.004 * (i % 3 === 0 ? 1 : -0.5);
+        const wave  = Math.sin(tick * 0.06 + i * 0.02) * 18;
+        const r1 = 20 + (i % 7) * 2;
+        const r2 = 90 + wave + (i % 11) * 1.5;
+
+        const x1 = cx + Math.cos(angle) * r1;
+        const y1 = cy + Math.sin(angle) * r1;
+        const x2 = cx + Math.cos(angle) * r2;
+        const y2 = cy + Math.sin(angle) * r2;
+
+        const hue = (i / ARMS) * 60 - 10 + tick * 0.5; // red → orange
+        const alpha = 0.45 + Math.sin(tick * 0.05 + i * 0.05) * 0.3;
+
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = `hsla(${hue},100%,55%,${alpha})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+
+      // Core orb
+      const orb = ctx.createRadialGradient(cx, cy, 0, cx, cy, 22);
+      orb.addColorStop(0, '#fff');
+      orb.addColorStop(0.3, '#ffd700');
+      orb.addColorStop(0.7, '#ff3b00');
+      orb.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(cx, cy, 22, 0, TWO_PI);
+      ctx.fillStyle = orb;
+      ctx.fill();
+
+      // Pulsing ring
+      const ringR = 28 + Math.sin(tick * 0.08) * 5;
+      ctx.beginPath();
+      ctx.arc(cx, cy, ringR, 0, TWO_PI);
+      ctx.strokeStyle = `rgba(255,215,0,${0.4 + Math.sin(tick * 0.08) * 0.3})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Center text
+      ctx.fillStyle = 'rgba(255,59,59,0.9)';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('666', cx, cy);
+
+      tick++;
+      requestAnimationFrame(frame);
+    }
+    frame();
+  }
+  // Auto-draw if demon tab is visible on load
+  if (document.getElementById('tab-demon').classList.contains('active')) drawDemon();
+</script>
+</body>
+</html>
